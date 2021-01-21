@@ -1,14 +1,15 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <router-view/>
   </div>
 </template>
 
 <style lang="scss">
+
+$image-path: '~@/../mdb/mdbvue/img'; // image path variable update
+@import '~@/../mdb/mdbvue/scss/mdb-free.scss'; // main mdb scss free file
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap'); // font import
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -29,4 +30,11 @@
     }
   }
 }
+
+// @include media-breakpoint-up(xs) {  }
+// @include media-breakpoint-up(sm) {  }
+// @include media-breakpoint-up(md) {  }
+// @include media-breakpoint-up(lg) {  }
+// @include media-breakpoint-up(xl) {  }
+
 </style>

@@ -5,6 +5,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 
+//Code below import ALL the mdb library (big size warning !)
+// import * as mdbvue from 'mdbvue'
+// for (const component in mdbvue) {
+// Vue.component(component, mdbvue[component])
+// }
+
 Vue.config.productionTip = false
 
 new Vue({
