@@ -1,2 +1,18 @@
 // Your custom variables
 $primary-color: #e57373;
+$default-color: white;
+
+.primary-text {
+  color: $primary-color;
+}
+
+.custom-select {
+  &:focus, &:focus-within {
+    color: $primary-color;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.5);
+    & option {
+      color: black;
+    }
+  }
+}

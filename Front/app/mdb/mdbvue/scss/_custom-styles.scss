@@ -1,1 +1,17 @@
 // Your custom styles
+.onFocus:hover, .onFocus:focus, .onFocus:focus-within, button.btn:hover, button.btn:focus, button.btn:focus-within {
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.red.lighten-4:hover, .red.lighten-4:focus, .red.lighten-4:focus-within {
+  background-color: #ef9a9a !important;
+}
+
+.primaryColorFocusW:focus-within {
+  color: $primary-color;
+}
+
+button:focus {
+  font-weight: bold;
+  text-decoration: underline;
+}

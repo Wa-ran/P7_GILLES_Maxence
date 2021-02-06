@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Accueil from '@/views/Accueil.vue'
 import HelloWorld from '@/views/HelloWorld.vue'
 import MainNav from '@/components/MainNav.vue'
-import AccueilForm from '@/components/AccueilForm.vue'
+import AccueilForm from '@/views/AccueilForm.vue'
 
 Vue.use(VueRouter)
 
