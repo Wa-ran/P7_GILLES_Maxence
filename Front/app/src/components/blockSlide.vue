@@ -2,7 +2,7 @@
   <transition
     tag="div"
     appear
-    name="blockSlide"
+    name="BlockSlide"
     mode="out-in"
     @before-enter="delay">
     <slot></slot>
@@ -11,14 +11,14 @@
 
 <script>
 export default {
-  name: "blockSlide",
+  name: "BlockSlide",
   methods: {
     delay(element) {
-      element.style.setProperty('--delay', (this.num *75) + 'ms')
+      element.style.setProperty('--delay', (this.number *75) + 'ms')
     }
   },
   props: {
-    num: {
+    number: {
       type: Number,
       required: true,
       default: 1
@@ -29,10 +29,10 @@ export default {
 
 <style lang="scss">
 
-.blockSlide {
+.BlockSlide {
   &-enter-active {
     border-radius: .25rem;
-    animation: blockSlide 0.5s ease-out var(--delay) backwards;
+    animation: BlockSlide 0.5s ease-out var(--delay) backwards;
   }
   &-leave-active {
     transition: all 0.1s;
@@ -43,7 +43,7 @@ export default {
 }
 
 
-@keyframes blockSlide {
+@keyframes BlockSlide {
   0% {
     opacity: 0;
   }

@@ -32,14 +32,14 @@ import { mdbCard, mdbWaves } from 'mdbvue';
 
 import MainButton from "@/components/MainButton.vue"
 import MainBrand from "@/components/MainBrand.vue"
-import cardSlide from '@/components/cardSlide';
+import CardSlide from '@/components/CardSlide';
 
 export default {
   components: {
     mdbCard,
     MainButton,
     MainBrand,
-    cardSlide
+    CardSlide
   },
   directives: {
     mdbWaves

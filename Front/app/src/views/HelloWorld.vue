@@ -1,59 +1,125 @@
 <template>
-  <div class="hello">
-    <h1>Bienvenue {{ $route.params.user }} !</h1>
-    <router-view/>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+  <card-slide>
+    <mdb-card class="p-3 mt-n2 mb-3 mx-3">
+      <form @submit.prevent @keyup.enter="focusNext">
+        <div class="black-text">
+
+          <wrap withComp="BlockSlide" v-if="this.currentPath === '/log'" key="log">
+              <mdb-input class="d-flex" label="Email" icon="envelope" group type="email" validate error="wrong" success="right" autofocus ref="autofocus"/>
+              <mdb-input class="d-flex" label="Mot de passe" icon="lock" group type="password" validate/>
+          </wrap>
+
+          <wrap withComp="BlockSlide" v-else key="sign">
+              <div class="d-flex justify-content-between primaryColorFocusW my-3">
+                <mdb-input class="d-flex pr-2 my-0" label="Nom" icon="user" group type="text" validate error="wrong" success="right" autofocus ref="autofocus"/>
+                <mdb-input class="d-flex my-0" label="Prénom" group type="text" validate error="wrong" success="right"/>
+              </div>
+              <div class="d-flex primaryColorFocusW">
+                <mdb-icon far icon="address-card" size="2x" class="mr-3" />
+                <select @keydown.enter="isSelected" class="custom-select">
+                  <option selected disabled value="null">Votre service :</option>
+                  <option value="1">Logistique</option>
+                  <option value="2">Marketing</option>
+                  <option value="3">Ressources Humaines</option>
+                  <option value="4">Direction</option>
+                  <option value="5">Service Technique</option>
+                </select>
+              </div>
+              <mdb-input class="d-flex" label="Email" name="Email" icon="envelope-open" group type="email" validate error="wrong" success="right"/>
+              <mdb-input class="d-flex" label="Confirmez votre Email" icon="envelope" group type="text" validate error="wrong" success="right"/>
+              <mdb-input class="d-flex" label="Mot de Passe" icon="lock-open" group type="password" validate/>
+              <mdb-input class="d-flex" label="Confirmez votre mot de Passe" icon="lock" group type="password" validate/>
+          </wrap>
+          <div class="d-flex flex-center py-4 mt-3" key="submit">
+            <transition
+              appear
+              name="fade">
+              <MainButton
+                :path="'/Waran'"
+                :text="'Envoyer'"
+                type="submit"
+              />
+            </transition>
+          </div>
+        </div>
+      </form>
+    </mdb-card>
+  </card-slide>
 </template>
 
 <script>
+import { mdbInput, mdbIcon, mdbCard } from 'mdbvue';
+
+import MainButton from '@/components/MainButton';
+import CardSlide from '@/components/CardSlide';
+import Wrap from '@/components/Wrap';
+
+import focusNext from '@/mixins/focusNext';
+
 export default {
-  name: 'HelloWorld',
+  name: 'AccueilForm',
+  components: {
+    mdbInput,
+    mdbIcon,
+    mdbCard,
+    MainButton,
+    CardSlide,
+    Wrap
+  },
   props: {
-    msg: String
-  }
+    currentPath: {
+      type: String,
+      required: true
+      // Sert de 'clef' envoyée depuis le parent pour forcer le reload et l'utilisation du v-if
+    }
+  },
+  methods: {
+    isSelected($event) {
+      // pour focusNext(): vérifie si une option à été selectionnée
+      if ($event.target.value > 0) {
+        $event.preventDefault();
+        this.focusNext;
+        // en pressant 'enter', passe directement au champ suivant au lieu de revenir sur le select
+      }
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    // pour forcer l'autofocus au changement de route
+    next(vm => {
+      vm.$nextTick(function() {
+        // attendre le chargement complet sinon :active reste sur le bouton
+        vm.$refs.autofocus.focus();
+      })
+    });
+    next()
+  },
+  mixins: [ focusNext ],
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+<style lang="scss">
+.card-body {
+  height: fit-content;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+.md-form input {
+  box-shadow: none !important;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+select {
+  background-color: inherit !important;
 }
-a {
-  color: #42b983;
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+  transform: translateY(-100px);
+  position: relative;
+}
+.fade-enter-active {
+  transition: all 0.3s 0.35s;
+}
+.fade-leave-active {
+  transition: all 0.1s;
+}
+.fade-enter-to {
+  opacity: 1;
 }
 </style>
