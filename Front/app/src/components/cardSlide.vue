@@ -13,10 +13,12 @@
 export default {
   methods: {
     enter(element) {
-      const { height } = getComputedStyle(element);
-      element.style.height = 0;
       setTimeout(() => {
-        element.style.height = height;
+        const { height } = getComputedStyle(element);
+        element.style.height = 0;
+        setTimeout(() => {
+          element.style.height = height;
+        })
       })
     },
     afterEnter(element) {

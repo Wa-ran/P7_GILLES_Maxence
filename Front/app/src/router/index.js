@@ -9,8 +9,8 @@ Vue.use(VueRouter)
 
 const routes = [
   {path: '/', component: Accueil, children: [
-    {path: '/log', component: AccueilForm},
-    {path: '/sign', name: 'sign', component: AccueilForm},
+    {path: '/login', component: AccueilForm},
+    {path: '/signup', component: AccueilForm},
   ]},
   {path: '/:user',
     components: {

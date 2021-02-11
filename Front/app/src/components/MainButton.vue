@@ -1,15 +1,13 @@
 <template>
-  <div>
-    <mdb-btn
-      @click="$router.push(path)"
-      role="button"
-      class="my-1 mx-0 px-3 py-1"
-      :class="[isActive ? 'viewActive' : 'red lighten-4']"
-      :tabindex="isActive ? -1 : ''"
-      darkWaves block>
-      <span class="font-weight-bold black-text text-capitalize">{{ text }}</span>
-    </mdb-btn>
-  </div>
+  <mdb-btn
+    @click="$router.push(path)"
+    role="button"
+    class="my-1 mx-0 px-3 py-1"
+    :class="[isActive ? 'viewActive' : 'red lighten-4']"
+    :tabindex="isActive ? -1 : ''"
+    darkWaves block>
+    <span class="font-weight-bold black-text text-capitalize">{{ text }}</span>
+  </mdb-btn>
 </template>
 
 <script>
@@ -25,18 +23,25 @@ export default {
       type: String,
       required: true
     },
+    // for: {
+    //   validator: function (value) {
+    //     // The value must match one of these strings
+    //     return ['form', 'submit'].indexOf(value) !== -1},
+    //   default: 'base'
+    // },
     path: {
       type: String,
-      required: false
+      required: false,
+      default: null
     },
-    currentPath: {
+    activePath: {
       type: String,
       required: false
     }
   },
   computed: {
     isActive: function () {
-      return this.currentPath == this.path
+      return this.path !== null && this.activePath == this.path
     }
   }
 }
@@ -46,6 +51,7 @@ export default {
 @import '../../mdb/mdbvue/scss/core/_colors.scss';
 
 button {
+  width: fit-content !important;
   & span {
     font-size: 1.25rem;
   }

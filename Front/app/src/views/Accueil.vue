@@ -6,20 +6,20 @@
       </mdb-card>
       <div class="d-flex justify-content-between px-3 pt-1">
         <MainButton
-          :path="'/log'"
+          :path="'/login'"
           :text="'Connection'"
-          :currentPath=$route.path
-          class="gmp-btn-accueil"
+          :activePath=$route.path
+          class="btn-accueil"
         />
         <MainButton
-          :path="'/sign'"
+          :path="'/signup'"
           :text="'M\'inscrire'"
-          :currentPath=$route.path
-          class="gmp-btn-accueil"
+          :activePath=$route.path
+          class="btn-accueil"
         />
       </div>
       <card-slide>
-        <router-view :currentPath=$route.path :key=$route.path></router-view>
+        <router-view :activePath=$route.path :key=$route.path></router-view>
       </card-slide>
     </mdb-card>
     <!-- <img v-if="this.$route.path === '/'" alt="Logo Groupomania" src="../assets/Groupomania/icon.svg"> -->
@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style lang="scss">
-.gmp-btn-accueil {
+.btn-accueil {
   min-width: 46%;
 }
 </style>

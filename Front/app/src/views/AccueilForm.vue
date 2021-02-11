@@ -1,41 +1,17 @@
 <template>
   <card-slide>
     <mdb-card class="p-3 mt-n2 mb-3 mx-3">
-      <form @submit.prevent @keyup.enter="focusNext">
+      <form @submit="checkForm" @keyup.enter="focusNext">
         <div class="black-text">
 
-          <wrap withComp="BlockSlide" v-if="this.currentPath === '/log'" key="log">
-              <mdb-input class="d-flex" label="Email" icon="envelope" group type="email" validate error="wrong" success="right" autofocus ref="autofocus"/>
-              <mdb-input class="d-flex" label="Mot de passe" icon="lock" group type="password" validate/>
-          </wrap>
+          <component :is='this.formComponent'></component>
 
-          <wrap withComp="BlockSlide" v-else key="sign">
-              <div class="d-flex justify-content-between primaryColorFocusW my-3">
-                <mdb-input class="d-flex pr-2 my-0" label="Nom" icon="user" group type="text" validate error="wrong" success="right" autofocus ref="autofocus"/>
-                <mdb-input class="d-flex my-0" label="Prénom" group type="text" validate error="wrong" success="right"/>
-              </div>
-              <div class="d-flex primaryColorFocusW">
-                <mdb-icon far icon="address-card" size="2x" class="mr-3" />
-                <select @keydown.enter="isSelected" class="custom-select">
-                  <option selected disabled value="null">Votre service :</option>
-                  <option value="1">Logistique</option>
-                  <option value="2">Marketing</option>
-                  <option value="3">Ressources Humaines</option>
-                  <option value="4">Direction</option>
-                  <option value="5">Service Technique</option>
-                </select>
-              </div>
-              <mdb-input class="d-flex" label="Email" name="Email" icon="envelope-open" group type="email" validate error="wrong" success="right"/>
-              <mdb-input class="d-flex" label="Confirmez votre Email" icon="envelope" group type="text" validate error="wrong" success="right"/>
-              <mdb-input class="d-flex" label="Mot de Passe" icon="lock-open" group type="password" validate/>
-              <mdb-input class="d-flex" label="Confirmez votre mot de Passe" icon="lock" group type="password" validate/>
-          </wrap>
-          <div class="d-flex flex-center py-4 mt-3" key="submit">
+          <div class="d-flex flex-center py-4 mt-3">
             <transition
               appear
               name="fade">
               <MainButton
-                :path="'/Waran'"
+                @click.prevent
                 :text="'Envoyer'"
                 type="submit"
               />
@@ -48,29 +24,37 @@
 </template>
 
 <script>
-import { mdbInput, mdbIcon, mdbCard } from 'mdbvue';
+import mdbCard from 'mdbvue/lib/components/mdbCard';
 
 import MainButton from '@/components/MainButton';
 import CardSlide from '@/components/CardSlide';
-import Wrap from '@/components/Wrap';
+import login from '@/components/login';
 
 import focusNext from '@/mixins/focusNext';
+
+const signup = () => ({
+  component: import('@/components/signup')
+})
 
 export default {
   name: 'AccueilForm',
   components: {
-    mdbInput,
-    mdbIcon,
     mdbCard,
     MainButton,
     CardSlide,
-    Wrap
+    login,
+    signup
   },
   props: {
-    currentPath: {
+    activePath: {
       type: String,
       required: true
       // Sert de 'clef' envoyée depuis le parent pour forcer le reload et l'utilisation du v-if
+    }
+  },
+  computed: {
+    formComponent() {
+      return this.activePath.replace('/', '')
     }
   },
   methods: {
@@ -81,6 +65,16 @@ export default {
         this.focusNext;
         // en pressant 'enter', passe directement au champ suivant au lieu de revenir sur le select
       }
+    },
+    checkForm($event) {
+      $event.preventDefault();
+      // document.body.appendChild(form);
+      // let form = new FormData({user: 'vcxvcv'});
+      // console.log(form);
+      // let path = form.Email;
+      this.$store.dispatch('postForm', {sdfsdf: 'usersdfsdf'})
+      .then(console.log(this.$store.state.user))
+      this.$router.push('path')
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -90,7 +84,7 @@ export default {
         // attendre le chargement complet (render et transitions)
         setTimeout(() => {
           vm.$el.querySelector('[autofocus]').focus();
-        }, 100)
+        }, 300)
       })
     });
     next()
