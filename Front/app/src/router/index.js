@@ -1,20 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Accueil from '@/views/Accueil.vue'
-import HelloWorld from '@/views/HelloWorld.vue'
+import Profile from '@/views/Profile.vue'
 import MainNav from '@/components/MainNav.vue'
-import AccueilForm from '@/views/AccueilForm.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {path: '/', component: Accueil, children: [
-    {path: '/login', component: AccueilForm},
-    {path: '/signup', component: AccueilForm},
+    {path: '/login'},
+    {path: '/signup'},
   ]},
   {path: '/:user',
     components: {
-      default: HelloWorld,
+      default: Profile,
       MainNav: MainNav
     },
     props: {

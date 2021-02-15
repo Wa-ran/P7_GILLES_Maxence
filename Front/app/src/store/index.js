@@ -7,7 +7,7 @@ import Back from '@/services/API/Back.js';
 
 export default new Vuex.Store({
   state: {
-    user: 28
+    user: {}
   },
   mutations: {
     setUser(state, payload) {

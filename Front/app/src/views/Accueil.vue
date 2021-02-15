@@ -19,7 +19,9 @@
         />
       </div>
       <card-slide>
-        <router-view :activePath=$route.path :key=$route.path></router-view>
+        <main-form v-if="this.$route.path !== '/'">
+          <component :is='this.formComponent' ref="formComp"></component>
+        </main-form>
       </card-slide>
     </mdb-card>
     <!-- <img v-if="this.$route.path === '/'" alt="Logo Groupomania" src="../assets/Groupomania/icon.svg"> -->
@@ -33,16 +35,36 @@ import { mdbCard, mdbWaves } from 'mdbvue';
 import MainButton from "@/components/MainButton.vue"
 import MainBrand from "@/components/MainBrand.vue"
 import CardSlide from '@/components/CardSlide';
+import MainForm from '@/components/MainForm';
+
+import login from '@/components/forms/login';
+const signup = () => ({
+  component: import('@/components/forms/signup')
+})
+
 
 export default {
   components: {
     mdbCard,
     MainButton,
     MainBrand,
-    CardSlide
+    CardSlide,
+    MainForm,
+    login,
+    signup
   },
   directives: {
     mdbWaves
+  },
+  computed: {
+    formComponent() {
+      return this.$route.path.replace('/', '')
+    }
+  },
+  updated() {
+    setTimeout(() => {
+      document.querySelector('[autofocus]').focus();
+    }, 300)
   }
 }
 </script>

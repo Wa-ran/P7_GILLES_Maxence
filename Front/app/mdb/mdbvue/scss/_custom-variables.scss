@@ -1,18 +1,10 @@
 // Your custom variables
 $primary-color: #e57373;
 $default-color: white;
+$danger: #f80;
 
-.primary-text {
-  color: $primary-color;
-}
-
-.custom-select {
-  &:focus, &:focus-within {
-    color: $primary-color;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.5);
-    & option {
-      color: black;
-    }
-  }
+// icônes des inputs de form
+.prefix {
+  position: relative !important;
+  margin-right: 1rem;
 }
