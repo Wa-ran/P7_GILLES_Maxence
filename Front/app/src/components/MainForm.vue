@@ -1,6 +1,6 @@
 <template>
   <card-slide>
-    <mdb-card class="p-3 mt-n2 mb-3 mx-3">
+    <mdb-card>
       <form novalidate @submit.prevent @keydown.enter="nextInput">
         <div class="black-text">
 
@@ -15,6 +15,7 @@
                 <MainButton
                   :text="'Envoyer'"
                   type="submit"
+                  class="gpm-shadow-focus gpm-prior-light"
                 />
               </transition>
             </div>
@@ -68,8 +69,8 @@ export default {
         }
       });
       if (valid === true) {
-        this.$store.dispatch('postForm', data)
-        this.$router.push('path')      
+        this.$store.dispatch('postForm', data);
+        this.$router.push('Home');  
       }
     }
   },
@@ -80,12 +81,6 @@ export default {
 <style lang="scss">
 .card-body {
   height: fit-content;
-}
-.md-form input {
-  box-shadow: none !important;
-}
-select {
-  background-color: inherit !important;
 }
 
 .fade-enter, .fade-leave-to {

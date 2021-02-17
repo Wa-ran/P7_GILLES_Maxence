@@ -2,16 +2,17 @@
   <card-slide>
     <mdb-card class="p-3 mt-n2 mb-3 mx-3">
       <wrap withComp="BlockSlide">
-        <div v-for="(item, index) in post" :key="index">
+        <div v-for="(item, index) in profile" :key="index">
           <p>{{ item }}</p>
         </div>
+        <p>Celui-là vient du serveur :) >> <span style="color: red">{{ profile.server }}</span></p>
       </wrap>
     </mdb-card>
   </card-slide>
 </template>
 
 <script>
-import { mdbCard } from 'mdbvue';
+import mdbCard from 'mdbvue/lib/components/mdbCard';
 
 import CardSlide from '@/components/CardSlide';
 import Wrap from '@/components/Wrap';
@@ -26,7 +27,7 @@ export default {
     Wrap
   },
   computed: {
-    post() {return this.$store.state.user}
+    profile() {return this.$store.state.profile}
   },
   mixins: [ focusNext ],
 }

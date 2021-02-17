@@ -50,7 +50,7 @@ export default {
   10% {
     opacity: 0.1;
     transform: translateX(-25%);
-    background-color: red;
+    background-color: #091F43;
   }
   40% {
     opacity: 0.6;
@@ -60,7 +60,7 @@ export default {
     transform: translateX(0);
   }
   100% {
-    background-color: #fff;
+    background-color: transparent;
   }
 }
 </style>

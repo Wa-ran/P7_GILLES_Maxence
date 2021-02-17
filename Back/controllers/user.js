@@ -49,7 +49,7 @@ exports.signup = (req, res, next) => {
 exports.login = (req, res, next) => {
   res.json({
     ...req.body,
-    user: 'Waran'
+    server: 'Waran'
   })
 };
 

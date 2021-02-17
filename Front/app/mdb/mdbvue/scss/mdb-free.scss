@@ -1,5 +1,10 @@
 @charset "UTF-8";
 
+// Your custom variables
+@import "custom-variables";
+// Your custom styles
+@import "custom-styles";
+
 // Bootstrap
 @import "core/bootstrap/functions";
 @import "core/bootstrap/variables";
@@ -7,8 +12,6 @@
 
 // CORE
 @import "core/mixins";
-// Your custom variables
-@import "custom-variables";
 @import "core/colors";
 @import "core/variables";
 @import "core/global";
@@ -47,6 +50,3 @@
 // @import "addons/hierarchical-display";
 // @import "addons/flag";
 // @import "addons/rating";
-
-// Your custom styles
-@import "custom-styles";

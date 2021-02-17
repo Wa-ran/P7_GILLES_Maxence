@@ -1,7 +1,7 @@
 <template>
   <wrap withComp="BlockSlide">
 
-    <div class="d-flex justify-content-between md-form my-3">
+    <div class="d-flex justify-content-between my-3 has-icon">
       <mdb-icon far icon="user" size="2x" class="mr-2 prefix"/>
       <mdb-input
         class="d-flex pr-2 my-0 input-group" 
@@ -18,7 +18,7 @@
         invalidFeedback="Non rempli"/>
     </div>
 
-    <div class="d-flex md-form mt-4">
+    <div class="d-flex mt-4 has-icon">
       <mdb-icon far icon="address-card" size="2x" class="mr-3 prefix"/>
       <select 
       name="departement" v-model="inputs.departement.value"
@@ -141,10 +141,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-.md-form.prefix {
-  position: relative !important;
-  margin-right: 1rem;
-}
-</style>

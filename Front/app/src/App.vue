@@ -18,24 +18,4 @@ $image-path: '~@/../mdb/mdbvue/img'; // image path variable update
   text-align: center;
   color: #2c3e50;
 }
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-
-// @include media-breakpoint-up(xs) {  }
-// @include media-breakpoint-up(sm) {  }
-// @include media-breakpoint-up(md) {  }
-// @include media-breakpoint-up(lg) {  }
-// @include media-breakpoint-up(xl) {  }
-
 </style>

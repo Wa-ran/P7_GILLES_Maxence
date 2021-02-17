@@ -1,11 +1,13 @@
+// Your custom variables
+@import "custom-variables";
+@import "custom-styles";
+
 // Bootstrap
 @import "core/bootstrap/functions";
 @import "core/bootstrap/variables";
 
 // CORE
 @import "core/mixins";
-// Your custom variables
-@import "custom-variables";
 @import "core/colors";
 @import "core/variables";
 @import "core/global";
@@ -34,5 +36,3 @@
 @import "free/steppers";
 @import "free/loader";
 @import "free/treeview";
-
-@import "custom-styles";

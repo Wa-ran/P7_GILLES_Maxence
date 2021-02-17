@@ -1,10 +1,70 @@
 // Your custom variables
-$primary-color: #e57373;
-$default-color: white;
-$danger: #f80;
+$gpm-base: #091F43;
+$gpm-base-light: #616D81;
+$gpm-prior: #D1515A;
+$gpm-prior-light: #D49095;
+$gpm-default: #AEAEAE;
+$gpm-default-light: #D8D8D8;
+$black: $gpm-base;
+$white: #eee;
 
-// icônes des inputs de form
+$black-base: $black;
+$default-color: $white;
+$primary-color: $gpm-base;
+$secondary-color: $gpm-prior;
+$white-base: $white;
+
+$md-card-text-color: $white;
+
+*.gpm-base {
+  background-color: $gpm-base-light !important;
+  color: $gpm-default-light !important;
+}
+*.gpm-base-light {
+  background-color: $gpm-base-light !important;
+  color: $gpm-base !important;
+}
+*.gpm-prior {
+  background-color: $gpm-prior !important;
+}
+*.gpm-prior-light {
+  background-color: $gpm-prior-light !important;
+  color: $gpm-base !important;
+  &:hover, &:focus {
+    background-color: $gpm-prior !important;
+    color: $white !important;
+    & span {
+      color: $white !important;
+    }
+  }
+}
+*.gpm-default {
+  background-color: $gpm-default !important;
+}
+*.gpm-default-light {
+  background-color: $gpm-default-light !important;
+}
+
+// prefix = icônes des inputs
 .prefix {
   position: relative !important;
   margin-right: 1rem;
+}
+form .active, .has-icon:focus-within {
+  color: $gpm-prior !important;
+} 
+form input {
+  box-shadow: none !important;
+  border-bottom: solid 1px $gpm-default !important;
+  &:focus, &:focus-within {
+    border-bottom: solid 1px $gpm-prior !important;
+    color: $gpm-prior !important;
+  }
+}
+form label {
+  color: inherit !important;
+}
+select {
+  background-color: inherit !important;
+  color: inherit !important;
 }

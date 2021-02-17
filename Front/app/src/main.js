@@ -8,6 +8,9 @@ import store from './store'
 
 
 Vue.config.productionTip = false
+Vue.config.errorHandler = function () {
+  return
+}
 
 new Vue({
   router,

@@ -1,7 +1,7 @@
 <template>
   <div class="accueil">
-    <mdb-card class="m-2 mt-4 pb-2 red lighten-5">
-      <mdb-card v-mdb-waves="{ dark: true }" class="red lighten-4 m-3 mt-n3 onFocus">
+    <mdb-card class="m-2 mt-4 pb-2 gpm-base">
+      <mdb-card v-mdb-waves="{ dark: true }" class="m-3 mt-n3 gpm-default">
         <MainBrand/>
       </mdb-card>
       <div class="d-flex justify-content-between px-3 pt-1">
@@ -9,17 +9,17 @@
           :path="'/login'"
           :text="'Connection'"
           :activePath=$route.path
-          class="btn-accueil"
+          class="btn-accueil gpm-shadow-focus gpm-default"
         />
         <MainButton
           :path="'/signup'"
           :text="'M\'inscrire'"
           :activePath=$route.path
-          class="btn-accueil"
+          class="btn-accueil gpm-shadow-focus gpm-default"
         />
       </div>
       <card-slide>
-        <main-form v-if="this.$route.path !== '/'">
+        <main-form v-if="this.$route.path !== '/'" class="mt-n2 mb-3 mx-3 p-3 white gpm-shadow-focus gpm-default-light">
           <component :is='this.formComponent' ref="formComp"></component>
         </main-form>
       </card-slide>
@@ -30,7 +30,8 @@
 
 
 <script>
-import { mdbCard, mdbWaves } from 'mdbvue';
+import mdbCard from 'mdbvue/lib/components/mdbCard';
+import mdbWaves from 'mdbvue/lib/components/mdbWaves';
 
 import MainButton from "@/components/MainButton.vue"
 import MainBrand from "@/components/MainBrand.vue"
