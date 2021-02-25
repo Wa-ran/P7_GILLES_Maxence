@@ -43,28 +43,68 @@ $md-card-text-color: $white;
 }
 *.gpm-default-light {
   background-color: $gpm-default-light !important;
+  &:focus {
+    box-shadow: inset 0 5px 11px 0 rgba($gpm-prior, 0.28), inset 0 4px 15px 0 rgba($gpm-prior, 0.25);
+  }
 }
 
 // prefix = icônes des inputs
+// has-icon = custom icône
 .prefix {
   position: relative !important;
   margin-right: 1rem;
 }
-form .active, .has-icon:focus-within {
-  color: $gpm-prior !important;
-} 
-form input {
-  box-shadow: none !important;
-  border-bottom: solid 1px $gpm-default !important;
-  &:focus, &:focus-within {
-    border-bottom: solid 1px $gpm-prior !important;
-    color: $gpm-prior !important;
+form {
+  height: fit-content;
+  & .input-group {
+    margin-top: 1.25rem !important;
+    margin-bottom: 1.25rem !important;
+    &::before {
+      content: "";
+      bottom: 35%;
+      left: 10%;
+      position: absolute;
+      width: 80%;
+      height: 0;
+      box-shadow: 0 0 15px 8px rgba($white, 0.88), 0 0 30px 10px rgba($white, 0.68) !important;
+    }
+    &:focus-within::before {
+      content: "";
+      bottom: 35%;
+      left: 10%;
+      position: absolute;
+      width: 80%;
+      height: 0;
+      box-shadow: 0 0 6px 4px rgba($gpm-prior-light, 0.38), 0 0 20px 6px rgba($gpm-prior, 0.18) !important;
+    }
   }
-}
-form label {
-  color: inherit !important;
+  & .active, .has-icon:focus-within {
+    color: $gpm-prior !important;  
+  }
+  & input {
+    box-shadow: none !important;
+    border-bottom: solid 1px $gpm-default !important;
+    color: $gpm-base !important;
+    font-weight: bold !important;
+    &[value=""] {
+      font-weight: normal;
+    }
+    &:focus, &:focus-within {
+      border-bottom: solid 1px $gpm-prior !important;
+      font-weight: bold;
+    }
+  }
+  & label {
+    color: inherit !important;
+  }
 }
 select {
   background-color: inherit !important;
   color: inherit !important;
+  & option[disabled] {
+    display: none;
+  }
+}
+.invalid-feedback {
+  z-index: 1;
 }

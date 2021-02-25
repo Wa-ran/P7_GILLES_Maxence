@@ -38,6 +38,5 @@ export default {
 .CardSlide-leave-to {
   transform: translateY(20px);
   opacity: 0;
-  background-color: red;
 }
 </style>

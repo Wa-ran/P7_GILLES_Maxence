@@ -1,21 +1,22 @@
 <template>
   <card-slide>
     <mdb-card>
-      <form novalidate @submit.prevent @keydown.enter="nextInput">
+      <form
+      novalidate @submit.prevent @keydown.enter="nextInput"
+      class="m-auto">
         <div class="black-text">
 
-          <slot></slot>
+          <slot class="h-auto"></slot>
 
-          <div class="d-flex flex-center py-4 mt-3">
-            <!-- écoute de l'évènement sur le parent car submit.prevent empêche le fonctionnement du clic sur le bouton (tous concidérés 'submit') -->
-            <div @mousedown="checkForm">
+          <div class="d-flex flex-center py-4 mt-3 mx-auto">
+            <!-- écoute de l'évènement sur le parent car submit.prevent, qui empêche le reload de la page, empêche aussi le fonctionnement du clic sur le bouton (tous concidérés 'submit') -->
+            <div @mousedown="$emit('form-submit')">
               <transition
-                appear
-                name="fade">
+              appear
+              name="fade">
                 <MainButton
-                  :text="'Envoyer'"
-                  type="submit"
-                  class="gpm-shadow-focus gpm-prior-light"
+                :text="this.submitButton"
+                class="gpm-shadow-focus gpm-prior-light"
                 />
               </transition>
             </div>
@@ -41,6 +42,11 @@ export default {
     MainButton,
     CardSlide
   },
+  props: {
+    submitButton: {
+      type: String
+    }
+  },
   methods: {
     nextInput($event) {
       if ($event.target == document.querySelector('[type=submit]')) {
@@ -53,24 +59,6 @@ export default {
       }
       else {
         this.focusNext()
-      }
-    },
-    checkForm($event) {
-      $event.preventDefault();
-      let valid = true;
-      let form = document.querySelector('form');
-      let data = {};
-      form.classList.add('was-validated');
-      document.querySelectorAll('[required]').forEach(function(elem) {
-        if (elem.checkValidity() === false) {
-          return valid = false;
-        } else {
-          return data[elem.name] = elem.value
-        }
-      });
-      if (valid === true) {
-        this.$store.dispatch('postForm', data);
-        this.$router.push('Home');  
       }
     }
   },

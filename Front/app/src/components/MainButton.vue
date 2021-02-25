@@ -1,6 +1,6 @@
 <template>
   <mdb-btn
-    @click="$router.push(path)"
+    @click="$emit('action')"
     role="button"
     class="my-1 mx-0 px-3 py-1"
     :class="[isActive ? 'viewActive gpm-default-light' : '']"
@@ -29,6 +29,7 @@ export default {
       default: null
     },
     activePath: {
+      // sert de clef pour rafraîchissement
       type: String,
       required: false
     }

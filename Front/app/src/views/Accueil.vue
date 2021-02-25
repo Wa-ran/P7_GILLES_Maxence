@@ -1,17 +1,19 @@
 <template>
-  <div class="accueil">
-    <mdb-card class="m-2 mt-4 pb-2 gpm-base">
+  <div>
+    <mdb-card class="accueil m-2 mt-4 pb-2 gpm-base gpm-big-shadow">
       <mdb-card v-mdb-waves="{ dark: true }" class="m-3 mt-n3 gpm-default">
-        <MainBrand/>
+        <MainBrand class="mx-auto my-2"/>
       </mdb-card>
-      <div class="d-flex justify-content-between px-3 pt-1">
+      <div class="d-flex justify-content-between px-3 pt-1 w-100">
         <MainButton
+          @action="$router.push('/login')"
           :path="'/login'"
           :text="'Connection'"
           :activePath=$route.path
           class="btn-accueil gpm-shadow-focus gpm-default"
         />
         <MainButton
+          @action="$router.push('/signup')"
           :path="'/signup'"
           :text="'M\'inscrire'"
           :activePath=$route.path
@@ -19,7 +21,11 @@
         />
       </div>
       <card-slide>
-        <main-form v-if="this.$route.path !== '/'" class="mt-n2 mb-3 mx-3 p-3 white gpm-shadow-focus gpm-default-light">
+        <main-form
+        v-if="this.$route.path !== '/'"
+        :submitButton="'Envoyer'"
+        @form-submit="checkForm"
+        class="w-auto mt-n2 mb-3 mx-3 p-3 white gpm-shadow-focus gpm-default-light">
           <component :is='this.formComponent' ref="formComp"></component>
         </main-form>
       </card-slide>
@@ -62,6 +68,25 @@ export default {
       return this.$route.path.replace('/', '')
     }
   },
+  methods: {
+    checkForm() {
+      let valid = true;
+      let form = document.querySelector('form');
+      let data = {};
+      form.classList.add('was-validated');
+      document.querySelectorAll('[required]').forEach(function(elem) {
+        if (elem.checkValidity() === false) {
+          return valid = false;
+        } else {
+          return data[elem.name] = elem.value
+        }
+      });
+      if (valid === true) {
+        this.$store.dispatch('postForm', data)
+        .then(() => this.$router.push('user'));  
+      }
+    }
+  },
   updated() {
     setTimeout(() => {
       document.querySelector('[autofocus]').focus();
@@ -71,6 +96,9 @@ export default {
 </script>
 
 <style lang="scss">
+.accueil {
+  max-width: 500px;
+}
 .btn-accueil {
   min-width: 46%;
 }

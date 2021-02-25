@@ -1,8 +1,8 @@
 <template>
   <wrap withComp="BlockSlide">
 
-    <div class="d-flex justify-content-between my-3 has-icon">
-      <mdb-icon far icon="user" size="2x" class="mr-2 prefix"/>
+    <div class="d-flex justify-content-between mt-3 has-icon">
+      <mdb-icon far icon="user" size="2x" class="mr-3 my-auto prefix"/>
       <mdb-input
         class="d-flex pr-2 my-0 input-group" 
         id="nom" name="nom" label="Nom" v-model="inputs.nom.value"
@@ -18,15 +18,16 @@
         invalidFeedback="Non rempli"/>
     </div>
 
-    <div class="d-flex mt-4 has-icon">
-      <mdb-icon far icon="address-card" size="2x" class="mr-3 prefix"/>
+    <div class="d-flex has-icon w-100">
+      <mdb-icon far icon="address-card" size="2x" class="my-auto prefix"/>
       <select 
       name="departement" v-model="inputs.departement.value"
-      class="custom-select" aria-labelledby="selectLabel" required>
+      class="custom-select" @change="styleBold"
+      aria-labelledby="selectLabel" required>
         <option selected disabled value="" id="selectLabel">Sélectionnez votre service</option>
-        <option v-for="option in optionsList" 
-        :value="option.value" :key="option.value">
-          {{ option.text }}
+        <option v-for="(dept, index) in deptsList" 
+        :value="index" :key="index">
+          {{ dept }}
         </option>
       </select>
     </div>
@@ -107,14 +108,8 @@ export default {
     }
   },
   computed: {
-    optionsList() {
-      return [
-        {text: 'Direction', value:'1'},
-        {text: 'Logistique', value:'2'},
-        {text: 'Marketing', value:'3'},
-        {text: 'Ressources Humaines', value:'4'},
-        {text: 'Service Technique', value:'5'}
-      ]
+    deptsList() {
+      return this.$store.state.depts
     },
     isValid() {
       let valid;
@@ -137,7 +132,13 @@ export default {
           input.valid = true
         }
       }
+    },
+    styleBold($event) {
+      $event.target.style.fontWeight = 'bold';
     }
+  },
+  created() {
+    this.$store.dispatch('getDepts')
   },
 }
 </script>

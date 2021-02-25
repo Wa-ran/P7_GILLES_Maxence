@@ -1,19 +1,22 @@
 <template>
   <mdbContainer class="container-fluid p-0" fluid>
-    <mdb-navbar color="red" class="lighten-4 navbar-3" animated animation="1" light>
-      <MainBrand />
-      <mdb-navbar-toggler>
-        <mdb-navbar-nav class="d-flex flex-row flex-wrap justify-content-start">
-          <MainButton
-            v-for="page in pages"
-            :key="page.id"
-            :path="page.path"
-            :text="page.name"
-          />
+    <mdb-navbar color="red" class="gpm-base navbar-3" animated animation="2" light>
+      <MainBrand class="my-2"/>
+      <mdb-navbar-toggler class="m-auto">
+        <mdb-navbar-nav class="d-flex flex-row flex-wrap w-100 m-0">
+          <div class="d-flex justify-content-between w-100">
+            <MainButton
+              v-for="page in pages"
+              :key="page.id"
+              :text="page.name"
+              @action="$router.push(page.path)"
+              class="gpm-default-light"
+            />
+          </div>
         </mdb-navbar-nav>
-        <form>
-          <mdb-form-inline class="active-purple active-purple-2 mt-3">
-            <input class="form-control mr-sm-2 mb-2" type="text" placeholder="Search" aria-label="Search"/>
+        <form class="w-100 my-3">
+          <mdb-form-inline class="w-100">
+            <input class="gpm-default-light form-control" type="text" placeholder="Search" aria-label="Search"/>
           </mdb-form-inline>
         </form>
       </mdb-navbar-toggler>
@@ -41,9 +44,9 @@ export default {
   data() {
     return {
       pages: [
-        { path: this.$route.params.user , name: "Home" },
+        { path: "/user", name: "Home" },
         { path: "/about", name: "About" },
-        { path: this.$route.params.user + "/about", name: "AboutChild" }
+        { path: "/user/profil", name: "Mon profil" }
       ]
     }
   }
@@ -51,21 +54,16 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../mdb/mdbvue/scss/core/_colors.scss';
-
+.logo {
+  max-width: 80%;
+}
 ul {
-  border-top: solid 2px $black;
+  border-top: solid 2px #AEAEAE;
+  margin-block-start: 0 !important;
+  margin: 0 !important;
   padding-top: 1rem;
 }
-.animated-icon1 * {
-  background-color: $black !important;
-}
-.active-purple-2 input[type=text]:focus:not([readonly]) {
-    border: 1px solid $black;
-    box-shadow: 0 2px 3px 0 $mdb-color-darken-2;
-}
-.active-purple input[type=text] {
-    border: 1px solid $black;
-    box-shadow: 0 1px 0 0 $black;
+.animated-icon2 * {
+  background-color: black !important;
 }
 </style>

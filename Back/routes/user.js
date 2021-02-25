@@ -6,6 +6,5 @@ const password = require('../middlewares/password')
 
 router.post('/signup', password, userCtrl.signup);
 router.post('/login', userCtrl.login);
-router.get('/login', userCtrl.fetch);
 
 module.exports = router;

@@ -46,16 +46,55 @@ exports.signup = (req, res, next) => {
 //     .catch(error => res.status(500).json({ error }));
 // };
 
+const mysqlx = require('@mysql/xdevapi');
+const config = {
+    password: 'pass',
+    user: 'root',
+    host: '127.0.0.1',
+    port: 33060,
+    schema: 'groupomania'
+};
+
+// mysqlx.getSession(config)
+// .then(session => {
+//   console.log(session.inspect());
+//   return session
+// })
+// .then(function (mySession) {
+//   // Get a list of all available schemas
+//   return mySession.getSchemas();
+// })
+// .then(function (schemaList) {
+//   console.log('Available schemas in this session:\n');
+
+//   // Loop over all available schemas and print their name
+//   schemaList.forEach(function (schema) {
+//     console.log(schema.getName() + '\n');
+//   })
+// })
+
+const departements = function() {
+  mysqlx.getSession(config)
+  .then(function (s) {
+    session = s;
+    session.sql('USE groupomania').execute();
+  })
+  .then(function () {
+    let dept = [];
+    return Promise.all([
+      session.sql('SELECT nom FROM departement').execute(async function (row) {
+        await row.map(nom => {
+          dept.push(nom)
+        })
+      })
+      .then(() => { return dept })
+    ])
+  })
+};
+
 exports.login = (req, res, next) => {
   res.json({
     ...req.body,
     server: 'Waran'
-  })
-};
-
-exports.fetch = (req, res, next) => {
-  res.json({
-    user: 'Waran',
-    req: req.body
-  })
+  });
 };

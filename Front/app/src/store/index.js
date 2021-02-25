@@ -13,17 +13,21 @@ export default new Vuex.Store({
     })
   ],
   state: {
-    profile: {}
+    profil: {},
+    depts: [],
   },
   mutations: {
     setProfile(state, payload) {
-      state.profile = payload;
+      state.profil = payload;
+    },
+    setDepts(state, payload) {
+      state.depts = payload;
     }
   },
   actions: {
-    getProfile (context) {
-      return Back.getProfile()
-      .then(profile => context.commit('setProfile', profile))
+    getDepts (context) {
+      return Back.getDepts()
+      .then(res => context.commit('setDepts', res))
     },
     postForm (context, data) {
       return Back.postForm(data)

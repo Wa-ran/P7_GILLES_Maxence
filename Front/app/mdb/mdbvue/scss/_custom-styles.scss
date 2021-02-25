@@ -1,7 +1,35 @@
 // Your custom styles
+html {
+  min-width: 100%;
+  background-image: url('~@/assets/city-background/'+ random(5) +'.webp');
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  &::after {
+    content: "";
+    opacity: 0.5;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;   
+    background-color: #eee;
+  }
+}
 body {
-  background-color: $white;
+  margin: auto;
+  min-width: 100%;
+  background-color: transparent;
   color: $black;
+  & div {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+.gpm-big-shadow {
+  box-shadow: 0 5px 11px 0 rgba(black, 0.68), 0 4px 15px 0 rgba(black, 0.45);
 }
 // style des ombres au survol/focus
 .gpm-shadow-focus:hover, .gpm-shadow-focus:focus, .gpm-shadow-focus:focus-within {
