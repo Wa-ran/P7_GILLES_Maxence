@@ -29,7 +29,7 @@ export default new Vuex.Store({
       return Back.getDepts()
       .then(res => context.commit('setDepts', res))
     },
-    postForm (context, data) {
+    postSignUp (context, data) {
       return Back.postForm(data)
       .then(res => context.commit('setProfile', res))
     }

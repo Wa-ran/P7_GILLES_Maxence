@@ -1,27 +1,27 @@
 <template>
   <wrap withComp="BlockSlide">
 
-    <div class="d-flex justify-content-between mt-3 has-icon">
-      <mdb-icon far icon="user" size="2x" class="mr-3 my-auto prefix"/>
+    <div class="d-flex justify-content-between has-icon mb-3 mt-0">
+      <mdb-icon far icon="user" size="2x" class="mr-3 my-0 prefix"/>
       <mdb-input
-        class="d-flex pr-2 my-0 input-group" 
-        id="nom" name="nom" label="Nom" v-model="inputs.nom.value"
+        class="d-flex pr-2 my-0 input-group gpm-mist" 
+        id="nom" name="nom" label="Nom"
         type="text" 
         validate required lazy 
         autofocus
         invalidFeedback="Non rempli"/>
       <mdb-input
-        class="d-flex my-0 input-group" 
-        id="prenom" name="prenom" label="Prénom" v-model="inputs.prenom.value" 
+        class="d-flex my-0 input-group gpm-mist" 
+        id="prenom" name="prenom" label="Prénom"
         type="text" 
         validate required lazy
         invalidFeedback="Non rempli"/>
     </div>
 
-    <div class="d-flex has-icon w-100">
+    <div class="d-flex has-icon w-100 mt-4 mb-3">
       <mdb-icon far icon="address-card" size="2x" class="my-auto prefix"/>
       <select 
-      name="departement" v-model="inputs.departement.value"
+      name="departement"
       class="custom-select" @change="styleBold"
       aria-labelledby="selectLabel" required>
         <option selected disabled value="" id="selectLabel">Sélectionnez votre service</option>
@@ -33,30 +33,33 @@
     </div>
 
     <mdb-input
-      class="d-flex input-group" 
-      id="email" name="email" label="Email" v-model="inputs.email.value" 
+      class="d-flex input-group gpm-mist" 
+      id="email" name="email" label="Email"
       icon="envelope-open" type="email" 
       validate required lazy
-      invalidFeedback="Non rempli"/>
+      :invalidFeedback="this.emailError"/>
     <mdb-input
-      class="d-flex input-group" 
-      id="emailConf" name="emailConf" label="Confirmez votre Email" v-model="inputs.emailConf.value" 
-      icon="envelope" type="text" 
+      class="d-flex input-group gpm-mist" 
+      id="emailConf" name="emailConf" label="Confirmez votre Email"
+      icon="envelope" type="email" 
       validate required
-      invalidFeedback="Non rempli"/>
+      :invalidFeedback="this.emailConfError"
+      @change.native="conf($event, 'email')"/>
 
     <mdb-input
-      class="d-flex input-group" 
-      id="password" name="password" label="Mot de Passe" v-model="inputs.password.value" 
+      class="d-flex input-group gpm-mist" 
+      id="password" name="password" label="Mot de Passe"
       icon="lock-open" type="password" 
       validate required lazy
-      invalidFeedback="Non rempli"/>
+      :invalidFeedback="this.passwordError"
+      @change.native="check($event.target)"/>
     <mdb-input
-      class="d-flex input-group" 
-      id="passwordConf" name="passwordConf" label="Confirmez votre mot de Passe" v-model="inputs.passwordConf.value" 
+      class="d-flex input-group gpm-mist" 
+      id="passwordConf" name="passwordConf" label="Confirmez votre mot de Passe"
       icon="lock" type="password" 
-      required validate
-      invalidFeedback="Non rempli"/>
+      validate required
+      :invalidFeedback="this.passwordConfError"
+      @change.native="conf($event, 'password'); check($event.target)"/>
   </wrap>
 </template>
 
@@ -64,6 +67,8 @@
 import mdbInput from 'mdbvue/lib/components/mdbInput';
 import mdbIcon from 'mdbvue/lib/components/mdbIcon';
 import Wrap from '@/components/Wrap';
+
+import checkPassword from '@/mixins/checkPassword'
 
 export default {
   name: 'signup',
@@ -74,71 +79,43 @@ export default {
   },
   data() {
     return {
-      inputs: {
-        nom: {
-          value: '',
-          valid: false
-        },
-        prenom: {
-          value: '',
-          valid: false
-        },
-        departement: {
-          value: '',
-          valid: false
-        },
-        email: {
-          value: '',
-          valid: false
-        },
-        emailConf: {
-          value: '',
-          valid: false
-        },
-        password: {
-          value: '',
-          valid: false
-        },
-        passwordConf: {
-          value: '',
-          valid: false
-        }
-      },
-      valid: true
+      emailError: 'Non rempli',
+      emailConfError: "Non rempli",
+      passwordError: 'Non rempli',
+      passwordConfError: "Non rempli"
     }
   },
   computed: {
     deptsList() {
       return this.$store.state.depts
-    },
-    isValid() {
-      let valid;
-      for (let input in this.inputs) {
-        if (!input.valid) {
-          valid = false
-          break
-        }
-        else {
-          return valid = true
-        }
-      }
-      return valid;
     }
   },
   methods: {
-    validForm () {
-      for (let input in this.inputs) {
-        if (document.getElementById(input).validityState.valid) {
-          input.valid = true
-        }
+    styleBold($event) { // JS car css ne suffit pas pour changer le style de select
+      $event.target.style.fontWeight = 'bold';
+    },
+    conf(event, cible) {
+      let error = "Ne correspond pas";
+      let model = document.getElementById(cible);
+      if (event.target.value !== model.value) {
+        event.target.setCustomValidity(error);
+        model.setCustomValidity(error);
+        this[event.target.id + 'Error'] = this[model.id + 'Error'] = error;
+      }
+      else {
+        event.target.setCustomValidity("");
+        model.setCustomValidity("");
       }
     },
-    styleBold($event) {
-      $event.target.style.fontWeight = 'bold';
+    check(input) {
+      let custError = this.checkPassword(input.value);
+      input.setCustomValidity(custError);
+      this[input.id + 'Error'] = custError;
     }
   },
   created() {
     this.$store.dispatch('getDepts')
   },
+  mixins: [ checkPassword ]
 }
 </script>

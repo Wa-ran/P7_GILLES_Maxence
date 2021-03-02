@@ -2,7 +2,7 @@
   <mdb-btn
     @click="$emit('action')"
     role="button"
-    class="my-1 mx-0 px-3 py-1"
+    class="my-1 mx-0 px-3 py-1 rounded"
     :class="[isActive ? 'viewActive gpm-default-light' : '']"
     :tabindex="isActive ? -1 : ''"
     darkWaves block>

@@ -24,13 +24,11 @@
         <main-form
         v-if="this.$route.path !== '/'"
         :submitButton="'Envoyer'"
-        @form-submit="checkForm"
         class="w-auto mt-n2 mb-3 mx-3 p-3 white gpm-shadow-focus gpm-default-light">
-          <component :is='this.formComponent' ref="formComp"></component>
+          <component :is='this.formComponent'></component>
         </main-form>
       </card-slide>
     </mdb-card>
-    <!-- <img v-if="this.$route.path === '/'" alt="Logo Groupomania" src="../assets/Groupomania/icon.svg"> -->
   </div>
 </template>
 
@@ -47,7 +45,7 @@ import MainForm from '@/components/MainForm';
 import login from '@/components/forms/login';
 const signup = () => ({
   component: import('@/components/forms/signup')
-})
+});
 
 
 export default {
@@ -68,25 +66,20 @@ export default {
       return this.$route.path.replace('/', '')
     }
   },
-  methods: {
-    checkForm() {
-      let valid = true;
-      let form = document.querySelector('form');
-      let data = {};
-      form.classList.add('was-validated');
-      document.querySelectorAll('[required]').forEach(function(elem) {
-        if (elem.checkValidity() === false) {
-          return valid = false;
-        } else {
-          return data[elem.name] = elem.value
-        }
-      });
-      if (valid === true) {
-        this.$store.dispatch('postForm', data)
-        .then(() => this.$router.push('user'));  
-      }
-    }
-  },
+  // methods: {
+  //   checkForm() {
+  //     let form = document.querySelector('form');
+  //     let data = {};
+  //     form.classList.add('was-validated');
+  //     if (form.checkValidity()) {
+  //       document.querySelectorAll('[required]').forEach(function(elem) {
+  //         return data[elem.name] = elem.value;
+  //       });
+  //       this.$store.dispatch('postForm', data)
+  //       .then(() => this.$router.push('user'));
+  //     }
+  //   }
+  // },
   updated() {
     setTimeout(() => {
       document.querySelector('[autofocus]').focus();

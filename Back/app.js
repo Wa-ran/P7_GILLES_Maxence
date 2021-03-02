@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const userRoutes = require('./routes/user');
-const getDepts = require('./routes/getDepts');
+const depts = require('./routes/depts');
 
 // const path = require('path');
 
@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 // app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/user', userRoutes);
-app.use('/getDepts', getDepts);
+app.use('/depts', depts);
 // app.use((req, res) => {
 //   res.json({ user: 'Votre requête a bien été reçue !' }); 
 // });

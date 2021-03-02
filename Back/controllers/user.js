@@ -3,21 +3,19 @@ const jwt = require('jsonwebtoken');
 
 const { encrypt, decrypt } = require('../middlewares/crypto');
 
-const User = {};
-
-exports.signup = (req, res, next) => {
-  const mask = encrypt(req.body.email);
-  bcrypt.hash(req.body.password, 10)
-    .then(hash => {
-      const user = new User({
-        email: mask,
-        password: hash
-      });
-      user.save()
-        .then(() => res.status(201).json({ message: 'Utilisateur créé :)' }))
-        .catch(error => res.status(400).json({ error }));
-    })
-    .catch(error => res.status(500).json({ error }));
+exports.signup = async (req, res, next) => {
+  try {
+    let email = encrypt(req.body.email);
+    let password = await bcrypt.hash(req.body.password, 10)
+    let user = {
+        ...req.body,
+        email,
+        password
+      };
+    res.status(201).json( user )  
+  } catch {
+    res.status(401).json({ error });
+  }
 };
 
 // exports.login = (req, res, next) => {
@@ -45,52 +43,6 @@ exports.signup = (req, res, next) => {
 //     })
 //     .catch(error => res.status(500).json({ error }));
 // };
-
-const mysqlx = require('@mysql/xdevapi');
-const config = {
-    password: 'pass',
-    user: 'root',
-    host: '127.0.0.1',
-    port: 33060,
-    schema: 'groupomania'
-};
-
-// mysqlx.getSession(config)
-// .then(session => {
-//   console.log(session.inspect());
-//   return session
-// })
-// .then(function (mySession) {
-//   // Get a list of all available schemas
-//   return mySession.getSchemas();
-// })
-// .then(function (schemaList) {
-//   console.log('Available schemas in this session:\n');
-
-//   // Loop over all available schemas and print their name
-//   schemaList.forEach(function (schema) {
-//     console.log(schema.getName() + '\n');
-//   })
-// })
-
-const departements = function() {
-  mysqlx.getSession(config)
-  .then(function (s) {
-    session = s;
-    session.sql('USE groupomania').execute();
-  })
-  .then(function () {
-    let dept = [];
-    return Promise.all([
-      session.sql('SELECT nom FROM departement').execute(async function (row) {
-        await row.map(nom => {
-          dept.push(nom)
-        })
-      })
-      .then(() => { return dept })
-    ])
-  })
-};
 
 exports.login = (req, res, next) => {
   res.json({

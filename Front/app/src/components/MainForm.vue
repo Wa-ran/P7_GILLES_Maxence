@@ -2,20 +2,22 @@
   <card-slide>
     <mdb-card>
       <form
-      novalidate @submit.prevent @keydown.enter="nextInput"
+      novalidate @keydown.prevent.enter="nextInput"
       class="m-auto">
-        <div class="black-text">
+        <div class="black-text pt-4 px-3">
 
           <slot class="h-auto"></slot>
 
           <div class="d-flex flex-center py-4 mt-3 mx-auto">
             <!-- écoute de l'évènement sur le parent car submit.prevent, qui empêche le reload de la page, empêche aussi le fonctionnement du clic sur le bouton (tous concidérés 'submit') -->
-            <div @mousedown="$emit('form-submit')">
+            <div>
               <transition
               appear
               name="fade">
                 <MainButton
+                @click.prevent="checkForm"
                 :text="this.submitButton"
+                type=submit
                 class="gpm-shadow-focus gpm-prior-light"
                 />
               </transition>
@@ -49,8 +51,8 @@ export default {
   },
   methods: {
     nextInput($event) {
-      if ($event.target == document.querySelector('[type=submit]')) {
-        this.checkForm($event)
+      if ($event.target == document.querySelector('[type="submit"]')) {
+        this.checkForm()
       }
       else if ($event.target.tagName === "SELECT" && $event.target.value !== '') {
         // en cas de focus dans les options du select
@@ -60,7 +62,25 @@ export default {
       else {
         this.focusNext()
       }
+    },
+    checkForm() {
+      let form = document.querySelector('form');
+      let data = {};
+      form.classList.add('was-validated');
+      if (form.checkValidity()) {
+        document.querySelectorAll('[required]').forEach(function(elem) {
+          return data[elem.name] = elem.value;
+        });
+        this.$store.dispatch('postSignUp', data)
+        .then(() => this.$router.push('user'));
+      }
     }
+  },
+  mounted() {
+    document.addEventListener('submit', (event) => {
+      event.preventDefault();
+      this.checkForm();
+    })
   },
   mixins: [ focusNext ]
 }

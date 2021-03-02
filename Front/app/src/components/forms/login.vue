@@ -1,12 +1,12 @@
 <template>
   <wrap withComp="BlockSlide">
     <mdb-input
-      class="d-flex" 
+      class="d-flex gpm-mist" 
       id="email" label="Email" name="email" v-model="email" 
       icon="envelope" group type="email" 
       validate required autofocus lazy/>
     <mdb-input
-      class="d-flex" 
+      class="d-flex gpm-mist" 
       id="password" label="Mot de passe" name="password" v-model="password"
       icon="lock" group type="password" 
       validate lazy/>
