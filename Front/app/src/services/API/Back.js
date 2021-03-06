@@ -4,7 +4,7 @@ export default {
     .then(res => res.json())
     .then(res => res.depts)
     .catch((error) => {
-      console.error('Error:', error);
+      console.error( error );
     });
   },
   postForm(data) {
@@ -15,7 +15,7 @@ export default {
     })
     .then(res => res.json())
     .catch((error) => {
-      console.error('Error:', error);
+      console.error( error );
     });
   }
 }

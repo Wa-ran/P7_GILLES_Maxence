@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const deptsCtrl = require('../controllers/depts');
+const gpm = require('../controllers/gpm');
 
-router.get('', deptsCtrl.get);
+router.get('', gpm.getDepts);
 
 module.exports = router;

@@ -26,7 +26,7 @@
       aria-labelledby="selectLabel" required>
         <option selected disabled value="" id="selectLabel">Sélectionnez votre service</option>
         <option v-for="(dept, index) in deptsList" 
-        :value="index" :key="index">
+        :value="dept" :key="index">
           {{ dept }}
         </option>
       </select>
@@ -52,14 +52,14 @@
       icon="lock-open" type="password" 
       validate required lazy
       :invalidFeedback="this.passwordError"
-      @change.native="check($event.target)"/>
+      @change.native="checkPw($event.target)"/>
     <mdb-input
       class="d-flex input-group gpm-mist" 
       id="passwordConf" name="passwordConf" label="Confirmez votre mot de Passe"
       icon="lock" type="password" 
       validate required
       :invalidFeedback="this.passwordConfError"
-      @change.native="conf($event, 'password'); check($event.target)"/>
+      @change.native="conf($event, 'password'); checkPw($event.target)"/>
   </wrap>
 </template>
 
@@ -107,7 +107,7 @@ export default {
         model.setCustomValidity("");
       }
     },
-    check(input) {
+    checkPw(input) {
       let custError = this.checkPassword(input.value);
       input.setCustomValidity(custError);
       this[input.id + 'Error'] = custError;

@@ -18,11 +18,11 @@ CREATE TABLE departement (
 
 CREATE TABLE utilisateur (
                 id INT AUTO_INCREMENT NOT NULL,
-                nom VARCHAR(100) NOT NULL,
-                mail VARCHAR(320) NOT NULL,
+                nom VARCHAR(256) NOT NULL,
+                mail VARCHAR(256) NOT NULL,
                 password BINARY(60) NOT NULL,
                 departement_nom VARCHAR(100) NOT NULL,
-                prenom VARCHAR(100) NOT NULL,
+                prenom VARCHAR(256) NOT NULL,
                 PRIMARY KEY (id)
 );
 

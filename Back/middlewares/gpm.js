@@ -1,6 +1,6 @@
 const groupomania = require('./groupomania');
 
-exports.get = groupomania.db
+exports.getDepts = groupomania.db
 .then(function () {
   let dept = [];
   return Promise.all([

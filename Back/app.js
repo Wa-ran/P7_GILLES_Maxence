@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const userRoutes = require('./routes/user');
-const depts = require('./routes/depts');
+const depts = require('./routes/gpm_depts');
 
 // const path = require('path');
 

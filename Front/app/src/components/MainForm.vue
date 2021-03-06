@@ -49,6 +49,12 @@ export default {
       type: String
     }
   },
+  data() {
+    return {
+      loading: false,
+      error: false
+    }
+  },
   methods: {
     nextInput($event) {
       if ($event.target == document.querySelector('[type="submit"]')) {
@@ -67,19 +73,23 @@ export default {
       let form = document.querySelector('form');
       let data = {};
       form.classList.add('was-validated');
-      if (form.checkValidity()) {
+      if (form.checkValidity() && !this.loading) {
+        this.loading = true;
         document.querySelectorAll('[required]').forEach(function(elem) {
-          return data[elem.name] = elem.value;
+          data[elem.name] = elem.value;
         });
         this.$store.dispatch('postSignUp', data)
+        .catch(() => this.loading = false)
         .then(() => this.$router.push('user'));
       }
     }
   },
-  mounted() {
+  created() {
     document.addEventListener('submit', (event) => {
       event.preventDefault();
-      this.checkForm();
+      if (!this.loading) {
+        this.checkForm()
+      }
     })
   },
   mixins: [ focusNext ]
