@@ -11,27 +11,29 @@ exports.signup = async (req, res, next) => {
   let email = encrypt(req.body.email);
   let password = await bcrypt.hash(req.body.password, 10);
   let departement = req.body.departement;
+  let exist = false;
 
   gpm.getDepts
   .then((depts) => { // Check de l'input departement
-    let match = false;
+  let match = false;
     depts.forEach((dept) => {
       if (encrypt(dept) === encrypt(departement)) {
-        match = true
+        match = true;
         return departement = dept;
       }
     });
     if (!match) {
-      throw ' !! ne correspond pas !! '
+      throw ' !! dept ne correspond pas !! '
     }
   })
   .then(() => { // Check si l'email est déjà enregistré
-    let exist = false;
-    session.sql('SELECT COUNT(*) FROM utilisateur WHERE mail = \''+ email +'\';').execute((res) => {
-      if (res !== 0) {
-        exist = true // Pas de throw depuis un sql.execute !
+    return session.sql('SELECT COUNT(*) FROM utilisateur WHERE mail = \''+ email +'\';').execute(
+      res => { if (res > 0) {
+        return exist = true // Pas de throw depuis l'objet sql !!
       }
     });
+  })
+  .then(() => {
     if (exist) {
       throw 'Un utilisateur avec ce mail existe déjà'
     }
@@ -48,7 +50,7 @@ exports.signup = async (req, res, next) => {
     res.status(201).json( user )
   })
   .catch((error) => {
-    res.status(500).json( error )
+    res.status(500).json(error)
   })
 };
 

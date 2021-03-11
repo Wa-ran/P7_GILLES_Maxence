@@ -73,23 +73,29 @@ export default {
       let form = document.querySelector('form');
       let data = {};
       form.classList.add('was-validated');
-      if (form.checkValidity() && !this.loading) {
+      if (form.checkValidity() && !this.loading && !this.error) {
         this.loading = true;
         document.querySelectorAll('[required]').forEach(function(elem) {
           data[elem.name] = elem.value;
         });
         this.$store.dispatch('postSignUp', data)
-        .catch(() => this.loading = false)
-        .then(() => this.$router.push('user'));
+        .then(() => this.$router.push('user'))
+        .catch((error) => {
+          this.loading = false;
+          this.error = true;
+          this.showError(error)
+        })
       }
+    },
+    showError(error) {
+      console.error(error)
     }
   },
   created() {
     document.addEventListener('submit', (event) => {
       event.preventDefault();
-      if (!this.loading) {
-        this.checkForm()
-      }
+      event.stopPropagation();
+      this.checkForm()
     })
   },
   mixins: [ focusNext ]

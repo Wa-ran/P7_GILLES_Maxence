@@ -13,9 +13,12 @@ export default {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     })
-    .then(res => res.json())
-    .catch((error) => {
-      console.error( error );
-    });
+    .then((res) => {
+      if (res.status >= 400) {
+        throw res.json()
+      } else {
+        res.json()
+      }
+    })
   }
 }
