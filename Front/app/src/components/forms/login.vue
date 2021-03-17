@@ -1,15 +1,15 @@
 <template>
   <wrap withComp="BlockSlide">
     <mdb-input
-      class="d-flex gpm-mist" 
-      id="email" label="Email" name="email" v-model="email" 
-      icon="envelope" group type="email" 
+      class="d-flex input-group gpm-mist" 
+      id="email" label="Email" name="email" :placeholder='email'
+      icon="envelope" type="email" 
       validate required autofocus lazy/>
     <mdb-input
-      class="d-flex gpm-mist" 
-      id="password" label="Mot de passe" name="password" v-model="password"
-      icon="lock" group type="password" 
-      validate lazy/>
+      class="d-flex input-group gpm-mist" 
+      id="password" label="Mot de passe" name="password"
+      icon="lock" type="password" 
+      validate required lazy/>
   </wrap>
 </template>
 
@@ -23,11 +23,16 @@ export default {
     mdbInput,
     Wrap
   },
-  data() {
-    return {
-      email: '',
-      password: ''
-    }
-  },
+  computed: {
+    email() {
+      let value;
+      if (this.$store.state.profil.email) {
+        value = this.$store.state.profil.email
+      } else {
+        value = ''
+      }
+      return value
+      }
+  }
 }
 </script>

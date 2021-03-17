@@ -5,15 +5,13 @@ const gpm = require('../middlewares/gpm');
 const { encrypt, decrypt } = require('../middlewares/crypto');
 
 exports.signup = async (req, res, next) => {
-  let user;
   let nom = encrypt(req.body.nom);
   let prenom = encrypt(req.body.prenom);
   let email = encrypt(req.body.email);
-  let password = await bcrypt.hash(req.body.password, 10);
+  let password = bcrypt.hash(req.body.password, 10);
   let departement = req.body.departement;
-  let exist = false;
 
-  gpm.getDepts
+  await gpm.getDepts
   .then((depts) => { // Check de l'input departement
   let match = false;
     depts.forEach((dept) => {
@@ -26,28 +24,9 @@ exports.signup = async (req, res, next) => {
       throw ' !! dept ne correspond pas !! '
     }
   })
-  .then(() => { // Check si l'email est déjà enregistré
-    return session.sql('SELECT COUNT(*) FROM utilisateur WHERE mail = \''+ email +'\';').execute(
-      res => { if (res > 0) {
-        return exist = true // Pas de throw depuis l'objet sql !!
-      }
-    });
-  })
+  await gpm.createUser(nom, prenom, email, password, departement)
   .then(() => {
-    if (exist) {
-      throw 'Un utilisateur avec ce mail existe déjà'
-    }
-  })
-  .then(() => { // Enregistrement de l'utilisateur
-    return session.sql('CALL sign_up(\''+ nom +'\', \''+ prenom +'\', \''+ email +'\', \''+ password +'\', \''+ departement +'\');').execute()
-  })
-  .then(() => {
-    return session.sql('SELECT * FROM utilisateur WHERE mail = \''+ email +'\';').execute((res) => {
-      user = res;
-    });
-  })
-  .then(() => {
-    res.status(201).json( user )
+    res.status(201).send({ email: req.body.email })
   })
   .catch((error) => {
     res.status(500).json(error)
@@ -57,6 +36,14 @@ exports.signup = async (req, res, next) => {
 // exports.login = (req, res, next) => {
 //   const email = encrypt(req.body.email);
 //   User.findOne({ email: mask })
+
+//   .then(function () {
+//     return session.sql('SELECT JSON_OBJECT(\'nom\', nom, \'prenom\', prenom, \'email\', mail, \'departement\', departement_nom) from utilisateur WHERE mail = \''+ email +'\';')
+//     .execute(field => {
+//       res.json(field[0])
+//     })
+//   })
+
 //     .then(user => {
 //       if (!user) {
 //         return res.status(401).json({ error: 'Utilisateur non trouvé !?' });

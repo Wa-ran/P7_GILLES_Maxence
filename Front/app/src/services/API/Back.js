@@ -7,7 +7,7 @@ export default {
       console.error( error );
     });
   },
-  postForm(data) {
+  signUp(data) {
     return fetch('http://localhost:3000/user/signup', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -17,8 +17,22 @@ export default {
       if (res.status >= 400) {
         throw res.json()
       } else {
-        res.json()
+        return res.json()
       }
     })
-  }
+  },
+  LogIn(data) {
+    return fetch('http://localhost:3000/user/login', {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw res.json()
+      } else {
+        return res.json()
+      }
+    })
+  },
 }

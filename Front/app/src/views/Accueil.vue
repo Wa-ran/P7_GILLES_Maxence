@@ -23,7 +23,9 @@
       <card-slide>
         <main-form
         v-if="this.$route.path !== '/'"
+        :key="this.formComponent"
         :submitButton="'Envoyer'"
+        :submitPath="'login'"
         class="w-auto mt-n2 mb-3 mx-3 p-3 white gpm-shadow-focus gpm-default-light">
           <component :is='this.formComponent'></component>
         </main-form>

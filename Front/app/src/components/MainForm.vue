@@ -15,7 +15,6 @@
               appear
               name="fade">
                 <MainButton
-                @click.prevent="checkForm"
                 :text="this.submitButton"
                 type=submit
                 class="gpm-shadow-focus gpm-prior-light"
@@ -36,6 +35,7 @@ import MainButton from '@/components/MainButton';
 import CardSlide from '@/components/CardSlide';
 
 import focusNext from '@/mixins/focusNext';
+import debouncer from '@/mixins/debouncer';
 
 export default {
   name: 'MainForm',
@@ -47,15 +47,24 @@ export default {
   props: {
     submitButton: {
       type: String
+    },
+    submitPath: {
+      type: String
     }
   },
   data() {
     return {
       loading: false,
-      error: false
+      error: false,
+      timeout: null
     }
   },
-  methods: {
+  computed: {
+    submitFct() {
+      return this.$store.state.submitFct
+    }
+  },
+methods: {
     nextInput($event) {
       if ($event.target == document.querySelector('[type="submit"]')) {
         this.checkForm()
@@ -69,6 +78,11 @@ export default {
         this.focusNext()
       }
     },
+    onSubmit(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.debounce(this.checkForm())
+    },
     checkForm() {
       let form = document.querySelector('form');
       let data = {};
@@ -78,27 +92,26 @@ export default {
         document.querySelectorAll('[required]').forEach(function(elem) {
           data[elem.name] = elem.value;
         });
-        this.$store.dispatch('postSignUp', data)
-        .then(() => this.$router.push('user'))
-        .catch((error) => {
-          this.loading = false;
-          this.error = true;
-          this.showError(error)
-        })
+        this.sendForm(data)
       }
     },
-    showError(error) {
-      console.error(error)
+    sendForm(data) {
+      this.$store.dispatch(this.submitFct, data)
+      .then(() => this.$router.push(this.submitPath))
+      .catch((error) => {
+        this.loading = false;
+        // this.error = true;
+        return console.error(error)
+      })
     }
   },
-  created() {
-    document.addEventListener('submit', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      this.checkForm()
-    })
+  mounted() {
+    document.addEventListener('submit', this.onSubmit)
   },
-  mixins: [ focusNext ]
+  beforeDestroy() {
+    document.removeEventListener('submit', this.onSubmit)
+  },
+  mixins: [ focusNext, debouncer ]
 }
 </script>
 

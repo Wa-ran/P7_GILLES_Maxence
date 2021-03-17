@@ -7,7 +7,7 @@ const config = {
     schema: 'groupomania'
 };
 
-exports.db = mysqlx.getSession(config)
+exports.connect = mysqlx.getSession(config)
 .then(function (s) {
   session = s;
   session.sql('USE groupomania').execute();

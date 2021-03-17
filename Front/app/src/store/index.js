@@ -13,11 +13,15 @@ export default new Vuex.Store({
     })
   ],
   state: {
-    profil: {},
+    submitFct: null,
+    profil: [],
     depts: [],
   },
   mutations: {
-    setProfile(state, payload) {
+    setSubmit(state, fctName) {
+      state.submitFct = fctName
+    },
+    setProfil(state, payload) {
       state.profil = payload;
     },
     setDepts(state, payload) {
@@ -25,13 +29,20 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    chooseSubmit(context, fctName) {
+      context.commit('setSubmit', fctName)
+    },
     getDepts (context) {
       return Back.getDepts()
       .then(res => context.commit('setDepts', res))
     },
     postSignUp (context, data) {
-      return Back.postForm(data)
-      .then(res => context.commit('setProfile', res))
+      return Back.signUp(data)
+      .then(res =>{ context.commit('setProfil', res)})
+    },
+    getLogIn (context, data) {
+      return Back.logIn(data)
+      .then(res =>{ context.commit('setProfil', res)})
     }
   },
   getters: {

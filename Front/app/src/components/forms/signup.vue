@@ -111,10 +111,11 @@ export default {
       let custError = this.checkPassword(input.value);
       input.setCustomValidity(custError);
       this[input.id + 'Error'] = custError;
-    }
+    },
   },
   created() {
-    this.$store.dispatch('getDepts')
+    this.$store.dispatch('getDepts');
+    this.$store.dispatch('chooseSubmit', 'postSignUp')
   },
   mixins: [ checkPassword ]
 }
