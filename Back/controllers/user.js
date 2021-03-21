@@ -4,72 +4,123 @@ const jwt = require('jsonwebtoken');
 const gpm = require('../middlewares/gpm');
 const { encrypt, decrypt } = require('../middlewares/crypto');
 
-exports.signup = async (req, res, next) => {
-  let nom = encrypt(req.body.nom);
-  let prenom = encrypt(req.body.prenom);
-  let email = encrypt(req.body.email);
-  let password = bcrypt.hash(req.body.password, 10);
-  let departement = req.body.departement;
-
-  await gpm.getDepts
-  .then((depts) => { // Check de l'input departement
-  let match = false;
-    depts.forEach((dept) => {
-      if (encrypt(dept) === encrypt(departement)) {
-        match = true;
-        return departement = dept;
+exports.cryptData = async (data) => {
+  let cryptData = {};
+  try {
+    for (const [key, value] of Object.entries(data)) {
+      if (key.match(/(departement)/)) {
+        cryptData[key] = value
       }
-    });
-    if (!match) {
-      throw ' !! dept ne correspond pas !! '
+      else if (key.match(/(assword)/)) {
+        cryptData[key] = await bcrypt.hash(value, 10)
+      }
+      else {
+        cryptData[key] = encrypt(value)
+      }
     }
+    cryptData.verifPass = data.password ? data.password : data.passwordOrigin;
+    return cryptData
+  } catch (error) {
+    throw {custMsg: "Le format des données n'est pas accepté."}
+  }
+};
+
+exports.standardizeProfil = (data) => {
+  let profil = {};
+  try {
+    profil.email = decrypt(data.email);
+    profil.nom = decrypt(data.nom);
+    profil.prenom = decrypt(data.prenom);
+    profil.departement = data.departement;
+    return profil
+  } catch (error) {
+    throw {custMsg: "Problème serveur : Le format n'est pas accepté."}
+  }
+};
+
+exports.signup = async (req, res, next) => {
+  await this.cryptData(req.body)
+  .then(async (cryptData) => {
+    await gpm.createUser(cryptData)
   })
-  await gpm.createUser(nom, prenom, email, password, departement)
   .then(() => {
-    res.status(201).send({ email: req.body.email })
+    let profil = {};
+    profil.email = req.body.email;
+    res.status(201).send(profil)
   })
   .catch((error) => {
-    res.status(500).json(error)
+    console.log(error);
+    let msg = error.custMsg;
+    res.status(500).send({msg , err: "Erreur lors de l'inscription."})
   })
 };
 
-// exports.login = (req, res, next) => {
-//   const email = encrypt(req.body.email);
-//   User.findOne({ email: mask })
+exports.login = async (req, res, next) => {
+  let tokenId = req.email;
 
-//   .then(function () {
-//     return session.sql('SELECT JSON_OBJECT(\'nom\', nom, \'prenom\', prenom, \'email\', mail, \'departement\', departement_nom) from utilisateur WHERE mail = \''+ email +'\';')
-//     .execute(field => {
-//       res.json(field[0])
-//     })
-//   })
+  await this.cryptData(req.body)
+  .then(async (cryptData) => {
+    return await gpm.selectProfil(cryptData)
+  })
+  .then((profil) => {
+    profil = this.standardizeProfil(profil);
+    profil.token = jwt.sign(
+      { tokenId },
+      'RANDOM_TOKEN_SECRET',
+      { expiresIn: '24h' }
+    )
+    res.send(profil)
+  })
+  .catch((error) => {
+    console.log(error);
+    let msg = error.custMsg;
+    res.status(500).send({msg , err: "Erreur lors de la connexion."});
+  })
+};
 
-//     .then(user => {
-//       if (!user) {
-//         return res.status(401).json({ error: 'Utilisateur non trouvé !?' });
-//       }
-//       bcrypt.compare(req.body.password, user.password)
-//         .then(valid => {
-//           if (!valid) {
-//             return res.status(401).json({ error: 'Mot de passe incorrect >:(' });
-//           }
-//           res.status(200).json({
-//             userId: user._id,
-//             token: jwt.sign(
-//               { userId: user._id },
-//               'RANDOM_TOKEN_SECRET',
-//               { expiresIn: '24h' }
-//             )
-//           });
-//         })
-//         .catch(error => res.status(500).json({ error }));
-//     })
-//     .catch(error => res.status(500).json({ error }));
-// };
+exports.modifUserInfos = async (req, res, next) => {
+  await this.cryptData(req.body)
+  .then(async (cryptData) => {
+    return await gpm.modifUserInfos(cryptData)
+  })
+  .then((profil) => {
+    profil = this.standardizeProfil(profil);
+    res.status(201).send(profil)
+  })
+  .catch((error) => {
+    console.log(error);
+    let msg = error.custMsg;
+    res.status(500).send({msg , err: "Erreur, vos informations n'ont pas pu être modifiées."})
+  })
+};
 
-exports.login = (req, res, next) => {
-  res.json({
-    ...req.body,
-    server: 'Waran'
-  });
+exports.modifUserEmail = async (req, res, next) => {
+  await this.cryptData(req.body)
+  .then(async (cryptData) => {
+    return await gpm.modifUserEmail(cryptData)
+  })
+  .then((profil) => {
+    profil = this.standardizeProfil(profil);
+    res.status(201).send(profil)
+  })
+  .catch((error) => {
+    console.log(error);
+    let msg = error.custMsg; 
+    res.status(500).send({msg , err: "Erreur, votre email n'a pas pu être modifié."})
+  })
+};
+
+exports.modifUserPass = async (req, res, next) => {
+  await this.cryptData(req.body)
+  .then(async (cryptData) => {
+    return await gpm.modifUserPass(cryptData)
+  })  
+  .then(() => {
+    res.status(201).json("Mot de passe modifié avec succès !")
+  })
+  .catch((error) => {
+    console.log(error);
+    let msg = error.custMsg;
+    res.status(500).send({msg , err: "Erreur, votre mot de passe n'a pas pu être modifié."})
+  })
 };

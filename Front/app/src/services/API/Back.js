@@ -7,7 +7,7 @@ export default {
       console.error( error );
     });
   },
-  signUp(data) {
+  postSignup(data) {
     return fetch('http://localhost:3000/user/signup', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -21,9 +21,51 @@ export default {
       }
     })
   },
-  LogIn(data) {
+  postLogin(data) {
     return fetch('http://localhost:3000/user/login', {
-      method: "GET",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw res.json()
+      } else {
+        return res.json()
+      }
+    })
+  },
+  putInfos(data) {
+    return fetch('http://localhost:3000/user/putInfos', {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw res.json()
+      } else {
+        return res.json()
+      }
+    })
+  },
+  putEmail(data) {
+    return fetch('http://localhost:3000/user/putEmail', {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw res.json()
+      } else {
+        return res.json()
+      }
+    })
+  },
+  putPass(data) {
+    return fetch('http://localhost:3000/user/putPass', {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     })

@@ -1,7 +1,7 @@
 const gpm = require('../middlewares/gpm');
 
 exports.getDepts = (req, res, next) => {
-  gpm.getDepts
+  gpm.listDepts()
   .then((depts) => {
     res.json({ depts })
   })

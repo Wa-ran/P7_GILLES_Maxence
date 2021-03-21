@@ -14,7 +14,7 @@ export default {
   name: "BlockSlide",
   methods: {
     delay(element) {
-      element.style.setProperty('--delay', (this.number *75) + 'ms')
+      element.style.setProperty('--delay', ((this.number + 2) *75) + 'ms')
     }
   },
   props: {

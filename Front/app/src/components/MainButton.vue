@@ -2,11 +2,11 @@
   <mdb-btn
     @click="$emit('action')"
     role="button"
-    class="my-1 mx-0 px-3 py-1 rounded"
+    class="px-3 py-1 font-weight-bold rounded"
     :class="[isActive ? 'viewActive gpm-default-light' : '']"
     :tabindex="isActive ? -1 : ''"
     darkWaves block>
-    <span class="font-weight-bold black-text text-capitalize">{{ text }}</span>
+    <span class="black-text btn-text-normal">{{ text }}</span>
   </mdb-btn>
 </template>
 

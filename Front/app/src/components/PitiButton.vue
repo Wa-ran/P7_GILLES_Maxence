@@ -1,0 +1,32 @@
+<template>
+  <mdb-btn
+    @click="$emit('action')"
+    role="button"
+    class="px-3 py-0 font-weight-bold rounded"
+    darkWaves block>
+    <span class="black-text btn-text-normal">{{ text }}</span>
+  </mdb-btn>
+</template>
+
+<script>
+import { mdbBtn } from 'mdbvue';
+
+export default {
+  name: "PitiButton",
+  components: {
+    mdbBtn
+  },
+  props: {
+    text: {
+      type: String,
+      required: true
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+span {
+  font-size: 1.1rem !important;
+}
+</style>

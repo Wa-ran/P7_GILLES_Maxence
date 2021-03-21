@@ -1,58 +1,79 @@
 <template>
   <card-slide>
-    <main-form
-    :submitButton="'Modifier'" :onSubmitGo="''"
-    class="w-100 mt-3 mx-3 p-3 white gpm-shadow-focus gpm-default-light">
-
-      <wrap withComp="BlockSlide">
-        <div v-for="(item, index) in profil" :key="index">
-          <mdb-input
-          class="d-flex input-group" 
-          :id=item :name=item :label=item
-          icon="user" type="text" 
-          validate required lazy/>
+    <mdb-card class="w-100 mt-n2 p-4 white gpm-shadow-focus gpm-default-light">
+        <div class="w-100">
+          <wrap withComp="BlockSlide" class="w-100">
+            <div class="title">
+              Vos informations personnelles :
+            </div>
+            <div class="w-100 pl-2 d-flex" v-for="(item, index) in infos" :key="index">
+              <div class="w-50 text-left">
+                Votre {{ index }} : 
+              </div>
+              <div class="w-50 text-left font-weight-bold">
+                {{ item }}
+              </div>
+            </div>
+            <PitiButton
+            @action="$router.push('profil/modif/infos')"
+            :text="'Modifier'"
+            class="mt-3 mx-auto gpm-prior-light-ultra"
+            />
+          </wrap>
         </div>
-        <p>Celui-là vient du serveur :) >> <span style="color: red">{{ profil }}</span></p>
-      </wrap>
 
-    </main-form>
+        <div class="w-100">
+          <wrap withComp="BlockSlide" class="w-100">
+            <div class="title">
+              Votre mail :
+            </div>
+            <div class="pl-2 w-100 d-flex justify-content-between">
+              <div class="font-weight-bold">{{ mail }}</div>
+              <PitiButton
+              @action="$router.push('profil/modif/mail')"
+              :text="'Modifier'"
+              class="my-auto ml-3 gpm-prior-light-ultra"
+              />
+            </div>
+          </wrap>
+        </div>
+
+        <div class="w-100">
+          <hr class="my-4 gpm-base w-100">
+          <wrap withComp="BlockSlide" class="w-100">
+            <PitiButton
+            @action="$router.push('profil/modif/pass')"
+            :text="'Modifier votre mot de passe ?'"
+            class="my-auto ml-3 gpm-prior-light-ultra"
+            />
+          </wrap>
+        </div>
+    </mdb-card>
   </card-slide>
 </template>
 
 <script>
-import mdbInput from 'mdbvue/lib/components/mdbInput';
-
-import CardSlide from '@/components/CardSlide';
-import MainForm from '@/components/MainForm';
 import Wrap from '@/components/Wrap';
+import CardSlide from '@/components/CardSlide';
+
+import mdbCard from 'mdbvue/lib/components/mdbCard';
+import PitiButton from '@/components/PitiButton.vue';
 
 export default {
-  name: 'Profil',
+  name: 'modifProfil',
   components: {
-    mdbInput,
+    Wrap,
     CardSlide,
-    MainForm,
-    Wrap
+    mdbCard,
+    PitiButton
   },
   computed: {
-    profil() { return this.$store.state.profil }
+    mail() { return this.$store.state.profil.email },
+    infos() {
+      let infos = { ...this.$store.state.profil };
+      delete infos.email;
+      return infos
+    }
   }
 }
 </script>
-
-<style lang="scss">
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-  transform: translateY(-100px);
-  position: relative;
-}
-.fade-enter-active {
-  transition: all 0.3s 0.35s;
-}
-.fade-leave-active {
-  transition: all 0.1s;
-}
-.fade-enter-to {
-  opacity: 1;
-}
-</style>

@@ -25,7 +25,6 @@
         v-if="this.$route.path !== '/'"
         :key="this.formComponent"
         :submitButton="'Envoyer'"
-        :submitPath="'login'"
         class="w-auto mt-n2 mb-3 mx-3 p-3 white gpm-shadow-focus gpm-default-light">
           <component :is='this.formComponent'></component>
         </main-form>
@@ -44,11 +43,10 @@ import MainBrand from "@/components/MainBrand.vue"
 import CardSlide from '@/components/CardSlide';
 import MainForm from '@/components/MainForm';
 
-import login from '@/components/forms/login';
+import login from '@/views/forms/login';
 const signup = () => ({
-  component: import('@/components/forms/signup')
+  component: import('@/views/forms/signup')
 });
-
 
 export default {
   components: {
@@ -65,23 +63,13 @@ export default {
   },
   computed: {
     formComponent() {
-      return this.$route.path.replace('/', '')
+      let str = this.$route.path;
+      return str.substring(str.lastIndexOf('/')+1)
     }
   },
-  // methods: {
-  //   checkForm() {
-  //     let form = document.querySelector('form');
-  //     let data = {};
-  //     form.classList.add('was-validated');
-  //     if (form.checkValidity()) {
-  //       document.querySelectorAll('[required]').forEach(function(elem) {
-  //         return data[elem.name] = elem.value;
-  //       });
-  //       this.$store.dispatch('postForm', data)
-  //       .then(() => this.$router.push('user'));
-  //     }
-  //   }
-  // },
+  mounted() {
+    this.$store.dispatch('clearProfil');
+  },
   updated() {
     setTimeout(() => {
       document.querySelector('[autofocus]').focus();

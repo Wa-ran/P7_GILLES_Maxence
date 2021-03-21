@@ -30,6 +30,14 @@ body {
   }
 }
 
+.btn-text-normal {
+  display: inline-block;
+  text-transform: lowercase !important;
+  &:first-letter {
+    text-transform: uppercase !important;
+  }
+}
+
 .gpm-big-shadow {
   box-shadow: 0 5px 11px 0 rgba(black, 0.68), 0 4px 15px 0 rgba(black, 0.45);
 }
@@ -78,4 +86,16 @@ button:focus {
     height: 0;
     box-shadow: 0 0 6px 4px rgba($gpm-prior-light, 0.38), 0 0 20px 6px rgba($gpm-prior, 0.18) !important;
   }
+}
+
+.title {
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  margin: 1rem !important;
+  margin-left: 0 !important;
+}
+
+.zind1 {
+  z-index: 1;
 }

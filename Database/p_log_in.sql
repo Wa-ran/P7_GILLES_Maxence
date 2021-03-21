@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sign_up`(p_nom VARCHAR(256), p_prenom VARCHAR(256), p_email VARCHAR(256), p_password VARCHAR(60), p_departement VARCHAR(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `log_in`(p_email VARCHAR(256))
 sp: BEGIN
 	DECLARE check_email INT;
     
@@ -6,14 +6,14 @@ sp: BEGIN
     BEGIN
 		SIGNAL SQLSTATE VALUE '03000'
 		SET MYSQL_ERRNO = 9999,
-		MESSAGE_TEXT = 'Cet email est déjà utilisé.';
+		MESSAGE_TEXT = 'Cet email n\'est pas enregistré. Veuillez utiliser le mail avec lequel vous vous êtes inscrit.';
 	END;
     
     DECLARE EXIT HANDLER FOR SQLEXCEPTION, SQLWARNING
 	BEGIN
 		SIGNAL SQLSTATE VALUE '03999'
 		SET	MYSQL_ERRNO = 9999,
-			MESSAGE_TEXT = 'Une erreur est survenue, l\'inscription à échouée.';
+			MESSAGE_TEXT = 'Une erreur est survenue, la connection à échouée.';
 	END;
 
 	SELECT COUNT(*)
@@ -21,14 +21,14 @@ sp: BEGIN
     FROM Utilisateur
     WHERE email = p_email;
     
-	IF check_email > 0
+	IF check_email = 0
     THEN BEGIN 
 			SIGNAL SQLSTATE VALUE '03000';
 		END;
 		LEAVE sp;
 	END IF;
 
-	INSERT INTO Utilisateur (id, nom, prenom, email, password, departement_nom)
-	VALUES
-		(NULL, p_nom, p_prenom, p_email, p_password, p_departement);
+	SELECT JSON_OBJECT('nom', nom, 'prenom', prenom, 'email', email, 'password', password, 'departement', departement_nom)
+    FROM utilisateur
+	WHERE email = p_email;
 END

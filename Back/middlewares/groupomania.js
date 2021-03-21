@@ -13,5 +13,5 @@ exports.connect = mysqlx.getSession(config)
   session.sql('USE groupomania').execute();
 })
 .catch((error) => {
-  console.error(error);
+  throw 'La connexion à la BDR a échouée !'
 });

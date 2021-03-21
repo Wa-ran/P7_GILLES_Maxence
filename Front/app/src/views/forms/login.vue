@@ -2,14 +2,15 @@
   <wrap withComp="BlockSlide">
     <mdb-input
       class="d-flex input-group gpm-mist" 
-      id="email" label="Email" name="email" :placeholder='email'
+      id="email" label="Email" name="email" :value='email'
       icon="envelope" type="email" 
       validate required autofocus lazy/>
     <mdb-input
       class="d-flex input-group gpm-mist" 
-      id="password" label="Mot de passe" name="password"
-      icon="lock" type="password" 
-      validate required lazy/>
+      id="password" name="password" label="Mot de Passe"
+      icon="lock-open" type="password" 
+      validate required lazy
+      invalidFeedback="Non rempli"/>
   </wrap>
 </template>
 
@@ -29,10 +30,13 @@ export default {
       if (this.$store.state.profil.email) {
         value = this.$store.state.profil.email
       } else {
-        value = ''
+        value = null
       }
       return value
-      }
+    }
+  },
+  mounted() {
+    this.$store.dispatch('chooseSubmit', { backFct: 'postLogin', submitPath: 'user' })
   }
 }
 </script>

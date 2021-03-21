@@ -3,6 +3,7 @@ $gpm-base: #091F43;
 $gpm-base-light: #616D81;
 $gpm-prior: #D1515A;
 $gpm-prior-light: #D49095;
+$gpm-prior-light-ultra: #D8BABC;
 $gpm-default: #AEAEAE;
 $gpm-default-light: #D8D8D8;
 $black: $gpm-base;
@@ -36,6 +37,13 @@ $md-card-text-color: $white;
     & span {
       color: $white !important;
     }
+  }
+}
+*.gpm-prior-light-ultra {
+  background-color: $gpm-prior-light-ultra !important;
+  color: $gpm-base !important;
+  &:hover, &:focus {
+    background-color: $gpm-prior-light !important;
   }
 }
 *.gpm-default {

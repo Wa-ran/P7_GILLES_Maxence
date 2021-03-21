@@ -1,6 +1,6 @@
 <template>
-  <mdbContainer class="container-fluid p-0" fluid>
-    <mdb-navbar color="red" class="gpm-base navbar-3" animated animation="2" light>
+  <mdb-container class="container-fluid p-0" fluid>
+    <mdb-navbar color="red" class="gpm-base navbar-3 z-depth-2 zind1" animated animation="2" light>
       <MainBrand class="my-2"/>
       <mdb-navbar-toggler class="m-auto">
         <mdb-navbar-nav class="d-flex flex-row flex-wrap w-100 m-0">
@@ -21,7 +21,7 @@
         </form>
       </mdb-navbar-toggler>
     </mdb-navbar>
-  </mdbContainer>
+  </mdb-container>
 </template>
 
 <script>

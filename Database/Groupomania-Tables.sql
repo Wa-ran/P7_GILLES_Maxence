@@ -1,8 +1,10 @@
+
 CREATE TABLE groupe (
                 id INT AUTO_INCREMENT NOT NULL,
                 nom VARCHAR(100) NOT NULL,
                 PRIMARY KEY (id)
 );
+
 
 CREATE TABLE participation (
                 id INT NOT NULL,
@@ -11,20 +13,26 @@ CREATE TABLE participation (
                 PRIMARY KEY (id)
 );
 
+
 CREATE TABLE departement (
                 nom VARCHAR(100) NOT NULL,
                 PRIMARY KEY (nom)
 );
 
+
 CREATE TABLE utilisateur (
                 id INT AUTO_INCREMENT NOT NULL,
                 nom VARCHAR(256) NOT NULL,
-                mail VARCHAR(256) NOT NULL,
-                password BINARY(60) NOT NULL,
+                email VARCHAR(256) NOT NULL,
+                password VARCHAR(60) NOT NULL,
                 departement_nom VARCHAR(100) NOT NULL,
                 prenom VARCHAR(256) NOT NULL,
                 PRIMARY KEY (id)
 );
+
+
+CREATE UNIQUE INDEX utilisateur_idx_email
+ ON utilisateur (email);
 
 CREATE TABLE utilisateur_participant (
                 utilisateur_id INT NOT NULL,
@@ -32,6 +40,7 @@ CREATE TABLE utilisateur_participant (
                 participant BOOLEAN NOT NULL,
                 PRIMARY KEY (utilisateur_id, participation_id)
 );
+
 
 CREATE TABLE commentaire (
                 id INT NOT NULL,
@@ -41,6 +50,7 @@ CREATE TABLE commentaire (
                 PRIMARY KEY (id)
 );
 
+
 CREATE TABLE utilisateur_groupe (
                 utilisateur_id INT NOT NULL,
                 groupe_id INT NOT NULL,
@@ -48,6 +58,7 @@ CREATE TABLE utilisateur_groupe (
                 admin BOOLEAN NOT NULL,
                 PRIMARY KEY (utilisateur_id, groupe_id)
 );
+
 
 ALTER TABLE utilisateur_groupe ADD CONSTRAINT t_groupe_membre_fk
 FOREIGN KEY (groupe_id)

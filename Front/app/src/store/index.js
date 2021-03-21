@@ -13,36 +13,50 @@ export default new Vuex.Store({
     })
   ],
   state: {
-    submitFct: null,
-    profil: [],
+    form: {
+      backFct: null,
+      submitPath: null
+    },
+    profil: {},
+    token: null,
     depts: [],
   },
   mutations: {
-    setSubmit(state, fctName) {
-      state.submitFct = fctName
+    clearProfil(state) {
+      state.profil = {}
+    },
+    setSubmit(state, payload) {
+      state.form.backFct = payload.backFct;
+      state.form.submitPath = payload.submitPath;
     },
     setProfil(state, payload) {
-      state.profil = payload;
+      state.profil = {};
+      for (const [key, value] of Object.entries(payload)) {
+        if (key.match(/(token)/)) {
+          state.token = value
+        } else {
+          state.profil[key] = value
+        }
+      }
     },
     setDepts(state, payload) {
       state.depts = payload;
     }
   },
   actions: {
-    chooseSubmit(context, fctName) {
-      context.commit('setSubmit', fctName)
+    clearProfil(context) {
+      context.commit('clearProfil')
     },
-    getDepts (context) {
+    chooseSubmit(context, payload) {
+      context.commit('setSubmit', payload)
+    },
+    getDepts(context) {
       return Back.getDepts()
       .then(res => context.commit('setDepts', res))
     },
-    postSignUp (context, data) {
-      return Back.signUp(data)
-      .then(res =>{ context.commit('setProfil', res)})
-    },
-    getLogIn (context, data) {
-      return Back.logIn(data)
-      .then(res =>{ context.commit('setProfil', res)})
+    sendForm(context, req) {
+      return Back[req.backFct](req.data)
+      .then(res => context.commit('setProfil', res))
     }
   },
   getters: {

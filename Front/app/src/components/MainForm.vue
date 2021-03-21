@@ -17,7 +17,7 @@
                 <MainButton
                 :text="this.submitButton"
                 type=submit
-                class="gpm-shadow-focus gpm-prior-light"
+                class="my-1 mx-0 gpm-shadow-focus gpm-prior-light"
                 />
               </transition>
             </div>
@@ -36,6 +36,7 @@ import CardSlide from '@/components/CardSlide';
 
 import focusNext from '@/mixins/focusNext';
 import debouncer from '@/mixins/debouncer';
+import checkPassword from '@/mixins/checkPassword';
 
 export default {
   name: 'MainForm',
@@ -47,9 +48,6 @@ export default {
   props: {
     submitButton: {
       type: String
-    },
-    submitPath: {
-      type: String
     }
   },
   data() {
@@ -60,11 +58,14 @@ export default {
     }
   },
   computed: {
-    submitFct() {
-      return this.$store.state.submitFct
+    backFct() {
+      return this.$store.state.form.backFct
+    },
+    submitPath() {
+      return this.$store.state.form.submitPath
     }
   },
-methods: {
+  methods: {
     nextInput($event) {
       if ($event.target == document.querySelector('[type="submit"]')) {
         this.checkForm()
@@ -84,19 +85,21 @@ methods: {
       this.debounce(this.checkForm())
     },
     checkForm() {
-      let form = document.querySelector('form');
+      let form = document.querySelector('form[novalidate]');
       let data = {};
       form.classList.add('was-validated');
       if (form.checkValidity() && !this.loading && !this.error) {
         this.loading = true;
         document.querySelectorAll('[required]').forEach(function(elem) {
-          data[elem.name] = elem.value;
+          if (!elem.name.match(/(Conf)/)) {
+            data[elem.name] = elem.value;
+          }
         });
         this.sendForm(data)
       }
     },
     sendForm(data) {
-      this.$store.dispatch(this.submitFct, data)
+      this.$store.dispatch('sendForm', { backFct: this.backFct, data: data })
       .then(() => this.$router.push(this.submitPath))
       .catch((error) => {
         this.loading = false;
@@ -111,7 +114,7 @@ methods: {
   beforeDestroy() {
     document.removeEventListener('submit', this.onSubmit)
   },
-  mixins: [ focusNext, debouncer ]
+  mixins: [ focusNext, debouncer, checkPassword ]
 }
 </script>
 

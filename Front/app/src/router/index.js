@@ -10,8 +10,8 @@ const routes = [
   {path: '/',
   component: Accueil,
   children: [
-    {path: '/login'},
-    {path: '/signup'},
+    {path: 'login'},
+    {path: 'signup'},
   ]},
   
   {path: '/user',
@@ -21,7 +21,14 @@ const routes = [
   },
   children: [
     {path: 'profil',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Profil.vue')}
+    component: () => import('../views/Profil.vue')},
+    {path: 'profil/modif',
+    component: () => import('../views/ModifProfil.vue'),
+    children: [
+      {path: 'infos'},
+      {path: 'mail'},
+      {path: 'pass'}
+    ]}
   ]}
 ]
 
