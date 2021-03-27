@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="m-auto">
+  <div id="app" class="m-auto h-100">
     <router-view name="MainNav"/>
     <router-view/>
   </div>

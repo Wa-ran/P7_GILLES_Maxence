@@ -77,4 +77,14 @@ export default {
       }
     })
   },
+  getLastAnnonce() {
+    return fetch('http://localhost:3000/articles/lastAnnonce')
+    .then((res) => {
+      if (res.status >= 400) {
+        throw res.json()
+      } else {
+        return res.json()
+      }
+    })
+  }
 }

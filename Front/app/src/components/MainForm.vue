@@ -4,22 +4,20 @@
       <form
       novalidate @keydown.prevent.enter="nextInput"
       class="m-auto">
-        <div class="black-text pt-4 px-3">
+        <div class="pt-4 px-3">
 
           <slot class="h-auto"></slot>
 
           <div class="d-flex flex-center py-4 mt-3 mx-auto">
             <!-- écoute de l'évènement sur le parent car submit.prevent, qui empêche le reload de la page, empêche aussi le fonctionnement du clic sur le bouton (tous concidérés 'submit') -->
             <div>
-              <transition
-              appear
-              name="fade">
+              <anim-fade>
                 <MainButton
                 :text="this.submitButton"
                 type=submit
-                class="my-1 mx-0 gpm-shadow-focus gpm-prior-light"
+                class="my-1 mx-0 gpm-shadow-focus gpm-warning  gpm-alert-active"
                 />
-              </transition>
+              </anim-fade>
             </div>
           </div>
         </div>
@@ -33,6 +31,7 @@ import mdbCard from 'mdbvue/lib/components/mdbCard';
 
 import MainButton from '@/components/MainButton';
 import CardSlide from '@/components/CardSlide';
+import AnimFade from '@/components/AnimFade';
 
 import focusNext from '@/mixins/focusNext';
 import debouncer from '@/mixins/debouncer';
@@ -43,7 +42,8 @@ export default {
   components: {
     mdbCard,
     MainButton,
-    CardSlide
+    CardSlide,
+    AnimFade
   },
   props: {
     submitButton: {
@@ -69,11 +69,6 @@ export default {
     nextInput($event) {
       if ($event.target == document.querySelector('[type="submit"]')) {
         this.checkForm()
-      }
-      else if ($event.target.tagName === "SELECT" && $event.target.value !== '') {
-        // en cas de focus dans les options du select
-        $event.preventDefault();
-        this.focusNext();
       }
       else {
         this.focusNext()
@@ -117,24 +112,3 @@ export default {
   mixins: [ focusNext, debouncer, checkPassword ]
 }
 </script>
-
-<style lang="scss">
-.card-body {
-  height: fit-content;
-}
-
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-  transform: translateY(-100px);
-  position: relative;
-}
-.fade-enter-active {
-  transition: all 0.3s 0.35s;
-}
-.fade-leave-active {
-  transition: all 0.1s;
-}
-.fade-enter-to {
-  opacity: 1;
-}
-</style>

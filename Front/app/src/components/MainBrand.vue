@@ -1,7 +1,7 @@
 <template>
-  <mdb-navbar-brand class="rounded transparent logo">
+  <mdb-navbar-brand class="rounded logo">
     <router-link to="/">
-      <img class="rounded" color="red" alt="Accueil" src="../assets/Groupomania/icon-left-dark.svg">
+      <img class="rounded" alt="Accueil" src="../assets/Groupomania/icon-left-dark.svg">
     </router-link>
   </mdb-navbar-brand>
 </template>
@@ -13,16 +13,6 @@ export default {
   name: "MainBrand",
   components: {
     mdbNavbarBrand
-  },
-  props: {
-    version: {
-      required: false,
-      default: 'dark',
-      validator: function (value) {
-        // The value must match one of these strings
-        return ['dark', 'light', 'red'].indexOf(value) !== -1
-      }
-    }
   }
 }
 </script>

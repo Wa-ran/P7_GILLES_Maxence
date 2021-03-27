@@ -1,17 +1,29 @@
+DROP DATABASE IF EXISTS groupomania;
+CREATE DATABASE groupomania;
+USE groupomania;
 
 CREATE TABLE groupe (
-                id INT AUTO_INCREMENT NOT NULL,
                 nom VARCHAR(100) NOT NULL,
-                PRIMARY KEY (id)
+                description TEXT,
+                PRIMARY KEY (nom)
 );
 
 
 CREATE TABLE participation (
-                id INT NOT NULL,
+                id INT AUTO_INCREMENT NOT NULL,
                 titre VARCHAR(200) NOT NULL,
-                groupe_id INT NOT NULL,
+                preview TEXT,
+                article TEXT,
+                importance TINYINT ZEROFILL,
+                createur VARCHAR(256) NOT NULL,
+                date_creation DATETIME NOT NULL,
+                groupe_nom VARCHAR(100) NOT NULL,
                 PRIMARY KEY (id)
 );
+
+
+CREATE INDEX participation_idx_groupe_titre
+ ON participation (titre, groupe_nom);
 
 
 CREATE TABLE departement (
@@ -21,54 +33,54 @@ CREATE TABLE departement (
 
 
 CREATE TABLE utilisateur (
-                id INT AUTO_INCREMENT NOT NULL,
                 nom VARCHAR(256) NOT NULL,
                 email VARCHAR(256) NOT NULL,
                 password VARCHAR(60) NOT NULL,
                 departement_nom VARCHAR(100) NOT NULL,
                 prenom VARCHAR(256) NOT NULL,
-                PRIMARY KEY (id)
+                PRIMARY KEY (email)
 );
 
 
-CREATE UNIQUE INDEX utilisateur_idx_email
- ON utilisateur (email);
+CREATE INDEX utilisateur_idx_nom_prenom
+ ON utilisateur (nom, prenom);
+ 
 
 CREATE TABLE utilisateur_participant (
-                utilisateur_id INT NOT NULL,
+                utilisateur_email VARCHAR(256) NOT NULL,
                 participation_id INT NOT NULL,
-                participant BOOLEAN NOT NULL,
-                PRIMARY KEY (utilisateur_id, participation_id)
+                admin BOOLEAN NOT NULL,
+                PRIMARY KEY (utilisateur_email, participation_id)
 );
 
 
 CREATE TABLE commentaire (
-                id INT NOT NULL,
                 contenu TEXT NOT NULL,
+                date_creation DATETIME NOT NULL,
                 participation_id INT NOT NULL,
-                utilisateur_id INT NOT NULL,
-                PRIMARY KEY (id)
+                utilisateur_email VARCHAR(256) NOT NULL,
+                PRIMARY KEY (utilisateur_email, participation_id, date_creation)
 );
 
 
 CREATE TABLE utilisateur_groupe (
-                utilisateur_id INT NOT NULL,
-                groupe_id INT NOT NULL,
+                utilisateur_email VARCHAR(256) NOT NULL,
+                groupe_nom VARCHAR(100) NOT NULL,
                 membre BOOLEAN NOT NULL,
                 admin BOOLEAN NOT NULL,
-                PRIMARY KEY (utilisateur_id, groupe_id)
+                PRIMARY KEY (utilisateur_email, groupe_nom)
 );
 
 
 ALTER TABLE utilisateur_groupe ADD CONSTRAINT t_groupe_membre_fk
-FOREIGN KEY (groupe_id)
-REFERENCES groupe (id)
+FOREIGN KEY (groupe_nom)
+REFERENCES groupe (nom)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
 ALTER TABLE participation ADD CONSTRAINT t_groupe_t_participation_fk
-FOREIGN KEY (groupe_id)
-REFERENCES groupe (id)
+FOREIGN KEY (groupe_nom)
+REFERENCES groupe (nom)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
@@ -91,19 +103,19 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
 ALTER TABLE utilisateur_groupe ADD CONSTRAINT t_utilisateur_membre_fk
-FOREIGN KEY (utilisateur_id)
-REFERENCES utilisateur (id)
+FOREIGN KEY (utilisateur_email)
+REFERENCES utilisateur (email)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
 ALTER TABLE commentaire ADD CONSTRAINT t_utilisateur_t_commentaire_fk
-FOREIGN KEY (utilisateur_id)
-REFERENCES utilisateur (id)
+FOREIGN KEY (utilisateur_email)
+REFERENCES utilisateur (email)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
 ALTER TABLE utilisateur_participant ADD CONSTRAINT t_utilisateur_partcipant_fk
-FOREIGN KEY (utilisateur_id)
-REFERENCES utilisateur (id)
+FOREIGN KEY (utilisateur_email)
+REFERENCES utilisateur (email)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;

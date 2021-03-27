@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Accueil from '@/views/Accueil.vue'
-import User from '@/views/User.vue'
+import Home from '@/views/Home.vue'
 import MainNav from '@/components/MainNav.vue'
 
 Vue.use(VueRouter)
@@ -14,10 +14,10 @@ const routes = [
     {path: 'signup'},
   ]},
   
-  {path: '/user',
+  {path: '/home',
   components: {
-    default: User,
-    MainNav: MainNav
+    default: Home,
+    MainNav
   },
   children: [
     {path: 'profil',
@@ -29,7 +29,10 @@ const routes = [
       {path: 'mail'},
       {path: 'pass'}
     ]}
-  ]}
+  ]},
+
+  {path: '/test',
+  component: () => import('../views/test.vue')},
 ]
 
 const router = new VueRouter({

@@ -51,7 +51,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('chooseSubmit', { backFct: 'putInfos', submitPath: '/user/profil' });
+    this.$store.dispatch('chooseSubmit', { backFct: 'putInfos', submitPath: '/home/profil' });
   }
 }
 </script>

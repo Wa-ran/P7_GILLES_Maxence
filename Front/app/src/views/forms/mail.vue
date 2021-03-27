@@ -46,7 +46,7 @@ export default {
     Wrap
   },
   mounted() {
-    this.$store.dispatch('chooseSubmit', { backFct: 'putEmail', submitPath: '/user/profil' });
+    this.$store.dispatch('chooseSubmit', { backFct: 'putEmail', submitPath: '/home/profil' });
   },
   mixins: [ inputConf ]
 }

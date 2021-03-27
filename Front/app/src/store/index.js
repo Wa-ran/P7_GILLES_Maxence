@@ -20,6 +20,7 @@ export default new Vuex.Store({
     profil: {},
     token: null,
     depts: [],
+    lastAnnonce: {},
   },
   mutations: {
     clearProfil(state) {
@@ -40,7 +41,10 @@ export default new Vuex.Store({
       }
     },
     setDepts(state, payload) {
-      state.depts = payload;
+      state.depts = payload
+    },
+    lastAnnonce(state, payload) {
+      state.lastAnnonce = payload
     }
   },
   actions: {
@@ -57,6 +61,10 @@ export default new Vuex.Store({
     sendForm(context, req) {
       return Back[req.backFct](req.data)
       .then(res => context.commit('setProfil', res))
+    },
+    getLastAnnonce(context) {
+      return Back.getLastAnnonce()
+      .then(res => context.commit('lastAnnonce', res))
     }
   },
   getters: {

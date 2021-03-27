@@ -1,10 +1,9 @@
 <template>
   <mdb-btn
-    @click="$emit('action')"
+    @click="$emit('actionBtnCircle')"
     role="button"
-    class="px-3 py-0 font-weight-bold rounded"
     darkWaves block>
-    <span class="black-text btn-text-normal">{{ text }}</span>
+    <slot></slot>
   </mdb-btn>
 </template>
 
@@ -12,15 +11,9 @@
 import mdbBtn from 'mdbvue/lib/components/mdbBtn';
 
 export default {
-  name: "PitiButton",
+  name: "ButtonCircle",
   components: {
     mdbBtn
-  },
-  props: {
-    text: {
-      type: String,
-      required: true
-    }
   }
 }
 </script>
@@ -28,5 +21,13 @@ export default {
 <style lang="scss" scoped>
 span {
   font-size: 1.1rem !important;
+}
+button {
+  min-width: 50px;
+  min-height: 50px;
+  max-width: 50px;
+  max-height: 50px;
+  padding: 0;
+  border-radius: 50%;
 }
 </style>

@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 const userRoutes = require('./routes/user');
 const depts = require('./routes/gpm_depts');
+const articles = require('./routes/articles');
 
 // const path = require('path');
 
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 
 app.use('/user', userRoutes);
 app.use('/depts', depts);
+app.use('/articles', articles);
 // app.use((req, res) => {
 //   res.json({ user: 'Votre requête a bien été reçue !' }); 
 // });

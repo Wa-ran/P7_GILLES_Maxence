@@ -42,7 +42,6 @@ export default {
   }
 }
 
-
 @keyframes BlockSlide {
   0% {
     opacity: 0;

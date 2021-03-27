@@ -22,15 +22,20 @@ html {
 body {
   margin: auto;
   min-width: 100%;
+  min-height: 100%;
   background-color: transparent;
-  color: $black;
   & div {
     margin: 0 !important;
     padding: 0 !important;
   }
 }
 
-.btn-text-normal {
+button:focus {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.btn-text-normal { // Pour que seule la première lettre soit en maj.
   display: inline-block;
   text-transform: lowercase !important;
   &:first-letter {
@@ -38,33 +43,28 @@ body {
   }
 }
 
-.gpm-big-shadow {
-  box-shadow: 0 5px 11px 0 rgba(black, 0.68), 0 4px 15px 0 rgba(black, 0.45);
-}
-
-.gpm-shadow-focus:hover, .gpm-shadow-focus:focus, .gpm-shadow-focus:focus-within { // style des ombres au survol/focus
-  box-shadow: 0 5px 11px 0 rgba($black, 0.28), 0 4px 15px 0 rgba($black, 0.25);
-}
-
-.transparent {
-  background-color: transparent;
+.card-body {
+  height: fit-content;
 }
 
 .custom-select { // style du select quand choix des options
   border-color: $gpm-default;
   &:focus, &:focus-within {
-    color: $gpm-prior;
-    border-color: $gpm-prior;
-    box-shadow: 0 0 0 0.2rem rgba($gpm-prior-light, 0.5);
+    color: $gpm-alert;
+    border-color: $gpm-alert;
+    box-shadow: 0 0 0 0.2rem rgba($gpm-warning, 0.5);
     & option {
       color: $black;
     }
   }
 }
 
-button:focus {
-  font-weight: bold;
-  text-decoration: underline;
+.gpm-big-shadow {
+  box-shadow: 0 5px 11px 0 rgba($black, 0.68), 0 4px 15px 0 rgba($black, 0.45);
+}
+
+.gpm-shadow-focus:hover, .gpm-shadow-focus:focus, .gpm-shadow-focus:focus-within { // style des ombres au survol/focus
+  box-shadow: 0 5px 11px 0 rgba($black, 0.28), 0 4px 15px 0 rgba($black, 0.25);
 }
 
 .gpm-mist { // "surlignage" estompé
@@ -84,7 +84,60 @@ button:focus {
     position: absolute;
     width: 80%;
     height: 0;
-    box-shadow: 0 0 6px 4px rgba($gpm-prior-light, 0.38), 0 0 20px 6px rgba($gpm-prior, 0.18) !important;
+    box-shadow: 0 0 6px 4px rgba($gpm-warning, 0.38), 0 0 20px 6px rgba($gpm-alert, 0.18) !important;
+  }
+}
+
+.invalid-feedback {
+  z-index: 1;
+}
+
+// prefix = icônes des inputs
+// has-icon = custom icône
+.prefix {
+  position: relative !important;
+  margin-right: 1rem;
+}
+form {
+  height: fit-content;
+  & .input-group {
+    margin-top: 1.25rem !important;
+    margin-bottom: 1.25rem !important;
+    &.my-0 {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+    }
+  }
+  & .active, .has-icon:focus-within {
+    color: $gpm-alert !important; // Couleur des icônes au focus
+  }
+  & input {
+    box-shadow: none !important;
+    border-bottom: solid 1px $gpm-default !important;
+    color: $gpm-base-dark !important;
+    font-weight: bold !important;
+    z-index: 1;
+    padding-bottom: 0 !important;
+    &[value=""] {
+      font-weight: normal; // Pas de value = pas mis en avant
+      padding-bottom: 0.25rem !important;
+    }
+    &:focus, &:focus-within {
+      border-bottom: solid 1px $gpm-alert !important;
+      font-weight: bold;
+    }
+  }
+  & label {
+    color: inherit !important;
+  }
+}
+
+select {
+  background-color: inherit !important;
+  color: inherit !important;
+  & option[disabled] {
+    display: none;
+    margin-top: 1rem;
   }
 }
 
@@ -92,8 +145,10 @@ button:focus {
   font-size: 1.1em;
   font-weight: bold;
   text-decoration: underline;
-  margin: 1rem !important;
-  margin-left: 0 !important;
+}
+
+.transparent {
+  background-color: transparent !important;
 }
 
 .zind1 {

@@ -1,17 +1,21 @@
 <template>
   <mdb-btn
-    @click="$emit('action')"
+    @click="$emit('action'), path !== null ? disableWaves($event) : ''"
     role="button"
-    class="px-3 py-1 font-weight-bold rounded"
-    :class="[isActive ? 'viewActive gpm-default-light' : '']"
+    class="px-3 py-1 font-weight-bold rounded no-ripples"
+    :class="[isActive ? 'viewActive ' + activeColor : defaultColor]"
     :tabindex="isActive ? -1 : ''"
     darkWaves block>
-    <span class="black-text btn-text-normal">{{ text }}</span>
+      <span class="btn-text-normal">{{ text }}</span>
+      <div v-if="isActive"
+      class="w-100 coverShadow"
+      :class="activeColor">
+      </div>
   </mdb-btn>
 </template>
 
 <script>
-import { mdbBtn } from 'mdbvue';
+import mdbBtn from 'mdbvue/lib/components/mdbBtn';
 
 export default {
   name: "MainButton",
@@ -32,11 +36,29 @@ export default {
       // sert de clef pour rafraîchissement
       type: String,
       required: false
+    },
+    defaultColor: {
+      type: String,
+      required: false,
+    },
+    activeColor: {
+      type: String,
+      required: false,
     }
   },
   computed: {
     isActive: function () {
       return this.path !== null && this.activePath == this.path
+    }
+  },
+  methods: {
+    disableWaves($event) {
+      let nextChildren = $event.target.children;
+      nextChildren.forEach(child => {
+        if (child.nodeType == Node.ELEMENT_NODE
+        && child.classList.contains('is-reppling'))
+        { child.remove() }
+      })
     }
   }
 }
@@ -50,9 +72,19 @@ button {
   & span {
     font-size: 1.25rem;
   }
-  &.viewActive {
+  &.viewActive { // Le boutton se confond avec la carte pour donner une impression de dossier
     z-index: 1;
-    box-shadow: 0 5px 0 0 $gpm-default-light, 0 0px 4px 2px rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0 0px 4px 2px rgba(0, 0, 0, 0.12) !important;
+    position: relative;
+    overflow: visible;
+  }
+  & *.coverShadow {
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    height: 8px;
+    z-index: 2;
+    border-radius: 0 0 3px 3px;
   }
 }
 </style>

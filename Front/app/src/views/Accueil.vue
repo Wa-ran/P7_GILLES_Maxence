@@ -1,7 +1,7 @@
 <template>
   <div>
     <mdb-card class="accueil m-2 mt-4 pb-2 gpm-base gpm-big-shadow">
-      <mdb-card v-mdb-waves="{ dark: true }" class="m-3 mt-n3 gpm-default">
+      <mdb-card v-mdb-waves="{ dark: true }" class="m-3 mt-n3 gpm-grey-light gpm-attention-active">
         <MainBrand class="mx-auto my-2"/>
       </mdb-card>
       <div class="d-flex justify-content-between px-3 pt-1 w-100">
@@ -10,6 +10,8 @@
           :path="'/login'"
           :text="'Connection'"
           :activePath=$route.path
+          :defaultColor="'gpm-grey-light gpm-lecture-active'"
+          :activeColor="'gpm-lecture'"
           class="btn-accueil gpm-shadow-focus gpm-default"
         />
         <MainButton
@@ -17,6 +19,8 @@
           :path="'/signup'"
           :text="'M\'inscrire'"
           :activePath=$route.path
+          :defaultColor="'gpm-grey-light gpm-lecture-active'"
+          :activeColor="'gpm-lecture'"
           class="btn-accueil gpm-shadow-focus gpm-default"
         />
       </div>
@@ -25,7 +29,7 @@
         v-if="this.$route.path !== '/'"
         :key="this.formComponent"
         :submitButton="'Envoyer'"
-        class="w-auto mt-n2 mb-3 mx-3 p-3 white gpm-shadow-focus gpm-default-light">
+        class="w-auto mt-n2 mb-3 mx-3 p-3 white gpm-shadow-focus gpm-lecture">
           <component :is='this.formComponent'></component>
         </main-form>
       </card-slide>

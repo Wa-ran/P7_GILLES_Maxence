@@ -133,4 +133,22 @@ exports.modifUserPass = async (req) => {
       }
     })
   })
+};
+
+exports.lastAnnonce = async () => {
+  let annonce = {};
+  await groupomania.connect
+  .then(function () {
+    return session.sql('CALL last_annonce()')
+    .execute(object => { annonce = object[0] })
+    .catch((error) => {
+      if (error.info.code === 9999) {
+        throw {custMsg: error.info.msg}
+      } else {
+        console.log(error);
+        throw {custMsg: 'Problème lors de la procédure...'}
+      }
+    })
+  })
+  return annonce;
 }

@@ -36,7 +36,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('chooseSubmit', { backFct: 'postLogin', submitPath: 'user' })
+    this.$store.dispatch('chooseSubmit', { backFct: 'postLogin', submitPath: 'home' })
   }
 }
 </script>
