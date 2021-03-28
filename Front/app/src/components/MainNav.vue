@@ -5,7 +5,7 @@
       <mdb-navbar-toggler class="m-auto">
         <mdb-navbar-nav class="d-flex flex-row flex-wrap w-100 m-0">
           <div class="d-flex justify-content-between w-100">
-            <MainButton
+            <ButtonDoc
               v-for="page in pages"
               :key="page.id"
               :text="page.name"
@@ -27,7 +27,7 @@
 <script>
 
 import { mdbNavbar, mdbNavbarToggler, mdbNavbarNav, mdbContainer, mdbFormInline } from 'mdbvue';
-import MainButton from './MainButton.vue';
+import ButtonDoc from './ButtonDoc.vue';
 import MainBrand from './MainBrand.vue';
 
 export default {
@@ -38,7 +38,7 @@ export default {
     mdbNavbarNav,
     mdbContainer,
     mdbFormInline,
-    MainButton,
+    ButtonDoc,
     MainBrand
   },
   data() {

@@ -18,7 +18,7 @@
 import mdbBtn from 'mdbvue/lib/components/mdbBtn';
 
 export default {
-  name: "MainButton",
+  name: "ButtonDoc",
   components: {
     mdbBtn
   },

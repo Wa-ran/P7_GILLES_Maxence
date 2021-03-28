@@ -2,13 +2,13 @@
   <div class="w-100 h-100">
     <router-view></router-view>
 
-    <article-preview
+    <ArticlePreview
     v-if="this.$route.path == '/home'"
     class="m-3 gpm-lecture"
     :btnColor="'gpm-warning gpm-alert-active'">
       <template #title>{{ lastAnnonceTitle }}</template>
       <template #preview>{{ lastAnnoncePreview }}</template>
-    </article-preview>
+    </ArticlePreview>
   </div>
 </template>
 

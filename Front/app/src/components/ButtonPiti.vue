@@ -12,7 +12,7 @@
 import mdbBtn from 'mdbvue/lib/components/mdbBtn';
 
 export default {
-  name: "PitiButton",
+  name: "ButtonPiti",
   components: {
     mdbBtn
   },

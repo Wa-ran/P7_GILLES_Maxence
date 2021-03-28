@@ -1,5 +1,5 @@
 <template>
-  <wrap withComp="BlockSlide">
+  <wrap withComp="AnimBlockSlide">
     <div v-for="(item, index) in profil" :key="index"
     class="w-100">
       <mdb-input

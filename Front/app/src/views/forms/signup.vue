@@ -1,5 +1,5 @@
 <template>
-  <wrap withComp="BlockSlide">
+  <wrap withComp="AnimBlockSlide">
 
     <div class="d-flex justify-content-between has-icon mb-3 mt-0">
       <mdb-icon far icon="user" size="2x" class="mr-3 my-0 prefix"/>

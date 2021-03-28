@@ -1,5 +1,5 @@
 <template>
-  <wrap withComp="BlockSlide">
+  <wrap withComp="AnimBlockSlide">
     <mdb-input
       class="d-flex input-group gpm-mist" 
       id="newPassword" name="newPassword" label="Nouveau mot de passe"

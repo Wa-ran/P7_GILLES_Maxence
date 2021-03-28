@@ -5,7 +5,7 @@
         <MainBrand class="mx-auto my-2"/>
       </mdb-card>
       <div class="d-flex justify-content-between px-3 pt-1 w-100">
-        <MainButton
+        <ButtonDoc
           @action="$router.push('/login')"
           :path="'/login'"
           :text="'Connection'"
@@ -14,7 +14,7 @@
           :activeColor="'gpm-lecture'"
           class="btn-accueil gpm-shadow-focus gpm-default"
         />
-        <MainButton
+        <ButtonDoc
           @action="$router.push('/signup')"
           :path="'/signup'"
           :text="'M\'inscrire'"
@@ -24,7 +24,7 @@
           class="btn-accueil gpm-shadow-focus gpm-default"
         />
       </div>
-      <card-slide>
+      <AnimSlideDrop>
         <main-form
         v-if="this.$route.path !== '/'"
         :key="this.formComponent"
@@ -32,7 +32,7 @@
         class="w-auto mt-n2 mb-3 mx-3 p-3 white gpm-shadow-focus gpm-lecture">
           <component :is='this.formComponent'></component>
         </main-form>
-      </card-slide>
+      </AnimSlideDrop>
     </mdb-card>
   </div>
 </template>
@@ -42,9 +42,9 @@
 import mdbCard from 'mdbvue/lib/components/mdbCard';
 import mdbWaves from 'mdbvue/lib/components/mdbWaves';
 
-import MainButton from "@/components/MainButton.vue"
+import ButtonDoc from "@/components/ButtonDoc.vue"
 import MainBrand from "@/components/MainBrand.vue"
-import CardSlide from '@/components/CardSlide';
+import AnimSlideDrop from '@/components/AnimSlideDrop';
 import MainForm from '@/components/MainForm';
 
 import login from '@/views/forms/login';
@@ -55,9 +55,9 @@ const signup = () => ({
 export default {
   components: {
     mdbCard,
-    MainButton,
+    ButtonDoc,
     MainBrand,
-    CardSlide,
+    AnimSlideDrop,
     MainForm,
     login,
     signup

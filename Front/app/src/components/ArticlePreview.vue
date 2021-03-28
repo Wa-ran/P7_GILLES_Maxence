@@ -1,41 +1,45 @@
 <template>
-  <card-slide>
-    <mdb-card class="p-3">
+  <mdb-card class="p-3">
 
-      <button-circle
-      @actionBtnCircle="triggerAnnonce()"
-      class="zind1 btn-circle d-flex"
-      :class="btnColor">
-        <div class="m-auto icon-size d-flex">
-          <i v-show="this.showAnnonce === true" class="fas fa-angle-up"></i>
-          <i v-show="this.showAnnonce === false" class="fas fa-angle-down"></i>
-        </div>
-      </button-circle>
+    <button-circle
+    @actionBtnCircle="triggerAnnonce()"
+    class="zind1 btn-circle d-flex"
+    :class="btnColor">
+      <div class="m-auto icon-size d-flex">
+        <i v-show="this.showAnnonce === true" class="fas fa-angle-up"></i>
+        <i v-show="this.showAnnonce === false" class="fas fa-angle-down"></i>
+      </div>
+    </button-circle>
 
-      <mdb-view hover class="black-text">
+    <mdb-view hover class="black-text">
 
-        <span class="title">
-          <slot name="title"></slot>
-        </span>
+      <span class="title">
+        <slot name="title"></slot>
+      </span>
 
-        <hr class="mt-3 mb-2 gpm-grey-light w-100">
+      <hr class="mt-3 mb-2 gpm-grey-light w-100">
 
-        <div v-show="this.showAnnonce === true">
-          <span>
-            <slot name="preview"></slot>
-          </span>
-        <hr class="mt-3 mb-2 gpm-grey-light w-100">
-        </div>
+      <div class="overhid">
+        <AnimSlideDrop>
+          <div
+          v-if="this.showAnnonce === true"
+          :key="this.showAnnonce">
+            <span>
+              <slot name="preview"></slot>
+            </span>
+          <hr class="mt-3 mb-2 gpm-grey-light w-100">
+          </div>
+        </AnimSlideDrop>
+      </div>
 
-        <div class="d-flex w-100">
-          <mdb-badge class="mr-2 gpm-base z-depth-0">Commentaires</mdb-badge>
-          <mdb-badge class="mr-2 gpm-base z-depth-0">Importance</mdb-badge>
-          <mdb-badge class="mr-2 gpm-base z-depth-0">groupe</mdb-badge>
-        </div>
+      <div class="d-flex w-100">
+        <mdb-badge class="mr-2 gpm-base z-depth-0">Commentaires</mdb-badge>
+        <mdb-badge class="mr-2 gpm-base z-depth-0">Importance</mdb-badge>
+        <mdb-badge class="mr-2 gpm-base z-depth-0">groupe</mdb-badge>
+      </div>
 
-      </mdb-view>
-    </mdb-card>
-  </card-slide>
+    </mdb-view>
+  </mdb-card>
 </template>
 
 <script>
@@ -44,7 +48,7 @@ import mdbBadge from 'mdbvue/lib/components/mdbBadge';
 import mdbView from 'mdbvue/lib/components/mdbView';
 
 import ButtonCircle from '@/components/ButtonCircle';
-import CardSlide from '@/components/CardSlide';
+import AnimSlideDrop from '@/components/AnimSlideDrop';
 
 import focusNext from '@/mixins/focusNext';
 
@@ -55,7 +59,7 @@ export default {
     mdbBadge,
     mdbView,
     ButtonCircle,
-    CardSlide
+    AnimSlideDrop
   },
   props: {
     btnColor: {
@@ -77,7 +81,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .btn-circle {
   position: absolute;
   right: -0.5rem;
@@ -92,5 +96,14 @@ export default {
     height: fit-content;
     margin: auto;
   }
+}
+// OverRide
+.AnimSlideDrop-leave-to {
+  transform: translateY(-50px);
+}
+.title {
+  font-size: 1.15em;
+  font-weight: bold;
+  text-decoration: none;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <wrap withComp="BlockSlide">
+  <wrap withComp="AnimBlockSlide">
     <mdb-input
       class="d-flex input-group gpm-mist" 
       id="newEmail" label="Nouvel email" name="newEmail"

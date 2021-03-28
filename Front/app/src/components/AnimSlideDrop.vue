@@ -1,7 +1,7 @@
 <template>
   <transition
     appear
-    name="CardSlide"
+    name="AnimSlideDrop"
     mode="out-in"
     @enter="enter"
     @afterEnter="afterEnter">
@@ -29,13 +29,13 @@ export default {
 </script>
 
 <style lang="scss">
-.CardSlide-enter-active {
+.AnimSlideDrop-enter-active {
   transition: all 0.4s ease-out;
 }
-.CardSlide-leave-active {
+.AnimSlideDrop-leave-active {
   transition: all 0.3s;
 }
-.CardSlide-leave-to {
+.AnimSlideDrop-leave-to {
   transform: translateY(20px);
   opacity: 0;
 }

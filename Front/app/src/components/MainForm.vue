@@ -1,5 +1,5 @@
 <template>
-  <card-slide>
+  <AnimSlideDrop>
     <mdb-card>
       <form
       novalidate @keydown.prevent.enter="nextInput"
@@ -12,7 +12,7 @@
             <!-- écoute de l'évènement sur le parent car submit.prevent, qui empêche le reload de la page, empêche aussi le fonctionnement du clic sur le bouton (tous concidérés 'submit') -->
             <div>
               <anim-fade>
-                <MainButton
+                <ButtonDoc
                 :text="this.submitButton"
                 type=submit
                 class="my-1 mx-0 gpm-shadow-focus gpm-warning  gpm-alert-active"
@@ -23,14 +23,14 @@
         </div>
       </form>
     </mdb-card>
-  </card-slide>
+  </AnimSlideDrop>
 </template>
 
 <script>
 import mdbCard from 'mdbvue/lib/components/mdbCard';
 
-import MainButton from '@/components/MainButton';
-import CardSlide from '@/components/CardSlide';
+import ButtonDoc from '@/components/ButtonDoc';
+import AnimSlideDrop from '@/components/AnimSlideDrop';
 import AnimFade from '@/components/AnimFade';
 
 import focusNext from '@/mixins/focusNext';
@@ -41,8 +41,8 @@ export default {
   name: 'MainForm',
   components: {
     mdbCard,
-    MainButton,
-    CardSlide,
+    ButtonDoc,
+    AnimSlideDrop,
     AnimFade
   },
   props: {

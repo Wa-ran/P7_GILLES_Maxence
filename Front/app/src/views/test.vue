@@ -1,40 +1,40 @@
 <template>
   <div class="all">
     <div class="h-auto d-flex flex-column justify-content-between">
-      <MainButton
+      <ButtonDoc
       text="Test"
       class=""/>
-      <MainButton
+      <ButtonDoc
       text="gpm-base-dark"
       class="gpm-base-dark gpm-base-active"/>
-      <MainButton
+      <ButtonDoc
       text="gpm-base"
       class="gpm-base gpm-base-dark-active"/>
-      <MainButton
+      <ButtonDoc
       text="gpm-default"
       class="gpm-default gpm-lecture-active"/>
-      <MainButton
+      <ButtonDoc
       text="gpm-lecture"
       class="gpm-lecture gpm-default-active"/>
-      <MainButton
+      <ButtonDoc
       text="gpm-alert-dark"
       class="gpm-alert-dark gpm-alert-active"/>
-      <MainButton
+      <ButtonDoc
       text="gpm-alert"
       class="gpm-alert gpm-alert-dark-active"/>
-      <MainButton
+      <ButtonDoc
       text="gpm-warning"
       class="gpm-warning gpm-attention-active"/>
-      <MainButton
+      <ButtonDoc
       text="gpm-attention"
       class="gpm-attention gpm-warning-active"/>
-      <MainButton
+      <ButtonDoc
       text="gpm-grey-dark"
       class="gpm-grey-dark gpm-grey-light-active"/>
-      <MainButton
+      <ButtonDoc
       text="gpm-grey"
       class="gpm-grey gpm-grey-dark-active"/>
-      <MainButton
+      <ButtonDoc
       text="gpm-grey-light"
       class="gpm-grey-light gpm-grey-active"/>
     </div>
@@ -42,12 +42,12 @@
 </template>
 
 <script>
-import MainButton from '@/components/MainButton';
+import ButtonDoc from '@/components/ButtonDoc';
 
 export default {
   name: 'test',
   components: {
-    MainButton
+    ButtonDoc
   }
 }
 </script>

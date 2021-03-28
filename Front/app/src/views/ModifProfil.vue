@@ -1,16 +1,16 @@
 <template>
-  <card-slide>
+  <AnimSlideDrop>
     <main-form
     :submitButton="'Confirmer'"
     :key="this.formComponent"
     class="w-auto mt-n2 p-3 white gpm-shadow-focus gpm-default-light">
       <component :is='this.formComponent'></component>
     </main-form>
-  </card-slide>
+  </AnimSlideDrop>
 </template>
 
 <script>
-import CardSlide from '@/components/CardSlide';
+import AnimSlideDrop from '@/components/AnimSlideDrop';
 import MainForm from '@/components/MainForm';
 
 const infos = () => ({
@@ -26,7 +26,7 @@ const pass = () => ({
 export default {
   name: 'profil',
   components: {
-    CardSlide,
+    AnimSlideDrop,
     MainForm,
     infos,
     mail,

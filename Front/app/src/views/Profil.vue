@@ -1,10 +1,10 @@
 <template>
-  <card-slide>
+  <AnimSlideDrop>
     <mdb-card class="w-100 mt-n2 p-4 white gpm-shadow-focus gpm-lecture">
         <div class="w-100">
-          <wrap withComp="BlockSlide" class="w-100">
+          <wrap withComp="AnimBlockSlide" class="w-100">
 
-            <PitiButton
+            <ButtonPiti
             @action="$router.push('/home')"
             :text="'Retour'"
             class="my-auto ml-3 gpm-attention gpm-warning-active"/>
@@ -20,7 +20,7 @@
                 {{ item }}
               </div>
             </div>
-            <PitiButton
+            <ButtonPiti
             @action="$router.push('profil/modif/infos')"
             :text="'Modifier'"
             class="mt-3 mx-auto gpm-attention gpm-warning-active"
@@ -29,13 +29,13 @@
         </div>
 
         <div class="w-100">
-          <wrap withComp="BlockSlide" class="w-100">
+          <wrap withComp="AnimBlockSlide" class="w-100">
             <div class="title my-3">
               Votre mail :
             </div>
             <div class="pl-2 w-100 d-flex justify-content-between">
               <div class="font-weight-bold">{{ mail }}</div>
-              <PitiButton
+              <ButtonPiti
               @action="$router.push('profil/modif/mail')"
               :text="'Modifier'"
               class="my-auto ml-3 gpm-attention gpm-warning-active"
@@ -46,8 +46,8 @@
 
         <div class="w-100">
           <hr class="my-4 gpm-base w-100">
-          <wrap withComp="BlockSlide" class="w-100">
-            <PitiButton
+          <wrap withComp="AnimBlockSlide" class="w-100">
+            <ButtonPiti
             @action="$router.push('profil/modif/pass')"
             :text="'Modifier votre mot de passe ?'"
             class="my-auto ml-3 gpm-attention gpm-warning-active"
@@ -55,23 +55,23 @@
           </wrap>
         </div>
     </mdb-card>
-  </card-slide>
+  </AnimSlideDrop>
 </template>
 
 <script>
 import Wrap from '@/components/Wrap';
-import CardSlide from '@/components/CardSlide';
+import AnimSlideDrop from '@/components/AnimSlideDrop';
 
 import mdbCard from 'mdbvue/lib/components/mdbCard';
-import PitiButton from '@/components/PitiButton.vue';
+import ButtonPiti from '@/components/ButtonPiti.vue';
 
 export default {
   name: 'modifProfil',
   components: {
     Wrap,
-    CardSlide,
+    AnimSlideDrop,
     mdbCard,
-    PitiButton
+    ButtonPiti
   },
   computed: {
     mail() { return this.$store.state.profil.email },

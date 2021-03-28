@@ -2,7 +2,7 @@
   <transition
     tag="div"
     appear
-    name="BlockSlide"
+    name="AnimBlockSlide"
     mode="out-in"
     @before-enter="delay">
     <slot></slot>
@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "BlockSlide",
+  name: "AnimAnimBlockSlide",
   methods: {
     delay(element) {
       element.style.setProperty('--delay', ((this.number + 2) *75) + 'ms')
@@ -29,10 +29,10 @@ export default {
 
 <style lang="scss">
 
-.BlockSlide {
+.AnimBlockSlide {
   &-enter-active {
     border-radius: .25rem;
-    animation: BlockSlide 0.5s ease-out var(--delay) backwards;
+    animation: AnimBlockSlide 0.5s ease-out var(--delay) backwards;
   }
   &-leave-active {
     transition: all 0.1s;
@@ -42,7 +42,7 @@ export default {
   }
 }
 
-@keyframes BlockSlide {
+@keyframes AnimBlockSlide {
   0% {
     opacity: 0;
   }
