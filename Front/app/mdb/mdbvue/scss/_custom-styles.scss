@@ -5,6 +5,10 @@
   font-family: 'Prompt', sans-serif;
 }
 
+.lecture {
+  font-family: sans-serif;
+}
+
 html {
   min-width: 100%;
   background-image: url('~@/assets/city-background/'+ random(5) +'.webp');
@@ -34,6 +38,10 @@ body {
     margin: 0 !important;
     padding: 0 !important;
   }
+}
+
+a {
+  color: inherit !important;
 }
 
 button:focus {

@@ -35,9 +35,10 @@ export default {
     animation: AnimBlockSlide 0.5s ease-out var(--delay) backwards;
   }
   &-leave-active {
-    transition: all 0.1s;
+    transition: all 0.2s;
   }
-  &-leave-active-to {
+  &-leave-to {
+    transform: translateX(40px);
     opacity: 0;
   }
 }

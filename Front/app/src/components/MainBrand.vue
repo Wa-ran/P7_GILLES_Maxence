@@ -16,7 +16,7 @@ export default {
   },
   computed: {
     brandPath() {
-      return this.$route.path == '/' ? '/' : '/connected'
+      return this.$route.path.indexOf('home') > -1 ? '/home' : '/'
     }
   }
 }

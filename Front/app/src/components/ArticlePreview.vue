@@ -11,7 +11,7 @@
       </div>
     </button-circle>
 
-    <mdb-view hover class="black-text">
+    <mdb-view class="w-100">
 
       <slot name="title"></slot>
 
@@ -19,13 +19,11 @@
 
       <div class="overhid">
         <AnimSlideDrop>
-          <div
-          v-if="this.showAnnonce === true"
-          :key="this.showAnnonce">
-            <span>
+          <div v-show="this.showAnnonce === true">
+            <span class="lecture">
               <slot name="preview"></slot>
             </span>
-          <hr class="mt-3 mb-2 gpm-grey-light w-100">
+            <hr class="mt-3 mb-2 gpm-grey-light w-100">
           </div>
         </AnimSlideDrop>
       </div>
@@ -109,6 +107,12 @@ export default {
   }
 }
 // OverRide
+.AnimSlideDrop-enter-active {
+  transform: translateY(-50px);
+}
+.AnimSlideDrop-enter-to {
+  transform: translateY(0px);
+}
 .AnimSlideDrop-leave-to {
   transform: translateY(-50px);
 }

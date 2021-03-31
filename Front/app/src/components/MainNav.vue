@@ -37,12 +37,12 @@
       </mdb-navbar-toggler>
     </mdb-navbar>
     <div
-    class="mt-n2 pt-2 w-100 text-left rounded gpm-base breadCrumb"
+    class="mt-n2 pt-2 w-100 text-left rounded z-depth-2 gpm-base breadCrumb"
     aria-label="Breadcrumb">
       <router-link v-for="(path, name) in breadCrumb" :key="name"
       :to="path.replace('/', '')">
       <!-- router-link 'to' rajoute un '/' au début, mais dans notre cas il est déjà présent -->
-        {{ name }} |
+        {{ decodeURIComponent(name) }} |
       </router-link>
     </div>
   </mdb-container>

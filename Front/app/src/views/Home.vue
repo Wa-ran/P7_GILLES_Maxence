@@ -30,7 +30,7 @@ export default {
     }
   },
   async created() {
-    await this.$store.dispatch('getLastAnnonce');
+    await this.$store.dispatch('GPMRequest', { backFct: 'LastAnnonce' });
   },
 }
 </script>

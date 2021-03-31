@@ -69,7 +69,7 @@ export default {
       }
     })
   },
-  getDepts() {
+  DeptsList() {
     return fetch('http://localhost:3000/gpm/depts')
     .then((res) => {
       if (res.status >= 400) {
@@ -79,7 +79,7 @@ export default {
       }
     })
   },
-  getLastAnnonce() {
+  LastAnnonce() {
     return fetch('http://localhost:3000/gpm/lastAnnonce')
     .then((res) => {
       if (res.status >= 400) {
@@ -89,7 +89,7 @@ export default {
       }
     })
   },
-  getGroupeContent(groupe) {
+  GroupeContent(groupe) {
     return fetch('http://localhost:3000/gpm/groupe/' + encodeURIComponent(groupe))
     .then((res) => {
       if (res.status >= 400) {

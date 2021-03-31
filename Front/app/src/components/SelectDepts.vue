@@ -33,7 +33,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('getDepts');
+    this.$store.dispatch('GPMRequest', { backFct: 'DeptsList' });
     if (this.$store.state.profil.departement) {
       setTimeout(() => {
       document.querySelector('select').style.fontWeight = 'bold';

@@ -38,13 +38,13 @@ export default new Vuex.Store({
         }
       }
     },
-    setDepts(state, payload) {
+    DeptsList(state, payload) {
       state.depts = payload.depts
     },
-    lastAnnonce(state, payload) {
+    LastAnnonce(state, payload) {
       state.lastAnnonce = payload
     },
-    addGroupe(state, payload) {
+    GroupeContent(state, payload) {
       state.groupe = payload
     }
   },
@@ -56,17 +56,9 @@ export default new Vuex.Store({
       return Back[req.backFct](req.data)
       .then(res => context.commit('setProfil', res))
     },
-    getDepts(context) {
-      return Back.getDepts()
-      .then(res => context.commit('setDepts', res))
-    },
-    getLastAnnonce(context) {
-      return Back.getLastAnnonce()
-      .then(res => context.commit('lastAnnonce', res))
-    },
-    getGroupeContent(context, groupe) {
-      return Back.getGroupeContent(groupe)
-      .then(res => context.commit('addGroupe', res))
+    GPMRequest(context, req) {
+      return Back[req.backFct](req.data ? req.data : null)
+      .then(res => context.commit(req.backFct, res))
     },
   },
   getters: {
