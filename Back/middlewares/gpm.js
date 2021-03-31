@@ -7,12 +7,15 @@ exports.listDepts = async () => {
 
   await groupomania.connect
   .then(function () {
-    return session.sql('SELECT nom FROM departement').execute(function (row) {
-      row.forEach(nom => {
-        dept.push(nom)
+    return session.sql('SELECT nom FROM departement')
+    .execute(
+      function (row) {
+        row.forEach(nom => {
+          dept.push(nom)
+        })
       })
-    })
-  })
+    }
+  )
   .catch(() => {
     throw {custMsg : 'Problème lors de la récupération des départements.'}
   })
@@ -151,4 +154,28 @@ exports.lastAnnonce = async () => {
     })
   })
   return annonce;
+}
+
+exports.getGroupeContent = async (groupeName) => {
+  let groupe = {};
+  let content = [];
+  await groupomania.connect
+  .then(function () {
+    return session.sql('CALL groupe_content(\'' + groupeName + '\')')
+    .execute(
+      function (row) {
+        content.push(row[0]);
+      }
+    )
+    .catch((error) => {
+      if (error.info.code === 9999) {
+        throw {custMsg: error.info.msg}
+      } else {
+        console.log(error);
+        throw {custMsg: 'Le groupe: ' + groupeName + ' n\'existe pas.'}
+      }
+    })
+  })
+  groupe[groupeName] = content;
+  return groupe;
 }

@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "AnimAnimBlockSlide",
+  name: "AnimBlockSlide",
   methods: {
     delay(element) {
       element.style.setProperty('--delay', ((this.number + 2) *75) + 'ms')

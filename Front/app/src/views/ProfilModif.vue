@@ -1,17 +1,26 @@
 <template>
-  <AnimSlideDrop>
-    <main-form
-    :submitButton="'Confirmer'"
-    :key="this.formComponent"
-    class="w-auto mt-n2 p-3 white gpm-shadow-focus gpm-default-light">
-      <component :is='this.formComponent'></component>
-    </main-form>
-  </AnimSlideDrop>
+  <div class="p-3 w-100">
+    <TitleDoc
+    :color="'gpm-lecture'">
+      <h2 class="h4 m-1">
+        Modifez votre profil
+      </h2>
+    </TitleDoc>
+    <AnimSlideDrop>
+      <main-form
+      :submitButton="'Confirmer'"
+      :key="this.formComponent"
+      class="w-100 px-4 gpm-lecture">
+        <component :is='this.formComponent'></component>
+      </main-form>
+    </AnimSlideDrop>
+  </div>
 </template>
 
 <script>
 import AnimSlideDrop from '@/components/AnimSlideDrop';
 import MainForm from '@/components/MainForm';
+import TitleDoc from '@/components/TitleDoc';
 
 const infos = () => ({
   component: import('@/views/forms/infos')
@@ -24,10 +33,11 @@ const pass = () => ({
 });
 
 export default {
-  name: 'profil',
+  name: 'ProfilModif',
   components: {
     AnimSlideDrop,
     MainForm,
+    TitleDoc,
     infos,
     mail,
     pass
@@ -36,6 +46,11 @@ export default {
     formComponent() {
       let str = this.$route.path;
       return str.substring(str.lastIndexOf('/')+1)
+    }
+  },
+  mounted() {
+    if (this.formComponent === 'modification') {
+      this.$router.push('/home/profil')
     }
   }
 }

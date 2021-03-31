@@ -21,11 +21,9 @@ export default new Vuex.Store({
     token: null,
     depts: [],
     lastAnnonce: {},
+    groupe: {},
   },
   mutations: {
-    clearProfil(state) {
-      state.profil = {}
-    },
     setSubmit(state, payload) {
       state.form.backFct = payload.backFct;
       state.form.submitPath = payload.submitPath;
@@ -41,31 +39,35 @@ export default new Vuex.Store({
       }
     },
     setDepts(state, payload) {
-      state.depts = payload
+      state.depts = payload.depts
     },
     lastAnnonce(state, payload) {
       state.lastAnnonce = payload
+    },
+    addGroupe(state, payload) {
+      state.groupe = payload
     }
   },
   actions: {
-    clearProfil(context) {
-      context.commit('clearProfil')
-    },
     chooseSubmit(context, payload) {
       context.commit('setSubmit', payload)
-    },
-    getDepts(context) {
-      return Back.getDepts()
-      .then(res => context.commit('setDepts', res))
     },
     sendForm(context, req) {
       return Back[req.backFct](req.data)
       .then(res => context.commit('setProfil', res))
     },
+    getDepts(context) {
+      return Back.getDepts()
+      .then(res => context.commit('setDepts', res))
+    },
     getLastAnnonce(context) {
       return Back.getLastAnnonce()
       .then(res => context.commit('lastAnnonce', res))
-    }
+    },
+    getGroupeContent(context, groupe) {
+      return Back.getGroupeContent(groupe)
+      .then(res => context.commit('addGroupe', res))
+    },
   },
   getters: {
 

@@ -47,14 +47,20 @@ $custom: (
 );
 
 @each $name, $color in $custom {
-  .#{$name} {
+  html .#{$name} {
     background-color: $color !important;
     color: set-color($color) !important;
   };
-  .#{$name}-active {
+  html .#{$name}-active {
     &:hover, &:focus {
       background-color: $color !important;
       color: set-color($color) !important;
     }
+  }
+};
+
+@for $i from 1 through 6 {
+  h#{$i}, .h#{$i} {
+    font-weight: bold;
   }
 };

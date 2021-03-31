@@ -1,12 +1,4 @@
 export default {
-  getDepts() {
-    return fetch('http://localhost:3000/depts')
-    .then(res => res.json())
-    .then(res => res.depts)
-    .catch((error) => {
-      console.error( error );
-    });
-  },
   postSignup(data) {
     return fetch('http://localhost:3000/user/signup', {
       method: "POST",
@@ -77,8 +69,8 @@ export default {
       }
     })
   },
-  getLastAnnonce() {
-    return fetch('http://localhost:3000/articles/lastAnnonce')
+  getDepts() {
+    return fetch('http://localhost:3000/gpm/depts')
     .then((res) => {
       if (res.status >= 400) {
         throw res.json()
@@ -86,5 +78,25 @@ export default {
         return res.json()
       }
     })
-  }
+  },
+  getLastAnnonce() {
+    return fetch('http://localhost:3000/gpm/lastAnnonce')
+    .then((res) => {
+      if (res.status >= 400) {
+        throw res.json()
+      } else {
+        return res.json()
+      }
+    })
+  },
+  getGroupeContent(groupe) {
+    return fetch('http://localhost:3000/gpm/groupe/' + encodeURIComponent(groupe))
+    .then((res) => {
+      if (res.status >= 400) {
+        throw res.json()
+      } else {
+        return res.json()
+      }
+    })
+  },
 }

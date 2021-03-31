@@ -13,9 +13,7 @@
 
     <mdb-view hover class="black-text">
 
-      <span class="title">
-        <slot name="title"></slot>
-      </span>
+      <slot name="title"></slot>
 
       <hr class="mt-3 mb-2 gpm-grey-light w-100">
 
@@ -32,10 +30,10 @@
         </AnimSlideDrop>
       </div>
 
-      <div class="d-flex w-100">
-        <mdb-badge class="mr-2 gpm-base z-depth-0">Commentaires</mdb-badge>
-        <mdb-badge class="mr-2 gpm-base z-depth-0">Importance</mdb-badge>
-        <mdb-badge class="mr-2 gpm-base z-depth-0">groupe</mdb-badge>
+      <div class="d-flex flex-wrap w-75">
+        <mdb-badge class="mt-2 mr-2 gpm-base z-depth-0">{{ this.com_number ? this.com_number : '0' }} com.</mdb-badge>
+        <mdb-badge class="mt-2 mr-2 gpm-base z-depth-0">{{ this.groupe }}</mdb-badge>
+        <!-- <mdb-badge class="mt-2 mr-2 gpm-base z-depth-0">{{ this.importance }}</mdb-badge> -->
       </div>
 
     </mdb-view>
@@ -62,6 +60,18 @@ export default {
     AnimSlideDrop
   },
   props: {
+    com_number: {
+      type: Number,
+      required: true
+    },
+    groupe: {
+      type: String,
+      required: true
+    },
+    importance: {
+      type: Number,
+      required: true
+    },
     btnColor: {
       type: String,
       required: false
@@ -84,9 +94,10 @@ export default {
 <style lang="scss" scoped>
 .btn-circle {
   position: absolute;
-  right: -0.5rem;
-  bottom: -0.5rem;
+  right: 0.5rem;
+  bottom: 0.5rem;
   text-decoration: none !important;
+  margin: 0 !important;
 }
 .icon-size {
   font-size: 2.5rem;
@@ -102,7 +113,7 @@ export default {
   transform: translateY(-50px);
 }
 .title {
-  font-size: 1.15em;
+  font-size: 1.1rem;
   font-weight: bold;
   text-decoration: none;
 }

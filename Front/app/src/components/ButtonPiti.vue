@@ -4,7 +4,7 @@
     role="button"
     class="px-3 py-0 font-weight-bold rounded"
     darkWaves block>
-    <span class="black-text btn-text-normal">{{ text }}</span>
+    <span class="btn-text-normal">{{ text }}</span>
   </mdb-btn>
 </template>
 

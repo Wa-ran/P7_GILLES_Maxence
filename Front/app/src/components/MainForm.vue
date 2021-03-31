@@ -3,22 +3,21 @@
     <mdb-card>
       <form
       novalidate @keydown.prevent.enter="nextInput"
-      class="m-auto">
-        <div class="pt-4 px-3">
+      class="w-100 p-3">
 
-          <slot class="h-auto"></slot>
+        <slot class="h-auto"></slot>
 
-          <div class="d-flex flex-center py-4 mt-3 mx-auto">
-            <!-- écoute de l'évènement sur le parent car submit.prevent, qui empêche le reload de la page, empêche aussi le fonctionnement du clic sur le bouton (tous concidérés 'submit') -->
-            <div>
-              <anim-fade>
-                <ButtonDoc
-                :text="this.submitButton"
-                type=submit
-                class="my-1 mx-0 gpm-shadow-focus gpm-warning  gpm-alert-active"
-                />
-              </anim-fade>
-            </div>
+        <div class="d-flex flex-center py-4 mt-3 mx-auto">
+          <!-- écoute de l'évènement sur le parent car submit.prevent, qui empêche le reload de la page, empêche aussi le fonctionnement du clic sur le bouton (tous concidérés 'submit') -->
+          <div>
+            <AnimSlideFade
+            :delay="350">
+              <ButtonDoc
+              :text="this.submitButton"
+              type=submit
+              class="my-1 mx-0 gpm-shadow-focus gpm-warning  gpm-alert-active"
+              />
+            </AnimSlideFade>
           </div>
         </div>
       </form>
@@ -31,7 +30,7 @@ import mdbCard from 'mdbvue/lib/components/mdbCard';
 
 import ButtonDoc from '@/components/ButtonDoc';
 import AnimSlideDrop from '@/components/AnimSlideDrop';
-import AnimFade from '@/components/AnimFade';
+import AnimSlideFade from '@/components/AnimSlideFade';
 
 import focusNext from '@/mixins/focusNext';
 import debouncer from '@/mixins/debouncer';
@@ -43,7 +42,7 @@ export default {
     mdbCard,
     ButtonDoc,
     AnimSlideDrop,
-    AnimFade
+    AnimSlideFade
   },
   props: {
     submitButton: {

@@ -5,9 +5,14 @@
     <ArticlePreview
     v-if="this.$route.path == '/home'"
     class="m-3 gpm-lecture"
+    :com_number="lastAnnonce.com_number"
+    :groupe="lastAnnonce.groupe_nom"
+    :importance="lastAnnonce.importance"
     :btnColor="'gpm-warning gpm-alert-active'">
-      <template #title>{{ lastAnnonceTitle }}</template>
-      <template #preview>{{ lastAnnoncePreview }}</template>
+      <template #title>
+        <h2 class="h5">{{ lastAnnonce.titre }}</h2>
+      </template>
+      <template #preview>{{ lastAnnonce.preview }}</template>
     </ArticlePreview>
   </div>
 </template>
@@ -21,12 +26,11 @@ export default {
   },
   data() {
     return {
-      lastAnnonceTitle: this.$store.state.lastAnnonce.titre,
-      lastAnnoncePreview: this.$store.state.lastAnnonce.preview
+      lastAnnonce: this.$store.state.lastAnnonce
     }
   },
-  mounted() {
-    this.$store.dispatch('getLastAnnonce');
+  async created() {
+    await this.$store.dispatch('getLastAnnonce');
   },
 }
 </script>

@@ -1,42 +1,45 @@
 <template>
-  <AnimSlideDrop>
-    <mdb-card class="w-100 mt-n2 p-4 white gpm-shadow-focus gpm-lecture">
+  <div class="m-3">
+    <TitleDoc
+    :color="'gpm-lecture'">
+      <h2 class="h4 m-1">
+        Profil
+      </h2>
+    </TitleDoc>
+    <AnimSlideDrop>
+      <mdb-card class="w-100 pt-4 p-3 white gpm-shadow-focus gpm-lecture">
         <div class="w-100">
           <wrap withComp="AnimBlockSlide" class="w-100">
 
-            <ButtonPiti
-            @action="$router.push('/home')"
-            :text="'Retour'"
-            class="my-auto ml-3 gpm-attention gpm-warning-active"/>
-
-            <div class="title my-3">
-              Vos informations personnelles :
+            <div class="mb-3">
+              <h3 class="h5 text-left">Vos informations personnelles :</h3>
             </div>
             <div class="w-100 pl-2 d-flex" v-for="(item, index) in infos" :key="index">
-              <div class="w-50 text-left">
-                Votre {{ index }} : 
+              <div class="w-50 text-left btn-text-normal">
+                {{ index }} : 
               </div>
               <div class="w-50 text-left font-weight-bold">
                 {{ item }}
               </div>
             </div>
             <ButtonPiti
-            @action="$router.push('profil/modif/infos')"
+            @action="$router.push('profil/modification/infos')"
             :text="'Modifier'"
-            class="mt-3 mx-auto gpm-attention gpm-warning-active"
+            class="mt-3 ml-auto gpm-attention gpm-warning-active"
             />
           </wrap>
         </div>
 
         <div class="w-100">
           <wrap withComp="AnimBlockSlide" class="w-100">
-            <div class="title my-3">
-              Votre mail :
+            <hr class="my-3 gpm-base w-100">
+            <div class="my-3">
+              <h3 class="h5 text-left">Votre mail :</h3>
             </div>
             <div class="pl-2 w-100 d-flex justify-content-between">
               <div class="font-weight-bold">{{ mail }}</div>
               <ButtonPiti
-              @action="$router.push('profil/modif/mail')"
+              @action="$router.push('profil/modification/mail')"
               :text="'Modifier'"
               class="my-auto ml-3 gpm-attention gpm-warning-active"
               />
@@ -45,33 +48,36 @@
         </div>
 
         <div class="w-100">
-          <hr class="my-4 gpm-base w-100">
           <wrap withComp="AnimBlockSlide" class="w-100">
+            <hr class="my-3 gpm-base w-100">
             <ButtonPiti
-            @action="$router.push('profil/modif/pass')"
+            @action="$router.push('profil/modification/pass')"
             :text="'Modifier votre mot de passe ?'"
-            class="my-auto ml-3 gpm-attention gpm-warning-active"
+            class="w-100 gpm-attention gpm-warning-active"
             />
           </wrap>
         </div>
-    </mdb-card>
-  </AnimSlideDrop>
+      </mdb-card>
+    </AnimSlideDrop>
+  </div>
 </template>
 
 <script>
 import Wrap from '@/components/Wrap';
 import AnimSlideDrop from '@/components/AnimSlideDrop';
-
-import mdbCard from 'mdbvue/lib/components/mdbCard';
+import TitleDoc from '@/components/TitleDoc.vue';
 import ButtonPiti from '@/components/ButtonPiti.vue';
 
+import mdbCard from 'mdbvue/lib/components/mdbCard';
+
 export default {
-  name: 'modifProfil',
+  name: 'Profil',
   components: {
     Wrap,
     AnimSlideDrop,
     mdbCard,
-    ButtonPiti
+    ButtonPiti,
+    TitleDoc
   },
   computed: {
     mail() { return this.$store.state.profil.email },

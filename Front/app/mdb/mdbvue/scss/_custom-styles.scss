@@ -1,4 +1,10 @@
 // Your custom styles
+@import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
+
+* {
+  font-family: 'Prompt', sans-serif;
+}
+
 html {
   min-width: 100%;
   background-image: url('~@/assets/city-background/'+ random(5) +'.webp');
@@ -145,14 +151,12 @@ select {
   }
 }
 
-.title {
-  font-size: 1.1em;
-  font-weight: bold;
-  text-decoration: underline;
-}
-
 .transparent {
   background-color: transparent !important;
+}
+
+.underline {
+  text-decoration: underline;
 }
 
 .zind1 {

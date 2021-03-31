@@ -12,7 +12,7 @@
           :activePath=$route.path
           :defaultColor="'gpm-grey-light gpm-lecture-active'"
           :activeColor="'gpm-lecture'"
-          class="btn-accueil gpm-shadow-focus gpm-default"
+          class="btn-accueil gpm-shadow-focus"
         />
         <ButtonDoc
           @action="$router.push('/signup')"
@@ -21,7 +21,7 @@
           :activePath=$route.path
           :defaultColor="'gpm-grey-light gpm-lecture-active'"
           :activeColor="'gpm-lecture'"
-          class="btn-accueil gpm-shadow-focus gpm-default"
+          class="btn-accueil gpm-shadow-focus"
         />
       </div>
       <AnimSlideDrop>
@@ -29,7 +29,7 @@
         v-if="this.$route.path !== '/'"
         :key="this.formComponent"
         :submitButton="'Envoyer'"
-        class="w-auto mt-n2 mb-3 mx-3 p-3 white gpm-shadow-focus gpm-lecture">
+        class="w-auto mt-n2 mb-3 mx-3 p-3 gpm-shadow-focus gpm-lecture">
           <component :is='this.formComponent'></component>
         </main-form>
       </AnimSlideDrop>
@@ -72,9 +72,10 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('clearProfil');
+    window.sessionStorage.clear()
   },
   updated() {
+    window.sessionStorage.clear();
     setTimeout(() => {
       document.querySelector('[autofocus]').focus();
     }, 300)

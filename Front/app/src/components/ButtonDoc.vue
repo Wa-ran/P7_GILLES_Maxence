@@ -65,8 +65,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../mdb/mdbvue/scss/custom-variables.scss';
-
 button {
   width: fit-content !important;
   & span {

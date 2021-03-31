@@ -1,6 +1,6 @@
 <template>
   <mdb-navbar-brand class="rounded logo">
-    <router-link to="/">
+    <router-link :to="brandPath">
       <img class="rounded" alt="Accueil" src="../assets/Groupomania/icon-left-dark.svg">
     </router-link>
   </mdb-navbar-brand>
@@ -13,6 +13,11 @@ export default {
   name: "MainBrand",
   components: {
     mdbNavbarBrand
+  },
+  computed: {
+    brandPath() {
+      return this.$route.path == '/' ? '/' : '/connected'
+    }
   }
 }
 </script>
