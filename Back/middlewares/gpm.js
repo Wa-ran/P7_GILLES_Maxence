@@ -156,6 +156,25 @@ exports.lastAnnonce = async () => {
   return annonce;
 }
 
+exports.getGroupeList = async () => {
+  let groupeList = [];
+  await groupomania.connect
+  .then(function () {
+    return session.sql('SELECT JSON_OBJECT(\'nom\', nom, \'description\', description) FROM groupe;')
+    .execute(
+      function (row) {
+        row.forEach(groupe => {
+          groupeList.push(groupe)
+        })
+      }
+    )
+  })
+  .catch(() => {
+    throw {custMsg : 'Problème lors de la récupération des groupes.'}
+  })
+  return groupeList;
+}
+
 exports.getGroupeContent = async (groupeName) => {
   let groupe = {};
   let content = [];

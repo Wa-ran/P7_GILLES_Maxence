@@ -67,8 +67,8 @@ export default {
     SelectDepts,
     Wrap
   },
-  mounted() {
-    this.$store.dispatch('chooseSubmit', { backFct: 'postSignup', submitPath: 'login' })
+  async created() {
+    await this.$store.dispatch('chooseSubmit', { backFct: 'postSignup', submitPath: 'login' })
   },
   mixins: [ inputConf ]
 }

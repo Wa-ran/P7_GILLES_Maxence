@@ -9,15 +9,17 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    name: 'accueil',
     component: Accueil,
     children: [
-      {path: 'login'},
-      {path: 'signup'},
+      {path: 'login', name: 'login'},
+      {path: 'signup', name: 'signup'},
     ]
   },
 
   {
     path: '/home',
+    name: 'home',
     components: {
       default: Home,
       MainNav
@@ -25,6 +27,7 @@ const routes = [
     children: [
       {
         path: 'profil',
+        name: 'profil',
         component: () => import('../views/Profil.vue'),
       },
 
@@ -32,22 +35,30 @@ const routes = [
         path: 'profil/modification',
         component: () => import('../views/ProfilModif.vue'),
         children: [
-          {path: 'infos'},
-          {path: 'mail'},
-          {path: 'pass'}
+          {path: 'infos', name: 'infos'},
+          {path: 'mail', name: 'mail'},
+          {path: 'pass', name: 'pass'}
         ]
       },
     
       {
         path: 'groupe',
+        name: 'groupe',
         component: () => import('../views/Groupe.vue'),
         children: [
           {
-            path: ':groupeName',
-            component: () => import('../views/GroupeName.vue'),
-            props: true
-            },
+            path: 'creation',
+            name: 'groupeCreation',
+            component: () => import('../views/GroupeCreation.vue')
+          },
         ]
+      },
+
+      {
+        path: 'groupe/:groupeName',
+        name: 'groupeName',
+        component: () => import('../views/GroupeName.vue'),
+        props: true
       },
     ]
   },

@@ -2,7 +2,7 @@
   <mdb-btn
     @click="$emit('action')"
     role="button"
-    class="px-3 py-0 font-weight-bold rounded"
+    class="px-2 py-0 font-weight-bold rounded"
     darkWaves block>
     <span class="btn-text-normal">{{ text }}</span>
   </mdb-btn>

@@ -64,3 +64,9 @@ $custom: (
     font-weight: bold;
   }
 };
+
+@for $i from 1 through 10 {
+  .zind#{$i} {
+    z-index: $i;
+  }
+};

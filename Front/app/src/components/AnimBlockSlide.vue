@@ -20,7 +20,6 @@ export default {
   props: {
     number: {
       type: Number,
-      required: true,
       default: 1
     }
   }

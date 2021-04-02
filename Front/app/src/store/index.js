@@ -21,6 +21,7 @@ export default new Vuex.Store({
     token: null,
     depts: [],
     lastAnnonce: {},
+    groupeList: [],
     groupe: {},
   },
   mutations: {
@@ -38,13 +39,16 @@ export default new Vuex.Store({
         }
       }
     },
-    DeptsList(state, payload) {
-      state.depts = payload.depts
+    deptsList(state, payload) {
+      state.depts = payload
     },
-    LastAnnonce(state, payload) {
+    lastAnnonce(state, payload) {
       state.lastAnnonce = payload
     },
-    GroupeContent(state, payload) {
+    groupeList(state, payload) {
+      state.groupeList = payload
+    },
+    groupeContent(state, payload) {
       state.groupe = payload
     }
   },

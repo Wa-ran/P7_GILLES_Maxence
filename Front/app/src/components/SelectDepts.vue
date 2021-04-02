@@ -32,8 +32,10 @@ export default {
       $event.target.style.fontWeight = 'bold';
     }
   },
+  async created() {
+    await this.$store.dispatch('GPMRequest', { backFct: 'deptsList' });    
+  },
   mounted() {
-    this.$store.dispatch('GPMRequest', { backFct: 'DeptsList' });
     if (this.$store.state.profil.departement) {
       setTimeout(() => {
       document.querySelector('select').style.fontWeight = 'bold';

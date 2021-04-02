@@ -1,37 +1,44 @@
 <template>
-  <mdb-card class="p-3 gpm-default">
-    <AnimSlideFade>
-      <div class="mb-4 mt-3 mx-auto title">
-        <h2 class="h3">{{ this.groupeName }}</h2>
-      </div>
-    </AnimSlideFade>
-    <wrap withComp="AnimBlockSlide">
-      <ArticlePreview v-for="participation in content" :key="participation"
-      :com_number="participation.com_number"
-      :importance="participation.importance"
-      :btnColor="'gpm-warning gpm-alert-active'"
-      class="gpm-lecture">
-        <template #title>
-          <h3 class="h5">{{ participation.titre }}</h3>
-        </template>
-        <template #preview>{{ participation.preview }}</template>
-      </ArticlePreview>
-    </wrap>
-  </mdb-card>
+  <TitleDoc :color="'gpm-default'">
+
+    <template #title>
+      <h2 class="h4 m-1">
+        {{ groupeName }}
+      </h2>
+    </template>
+
+    <template>
+      <wrap withComp="AnimBlockSlide" class="w-100">
+
+        <ArticlePreview
+        v-for="(participation, index) in content" :key="index"
+        class="gpm-lecture"
+        :btnColor="'gpm-warning gpm-alert-active'">
+          <template #title>
+            <h2 class="h5">{{ participation.titre }}</h2>
+          </template>
+          <template #preview>{{ participation.preview }}</template>
+          <template #infos>
+            <div class="d-flex flex-wrap w-75">
+              <mdb-badge class="mt-2 mr-2 gpm-base z-depth-0">0 com.</mdb-badge>
+            </div>
+          </template>
+        </ArticlePreview>
+
+      </wrap>
+    </template>
+  </TitleDoc>
 </template>
 
 <script>
-import mdbCard from 'mdbvue/lib/components/mdbCard';
-
-import AnimSlideFade from '@/components/AnimSlideFade';
+import TitleDoc from '@/components/TitleDoc';
 import ArticlePreview from '@/components/ArticlePreview';
 import Wrap from '@/components/Wrap';
 
 export default {
   name: 'GroupeName',
   components: {
-    mdbCard,
-    AnimSlideFade,
+    TitleDoc,
     ArticlePreview,
     Wrap
   },
@@ -39,8 +46,8 @@ export default {
   computed: {
     content() { return this.$store.state.groupe[this.groupeName] }
   },
-  created() {
-    this.$store.dispatch('GPMRequest', { backFct: 'GroupeContent', data: this.groupeName });
+  async created() {
+    await this.$store.dispatch('GPMRequest', { backFct: 'groupeContent', data: this.groupeName });
   },
 }
 </script>

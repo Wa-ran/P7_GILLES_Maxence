@@ -44,9 +44,16 @@ a {
   color: inherit !important;
 }
 
-button:focus {
+button:focus span {
   font-weight: bold;
   text-decoration: underline;
+}
+
+.breadCrumb a {
+  max-width: 25%;
+  overflow: hidden;
+  font-style: italic;
+  white-space: nowrap;
 }
 
 .btn-text-normal { // Pour que seule la première lettre soit en maj.
@@ -165,8 +172,4 @@ select {
 
 .underline {
   text-decoration: underline;
-}
-
-.zind1 {
-  z-index: 1;
 }

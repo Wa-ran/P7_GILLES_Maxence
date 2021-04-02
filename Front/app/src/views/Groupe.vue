@@ -1,42 +1,63 @@
 <template>
-  <div class="w-100">
-    <AnimBlockSlide>
-      
-      <router-view/>
+  <TitleDoc :color="'gpm-default'">
 
-      <ArticlePreview
-      v-if="this.$route.path == '/home/groupe'"
-      class="m-3 w-auto gpm-lecture"
-      :com_number="0"
-      :groupe="'something'"
-      :importance="0"
-      :btnColor="'gpm-warning gpm-alert-active'">
-        <template #title>
-          <h2 class="h5">
-            <router-link :to="'groupe/' + GroupeName">
-              {{ GroupeName }}
-            </router-link>
-          </h2>
-        </template>
-      </ArticlePreview>
-    </AnimBlockSlide>
-  </div>
+    <template #title>
+      <h2 class="h4 m-1">
+        Groupe
+      </h2>
+    </template>
+
+    <template>
+      <wrap withComp="AnimBlockSlide" class="w-100">
+
+        <div v-if="this.$route.path == '/home/groupe'" class="w-100">
+          <GroupePreview
+          v-for="groupe of groupeList" :key="groupe.nom"
+          class="w-100 gpm-lecture"
+          :btnColor="'gpm-attention gpm-warning-active'"
+          :hr="'m-0 gpm-grey w-100'">
+
+            <template #name>
+              <h3 class="mx-auto mb-2 pb-0 h4">
+                <router-link :to="'/home/groupe/' + groupe.nom">
+                  {{ groupe.nom }}
+                </router-link>
+              </h3>
+            </template>
+
+            <template #description>
+              <div class="mt-2">
+                {{ groupe.description }}
+              </div>
+            </template>
+          </GroupePreview>
+        </div>
+
+      </wrap>
+    </template>
+  </TitleDoc>
 </template>
 
 <script>
-import ArticlePreview from '@/components/ArticlePreview';
-import AnimBlockSlide from '@/components/AnimBlockSlide';
+import GroupePreview from '@/components/GroupePreview';
+import TitleDoc from '@/components/TitleDoc';
+import Wrap from '@/components/Wrap';
 
 export default {
   name: 'Groupe',
   components: {
-    ArticlePreview,
-    AnimBlockSlide
+    GroupePreview,
+    TitleDoc,
+    Wrap
   },
   computed: {
-    GroupeName() {
-      return Object.keys(this.$store.state.groupe)[0]
+    groupeList() {
+      return this.$store.state.groupeList
     }
-  }
+  },
+  async created() {
+    await this.$store.dispatch('GPMRequest', { backFct: 'groupeList' })
+    .catch(error => console.log(error));
+  },
 }
 </script>

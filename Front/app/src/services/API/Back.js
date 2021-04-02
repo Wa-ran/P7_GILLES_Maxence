@@ -69,7 +69,7 @@ export default {
       }
     })
   },
-  DeptsList() {
+  deptsList() {
     return fetch('http://localhost:3000/gpm/depts')
     .then((res) => {
       if (res.status >= 400) {
@@ -79,7 +79,7 @@ export default {
       }
     })
   },
-  LastAnnonce() {
+  lastAnnonce() {
     return fetch('http://localhost:3000/gpm/lastAnnonce')
     .then((res) => {
       if (res.status >= 400) {
@@ -89,7 +89,17 @@ export default {
       }
     })
   },
-  GroupeContent(groupe) {
+  groupeList() {
+    return fetch('http://localhost:3000/gpm/groupe')
+    .then((res) => {
+      if (res.status >= 400) {
+        throw res.json()
+      } else {
+        return res.json()
+      }
+    })
+  },
+  groupeContent(groupe) {
     return fetch('http://localhost:3000/gpm/groupe/' + encodeURIComponent(groupe))
     .then((res) => {
       if (res.status >= 400) {

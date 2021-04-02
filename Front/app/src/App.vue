@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="m-auto h-100">
-    <router-view name="MainNav"/>
+    <router-view name="MainNav" class="zind10 dessus"/>
     <router-view/>
   </div>
 </template>
@@ -17,5 +17,8 @@ $image-path: '~@/../mdb/mdbvue/img'; // image path variable update
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.dessus {
+  position: relative;
 }
 </style>

@@ -1,20 +1,20 @@
 <template>
-  <div class="p-3 w-100">
-    <TitleDoc
-    :color="'gpm-lecture'">
+    <TitleDoc :color="'gpm-default'">
+    <template #title>
       <h2 class="h4 m-1">
         Modifez votre profil
       </h2>
+    </template>
+
+      <template>
+        <main-form
+        :submitButton="'Confirmer'"
+        :key="this.formComponent"
+        class="w-100 px-4 gpm-lecture">
+          <component :is='this.formComponent'></component>
+        </main-form>
+      </template>
     </TitleDoc>
-    <AnimSlideDrop>
-      <main-form
-      :submitButton="'Confirmer'"
-      :key="this.formComponent"
-      class="w-100 px-4 gpm-lecture">
-        <component :is='this.formComponent'></component>
-      </main-form>
-    </AnimSlideDrop>
-  </div>
 </template>
 
 <script>
@@ -48,10 +48,18 @@ export default {
       return str.substring(str.lastIndexOf('/')+1)
     }
   },
-  mounted() {
-    if (this.formComponent === 'modification') {
-      this.$router.push('/home/profil')
+  methods: {
+    dontBeThere() {
+      if (this.formComponent == 'modification') {
+        this.$router.push('/home/profil')
+      }
     }
+  },
+  created() {
+    this.dontBeThere()
+  },
+  updated() {
+    this.dontBeThere()
   }
 }
 </script>

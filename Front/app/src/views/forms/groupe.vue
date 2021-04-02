@@ -10,8 +10,6 @@
       invalidFeedback="Non rempli"/>
     </div>
 
-    <SelectDepts/>
-
     <hr class="my-4 mb-3 gpm-base w-100">
     <mdb-input
       class="d-flex input-group gpm-mist" 
@@ -31,14 +29,12 @@
 <script>
 import mdbInput from 'mdbvue/lib/components/mdbInput';
 
-import SelectDepts from '@/components/SelectDepts';
 import Wrap from '@/components/Wrap';
 
 export default {
-  name: 'infos',
+  name: 'group',
   components: {
     mdbInput,
-    SelectDepts,
     Wrap
   },
   computed: {
@@ -50,8 +46,8 @@ export default {
       return profil
     }
   },
-  async created() {
-    await this.$store.dispatch('chooseSubmit', { backFct: 'putInfos', submitPath: '/home/profil' });
+  mounted() {
+    this.$store.dispatch('chooseSubmit', { backFct: 'putInfos', submitPath: '/home/profil' });
   }
 }
 </script>

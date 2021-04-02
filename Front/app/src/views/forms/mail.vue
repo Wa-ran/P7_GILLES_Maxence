@@ -45,8 +45,8 @@ export default {
     mdbInput,
     Wrap
   },
-  mounted() {
-    this.$store.dispatch('chooseSubmit', { backFct: 'putEmail', submitPath: '/home/profil' });
+  async created() {
+    await this.$store.dispatch('chooseSubmit', { backFct: 'putEmail', submitPath: '/home/profil' });
   },
   mixins: [ inputConf ]
 }
