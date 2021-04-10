@@ -1,8 +1,9 @@
 const groupomania = require('./groupomania');
-const { encrypt, decrypt } = require('../middlewares/crypto');
-const bcrypt = require('bcrypt');
 
-exports.listDepts = async () => {
+const { encrypt, decrypt } = require('../middlewares/crypto');
+
+
+exports.getDeptsList = async () => {
   let dept = [];
 
   await groupomania.connect
@@ -20,10 +21,10 @@ exports.listDepts = async () => {
     throw {custMsg : 'Problème lors de la récupération des départements.'}
   })
   return dept
-}
+};
 
 exports.checkDept = async (departement) => {
-  await this.listDepts()
+  await this.getDeptsList()
   .then((depts) => { // Check de l'input departement
     let match = false;
     depts.forEach((dept) => {
@@ -38,107 +39,7 @@ exports.checkDept = async (departement) => {
   })
 };
 
-exports.selectProfil = async (req) => {
-  let profil;
-
-  await groupomania.connect
-  .then(function () {
-    return session.sql('CALL log_in(\''+ req.email +'\');')
-    .execute(res => { return profil = res[0] })
-    .catch((error) => {
-      if (error.info.code === 9999) {
-        throw {custMsg: error.info.msg}
-      } else {
-        console.log(error);
-        throw {custMsg: 'Problème lors de la procédure...'}
-      }
-    })
-  })
-  .then(() => {
-    if (!bcrypt.compareSync(req.verifPass, profil.password)) {
-      throw {custMsg : 'Mot de passe incorrect >:('}
-    }
-  })
-  return profil
-};
-
-exports.createUser = async (req) => {
-  await groupomania.connect
-  .then(() => { 
-    this.checkDept(req.departement)
-  })
-  .then(() => { // Enregistrement de l'utilisateur, check mail existant dans procédure
-    return session.sql('CALL sign_up(\''+ req.nom +'\', \''+ req.prenom +'\', \''+ req.email +'\', \''+ req.password +'\', \''+ req.departement +'\');')
-    .execute() // pas de renvoi sauf erreurs
-    .catch((error) => {
-      if (error.info.code === 9999) {
-        throw {custMsg: error.info.msg}
-      } else {
-        console.log(error);
-        throw {custMsg: 'Problème lors de la procédure...'}
-      }
-    })
-  })
-};
-
-exports.modifUserInfos = async (req) => {
-  let profil;
-
-  await this.checkDept(req.departement)
-  .then(async () => {
-    await this.selectProfil(req)
-  })
-  .then(() => { // Enregistrement des modifications
-    return session.sql('CALL modif_user_infos(\''+ req.nom +'\', \''+ req.prenom +'\', \''+ req.email +'\', \''+ req.departement +'\');')
-    .execute(res => { return profil = res[0] })
-    .catch((error) => {
-      if (error.info.code === 9999) {
-        throw {custMsg: error.info.msg}
-      } else {
-        console.log(error);
-        throw {custMsg: 'Problème lors de la procédure...'}
-      }
-    })
-  })
-  return profil
-}
-
-exports.modifUserEmail = async (req) => {
-  let profil;
-
-  await this.selectProfil(req)
-  .then(() => { // Enregistrement du mail
-    return session.sql('CALL modif_user_email(\''+ req.newEmail +'\', \''+ req.email +'\');')
-    .execute(res => { return profil = res[0] })
-    .catch((error) => {
-      if (error.info.code === 9999) {
-        throw {custMsg: error.info.msg}
-      } else {
-        console.log(error);
-        throw {custMsg: 'Problème lors de la procédure...'}
-      }
-    })
-  })
-  return profil
-}
-
-exports.modifUserPass = async (req) => {
-  await this.selectProfil(req)
-  .then(() => { // Enregistrement du mot de passe
-    return session.sql('CALL modif_user_pass(\''+ req.newPassword +'\', \''+ req.email +'\');')
-    .execute() // Pas de renvoi sauf erreurs
-    .catch((error) => {
-      if (error.info.code === 9999) {
-        throw {custMsg: error.info.msg}
-      } else {
-        console.log(error);
-        throw {custMsg: 'Problème lors de la procédure...'}
-      }
-    })
-  })
-};
-
-exports.lastAnnonce = async () => {
+exports.getLastAnnonce = async () => {
   let annonce = {};
   await groupomania.connect
   .then(function () {
@@ -154,7 +55,7 @@ exports.lastAnnonce = async () => {
     })
   })
   return annonce;
-}
+};
 
 exports.getGroupeList = async () => {
   let groupeList = [];
@@ -173,17 +74,18 @@ exports.getGroupeList = async () => {
     throw {custMsg : 'Problème lors de la récupération des groupes.'}
   })
   return groupeList;
-}
+};
 
 exports.getGroupeContent = async (groupeName) => {
-  let groupe = {};
   let content = [];
   await groupomania.connect
   .then(function () {
     return session.sql('CALL groupe_content(\'' + groupeName + '\')')
     .execute(
       function (row) {
-        content.push(row[0]);
+        row.forEach(part => {
+          content.push(part)
+        })
       }
     )
     .catch((error) => {
@@ -191,10 +93,42 @@ exports.getGroupeContent = async (groupeName) => {
         throw {custMsg: error.info.msg}
       } else {
         console.log(error);
-        throw {custMsg: 'Le groupe: ' + groupeName + ' n\'existe pas.'}
+        throw {custMsg: 'Erreur lors de la récupération du contenu de ' + groupeName + '.'}
       }
     })
   })
-  groupe[groupeName] = content;
-  return groupe;
-}
+  return content;
+};
+
+exports.postGroupe = async (req) => {
+  await groupomania.connect
+  .then(() => {
+    return session.sql('CALL create_groupe(\''+ req.groupe +'\', \''+ req.description +'\', \''+ req.email +'\');')
+    .execute() // pas de renvoi sauf erreurs
+    .catch((error) => {
+      if (error.info.code === 9999) {
+        throw {custMsg: error.info.msg}
+      } else {
+        console.log(error);
+        throw {custMsg: 'Problème lors de la procédure...'}
+      }
+    })
+  })
+};
+
+exports.postParticipation = async (req) => {
+  await groupomania.connect
+  .then(() => {
+    console.log(req)
+    return session.sql('CALL create_participation(\''+ req.groupe +'\', \''+ req.email +'\', \''+ req.titre +'\', \''+ req.preview +'\', \''+ req.article +'\');')
+    .execute() // pas de renvoi sauf erreurs
+    .catch((error) => {
+      if (error.info.code === 9999) {
+        throw {custMsg: error.info.msg}
+      } else {
+        console.log(error);
+        throw {custMsg: 'Problème lors de la procédure...'}
+      }
+    })
+  })
+};

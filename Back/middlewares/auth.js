@@ -1,18 +1,23 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-  try {
-    const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-    const userId = decodedToken.userId;
-    if (req.body.userId && req.body.userId !== userId) {
-      throw 'Identifiant utilsateur invalide';
-    } else {
-      next();
+  const token = req.headers.authorization;
+  jwt.verify(token, 'RANDOM_TOKEN_SECRET', function(err, decoded) {
+    try {
+      if (err) {
+        throw {custMsg: 'Identifiant utilisateur invalide'}
+      };
+      const tokenEmail = decoded.tokenId;
+      if (req.body.email && req.body.email !== tokenEmail) {
+        throw {custMsg: 'Identifiant utilisateur non reconnu'}
+      } else {
+        req.body.email = tokenEmail;
+        next();
+      }
+    } catch (error) {
+      console.log(error);
+      let msg = error.custMsg ? error.custMsg : "Veuillez vous reconnecter.";
+      res.status(500).send({msg , err: "Erreur lors de la connexion."});
     }
-  } catch {
-    res.status(401).json({
-      error: new Error('Requête invalide')
-    });
-  }
+  });
 };

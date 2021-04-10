@@ -1,6 +1,6 @@
 <template>
-  <div class="w-100 h-100 p-3">
-    <router-view></router-view>
+  <div class="p-3">
+    <router-view class="w-100"></router-view>
 
     <ArticlePreview
     v-if="this.$route.path == '/home'"
@@ -9,7 +9,7 @@
       <template #title>
         <h2 class="h5">{{ lastAnnonce.titre }}</h2>
       </template>
-      <template #preview>{{ lastAnnonce.preview }}</template>
+      <template #text>{{ lastAnnonce.preview }}</template>
       <template #infos>
         <div class="d-flex flex-wrap w-75">
           <mdb-badge class="mt-2 mr-2 gpm-base z-depth-0">{{ 0 }} com.</mdb-badge>
@@ -37,7 +37,10 @@ export default {
     }
   },
   async created() {
-    await this.$store.dispatch('GPMRequest', { backFct: 'lastAnnonce' });
+    if (this.$route.path == '/home') {
+      await this.$store.dispatch('GPMRequest', { backFct: 'getLastAnnonce' })
+      .catch(error => console.log(error));
+    }
   },
 }
 </script>

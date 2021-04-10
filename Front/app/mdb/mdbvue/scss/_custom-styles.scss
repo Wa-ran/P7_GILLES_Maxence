@@ -166,6 +166,24 @@ select {
   }
 }
 
+div .textarea {
+  background-color: $white !important;
+  &:focus-within {
+    background-color: $gpm-attention !important;
+  }
+  & textarea {
+    border-radius: 5px !important;
+    border: solid 1px $gpm-grey !important;
+    box-shadow: inset 0 0 15px 20px $gpm-lecture !important;
+    &:focus {
+      border: solid 2px $gpm-warning !important;
+    }
+    &+ label {
+      left: 1rem !important;
+    }
+  }
+}
+
 .transparent {
   background-color: transparent !important;
 }

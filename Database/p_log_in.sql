@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `log_in`(p_email VARCHAR(256))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `log_in`(p_email VARCHAR(100))
 BEGIN
 	DECLARE check_email INT;
     
@@ -10,12 +10,10 @@ BEGIN
 		MESSAGE_TEXT = 'Cet email n\'est pas enregistré. Veuillez utiliser le mail avec lequel vous vous êtes inscrit.';
 	END;
     
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION, SQLWARNING
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION, SQLWARNING
 	BEGIN
 		ROLLBACK;
-		SIGNAL SQLSTATE VALUE '03999'
-		SET	MYSQL_ERRNO = 9999,
-			MESSAGE_TEXT = 'Une erreur est survenue, la connection à échouée.';
+		RESIGNAL;
 	END;
     
     START TRANSACTION READ ONLY;

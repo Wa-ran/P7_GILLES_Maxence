@@ -1,7 +1,8 @@
 <template>
-  <div id="app" class="m-auto h-100">
+  <div id="app" class="w-100 d-flex flex-column position-absolute page">
     <router-view name="MainNav" class="zind10 dessus"/>
-    <router-view/>
+    <router-view class="w-100 h-100 flex-grow-1"/>
+    <router-view name="Footer" class="w-100"/>
   </div>
 </template>
 
@@ -20,5 +21,9 @@ $image-path: '~@/../mdb/mdbvue/img'; // image path variable update
 }
 .dessus {
   position: relative;
+}
+.page {
+  min-height: 100%;
+  max-height: 100%;
 }
 </style>

@@ -1,14 +1,11 @@
 CREATE DEFINER=`root`@`localhost` PROCEDURE `last_annonce`()
 BEGIN
 	DECLARE last_annonce INT;
-	DECLARE com_number INT;
-
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION, SQLWARNING
+    
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION, SQLWARNING
 	BEGIN
 		ROLLBACK;
-		SIGNAL SQLSTATE VALUE '03999'
-		SET	MYSQL_ERRNO = 9999,
-			MESSAGE_TEXT = 'Une erreur est survenue, les données n\'ont pas été récupérées.';
+		RESIGNAL;
 	END;
     
     START TRANSACTION READ ONLY;
@@ -16,16 +13,11 @@ BEGIN
 		SELECT id
         INTO last_annonce
         FROM participation
-        WHERE groupe_nom = 'Annonce Groupomania'
+        WHERE groupe_nom = '3b265bff7bd75e95dc0d84a9d8d6274b565ab1'
         AND importance = (SELECT MAX(importance) FROM participation
 							WHERE date_creation = (SELECT MAX(date_creation) FROM participation));
-		
-        SELECT COUNT(*)
-        INTO com_number
-        FROM commentaire
-        WHERE participation_id = last_annonce;
 
-		SELECT JSON_OBJECT('id', id, 'titre', titre, 'preview', preview, 'article', article, 'date_creation', date_creation, 'groupe_nom', groupe_nom, 'importance', importance, 'createur', createur, 'com_number', com_number)
+		SELECT JSON_OBJECT('id', id, 'titre', titre, 'preview', preview, 'article', article, 'date_creation', date_creation, 'groupe_nom', groupe_nom, 'importance', importance, 'createur', createur)
 		FROM participation
 		WHERE id = last_annonce;
     

@@ -19,6 +19,7 @@ export default new Vuex.Store({
     },
     profil: {},
     token: null,
+    headers: {},
     depts: [],
     lastAnnonce: {},
     groupeList: [],
@@ -33,23 +34,27 @@ export default new Vuex.Store({
       state.profil = {};
       for (const [key, value] of Object.entries(payload)) {
         if (key.match(/(token)/)) {
-          state.token = value
+          state.token = value;
+          state.headers = {
+          'Authorization': state.token,
+          'Content-Type': 'application/json'
+          }
         } else {
           state.profil[key] = value
         }
       }
     },
-    deptsList(state, payload) {
+    getDeptsList(state, payload) {
       state.depts = payload
     },
-    lastAnnonce(state, payload) {
+    getLastAnnonce(state, payload) {
       state.lastAnnonce = payload
     },
-    groupeList(state, payload) {
+    getGroupeList(state, payload) {
       state.groupeList = payload
     },
-    groupeContent(state, payload) {
-      state.groupe = payload
+    getGroupeContent(state, payload) {
+      state.groupe[Object.keys(payload)[0]] = Object.values(payload)[0]
     }
   },
   actions: {
@@ -58,7 +63,7 @@ export default new Vuex.Store({
     },
     sendForm(context, req) {
       return Back[req.backFct](req.data)
-      .then(res => context.commit('setProfil', res))
+      .then(res => context.commit('setProfil', res)) // Pas de res pour la création de groupes/participations/commentaires
     },
     GPMRequest(context, req) {
       return Back[req.backFct](req.data ? req.data : null)

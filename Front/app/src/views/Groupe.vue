@@ -1,63 +1,133 @@
 <template>
-  <TitleDoc :color="'gpm-default'">
+  <div class="h-100">
+    <TitleDoc :color="'gpm-default'" :key="groupeName">
 
-    <template #title>
-      <h2 class="h4 m-1">
-        Groupe
-      </h2>
-    </template>
+      <template #title>
+        <h2 class="h4 m-1">
+          {{ groupeName ? groupeName : 'Groupes' }}
+        </h2>
+      </template>
 
-    <template>
-      <wrap withComp="AnimBlockSlide" class="w-100">
-
-        <div v-if="this.$route.path == '/home/groupe'" class="w-100">
-          <GroupePreview
-          v-for="groupe of groupeList" :key="groupe.nom"
-          class="w-100 gpm-lecture"
-          :btnColor="'gpm-attention gpm-warning-active'"
-          :hr="'m-0 gpm-grey w-100'">
-
-            <template #name>
-              <h3 class="mx-auto mb-2 pb-0 h4">
-                <router-link :to="'/home/groupe/' + groupe.nom">
-                  {{ groupe.nom }}
-                </router-link>
-              </h3>
-            </template>
-
-            <template #description>
-              <div class="mt-2">
-                {{ groupe.description }}
-              </div>
-            </template>
-          </GroupePreview>
+      <template>
+        <div v-show="!isCreation" class="w-100">
+          <wrap withComp="AnimBlockSlide" class="w-100 mt-n3">
+            <ArticlePreview
+            v-for="(item, index) of contentList" :key="index"
+            class="w-100 mt-3 gpm-lecture"
+            :btnColor="'gpm-attention gpm-warning-active'"
+            :isGroupe="isGroupes">
+              <template #title>
+                <h3 class="mx-auto mb-2 pb-0"
+                :class="isGroupes ? 'h4' : 'h5'">
+                  <router-link :to="'/home/groupes/' + item.title">
+                    {{ item.title }}
+                  </router-link>
+                </h3>
+              </template>
+              <template #text>
+                <div class="mt-2">
+                  {{ item.text }}
+                </div>
+              </template>
+            </ArticlePreview>
+          </wrap>
         </div>
 
-      </wrap>
-    </template>
-  </TitleDoc>
+        <div v-if="isCreation" class="w-100">
+          <main-form
+          :submitButton="'Confirmer'"
+          class="w-100 gpm-lecture">
+            <component :is='this.formComponent'></component>
+          </main-form>
+        </div>
+      </template>
+    </TitleDoc>
+    <ButtonDoc
+    v-show="!isCreation"
+    @action="$router.push(pathToForm)"
+    :text="isGroupes ? 'Créer un nouveau groupe' : 'Nouvelle participation'"
+    class="mx-auto my-3 gpm-attention gpm-warning-active gpm-shadow-focus"/>
+  </div>
 </template>
 
 <script>
-import GroupePreview from '@/components/GroupePreview';
+import ButtonDoc from "@/components/ButtonDoc.vue"
+import ArticlePreview from '@/components/ArticlePreview';
+import MainForm from '@/components/MainForm';
 import TitleDoc from '@/components/TitleDoc';
 import Wrap from '@/components/Wrap';
+
+const groupe = () => ({
+  component: import('@/views/forms/groupe')
+});
+const participation = () => ({
+  component: import('@/views/forms/participation')
+});
 
 export default {
   name: 'Groupe',
   components: {
-    GroupePreview,
+    ButtonDoc,
+    ArticlePreview,
+    MainForm,
     TitleDoc,
-    Wrap
+    Wrap,
+    groupe,
+    participation
   },
+  props: ['groupeName'],
   computed: {
-    groupeList() {
-      return this.$store.state.groupeList
+    isGroupes() {
+      return this.$route.name == 'groupes' ? true : false
+    },
+    isCreation() {
+      return this.$route.name.match(/(creation)/) ? true : false
+    },
+    formComponent() {
+      return this.groupeName ? participation : groupe
+    },
+    pathToForm() {
+      return this.$route.path + '/creation'
+    },
+    contentList() {
+      let data = this.groupeName ?
+      this.$store.state.groupe[this.groupeName] :
+      this.$store.state.groupeList;
+
+      let list = [];
+
+      for (const item in data) {
+        let obj = {};
+        for (const [key, value] of Object.entries(data[item])) {
+          if (key.match(/(nom)/) || key.match(/(titre)/)) {
+            obj['title'] = value
+          }
+          else if (key.match(/(description)/) || key.match(/(preview)/)) {
+            obj['text'] = value
+          }
+          else {
+            obj[key] = value
+          }
+        }
+        list.push(obj)
+      }
+      return list
+    }
+  },
+  methods: {
+    async dispatch() {
+      if (this.$route.name == 'groupeName') {
+        await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeContent', data: this.groupeName })
+        .catch(error => console.log(error));      
+      }
+      else {
+        await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeList' })
+        .catch(error => console.log(error));    
+      }
     }
   },
   async created() {
-    await this.$store.dispatch('GPMRequest', { backFct: 'groupeList' })
-    .catch(error => console.log(error));
-  },
+    await this.dispatch()
+  }
 }
 </script>

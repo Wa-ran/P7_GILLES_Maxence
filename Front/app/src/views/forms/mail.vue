@@ -46,7 +46,7 @@ export default {
     Wrap
   },
   async created() {
-    await this.$store.dispatch('chooseSubmit', { backFct: 'putEmail', submitPath: '/home/profil' });
+    await this.$store.dispatch('chooseSubmit', { backFct: 'putEmail', submitPath: '/' });
   },
   mixins: [ inputConf ]
 }

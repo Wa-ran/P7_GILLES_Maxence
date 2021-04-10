@@ -1,28 +1,18 @@
 <template>
-  <wrap withComp="AnimBlockSlide">
-    <div v-for="(item, index) in profil" :key="index"
-    class="w-100">
-      <mdb-input
-      class="d-flex input-group gpm-mist" 
-      :id=index :name=index :label=index :value=item
-      icon="user" type="text" 
-      validate required autofocus lazy
-      invalidFeedback="Non rempli"/>
-    </div>
-
-    <hr class="my-4 mb-3 gpm-base w-100">
+  <wrap withComp="AnimBlockSlide" class="w-100 mb-n3">
     <mdb-input
       class="d-flex input-group gpm-mist" 
-      id="email" label="Email" name="email" :value='this.$store.state.profil.email'
-      icon="envelope" type="email" 
+      id="groupe" label="Nom du groupe" name="groupe"
+      v-model="groupeName"
+      type="text" maxlength="50"
       validate required autofocus lazy
       invalidFeedback="Non rempli"/>
     <mdb-input
-      class="d-flex input-group gpm-mist" 
-      id="password" name="password" label="Mot de Passe"
-      icon="lock-open" type="password" 
-      validate required lazy
-      invalidFeedback="Non rempli"/>
+      class="d-flex flex-column input-group textarea" 
+      id="description" name="description" label="Une petite description ?"
+      value="Pas de description." @focus="$event.target.select()"
+      type="textarea"
+      validate required lazy/>
   </wrap>
 </template>
 
@@ -32,22 +22,35 @@ import mdbInput from 'mdbvue/lib/components/mdbInput';
 import Wrap from '@/components/Wrap';
 
 export default {
-  name: 'group',
+  name: 'groupe',
   components: {
     mdbInput,
     Wrap
   },
-  computed: {
-    profil() {
-      let profil = {...this.$store.state.profil};
-      delete profil.departement;
-      delete profil.email;
-      delete profil.password;
-      return profil
+  data() {
+    return {
+      groupeName: ''
     }
   },
-  mounted() {
-    this.$store.dispatch('chooseSubmit', { backFct: 'putInfos', submitPath: '/home/profil' });
+  watch : {
+    groupeName() {
+      this.$store.dispatch('chooseSubmit', { backFct: 'postGroupe', submitPath: '/home/groupe/' + this.groupename });    
+    }
   }
 }
 </script>
+
+<style lang="scss">
+.md-form .prefix ~ textarea {
+  width: 100% !important;
+}
+.md-form textarea.md-textarea {
+  height: 0;
+  border-radius: 5px !important;
+  &:focus {
+    height: auto;
+    border: solid 2px #D4848A !important;
+    box-shadow: none !important;
+  }
+}
+</style>

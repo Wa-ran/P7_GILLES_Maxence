@@ -1,5 +1,5 @@
 <template>
-  <mdb-container class="container-fluid p-0 mb-n4" fluid>
+  <mdb-container class="container-fluid p-0 mb-n3" fluid>
     <mdb-navbar class="gpm-base navbar-3 z-depth-2 zind3" animated animation="2">
       <MainBrand class="my-2"/>
       <mdb-navbar-toggler class="m-auto">
@@ -83,7 +83,7 @@ export default {
       pages: [
         { path: "/home", name: "Accueil" },
         { path: "/home/news", name: "Nouveautés" },
-        { path: "/home/groupe", name: "Groupes" },
+        { path: "/home/groupes", name: "Groupes" },
       ]
     }
   },

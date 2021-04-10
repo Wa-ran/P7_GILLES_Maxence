@@ -93,6 +93,12 @@ export default {
       }
     },
     sendForm(data) {
+      if (!data.email) {
+        data['email'] = this.$store.state.profil.email
+      }
+      if (this.$route.params.groupeName) {
+        data['groupe'] = this.$route.params.groupeName
+      }
       this.$store.dispatch('sendForm', { backFct: this.backFct, data: data })
       .then(() => this.$router.push(this.submitPath))
       .catch((error) => {

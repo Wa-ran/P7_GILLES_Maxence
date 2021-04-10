@@ -33,7 +33,7 @@ export default {
     }
   },
   async created() {
-    await this.$store.dispatch('GPMRequest', { backFct: 'deptsList' });    
+    await this.$store.dispatch('GPMRequest', { backFct: 'getDeptsList' });    
   },
   mounted() {
     if (this.$store.state.profil.departement) {

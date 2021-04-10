@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Accueil from '@/views/Accueil.vue'
 import Home from '@/views/Home.vue'
 import MainNav from '@/components/MainNav.vue'
+import Footer from '@/views/Footer.vue'
 
 Vue.use(VueRouter)
 
@@ -22,7 +23,8 @@ const routes = [
     name: 'home',
     components: {
       default: Home,
-      MainNav
+      MainNav,
+      Footer
     },
     children: [
       {
@@ -35,37 +37,38 @@ const routes = [
         path: 'profil/modification',
         component: () => import('../views/ProfilModif.vue'),
         children: [
-          {path: 'infos', name: 'infos'},
-          {path: 'mail', name: 'mail'},
-          {path: 'pass', name: 'pass'}
+          { path: 'infos', name: 'infos' },
+          { path: 'mail', name: 'mail' },
+          { path: 'pass', name: 'pass' }
         ]
       },
     
       {
-        path: 'groupe',
-        name: 'groupe',
+        path: 'groupes',
+        name: 'groupes',
         component: () => import('../views/Groupe.vue'),
+        props: true,
         children: [
-          {
-            path: 'creation',
-            name: 'groupeCreation',
-            component: () => import('../views/GroupeCreation.vue')
-          },
+          { path: 'creation', name: 'creationGroupe' },
+          { 
+            path: ':groupeName',
+            name: 'groupeName',
+            children: [
+              { path: 'creation', name: 'creationParticipation' },
+            ]
+          }
         ]
-      },
-
-      {
-        path: 'groupe/:groupeName',
-        name: 'groupeName',
-        component: () => import('../views/GroupeName.vue'),
-        props: true
-      },
+      }
     ]
   },
 
   {
     path: '/test',
     component: () => import('../views/test.vue')
+  },
+  {
+    path: '/test2',
+    component: () => import('../views/test2.vue')
   },
 ]
 

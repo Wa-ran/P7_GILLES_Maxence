@@ -1,15 +1,12 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `modif_user_infos`(p_nom VARCHAR(256), p_prenom VARCHAR(256), p_email VARCHAR(256), p_departement VARCHAR(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modif_user_infos`(p_nom VARCHAR(100), p_prenom VARCHAR(100), p_email VARCHAR(100), p_departement VARCHAR(50))
 BEGIN
-#Le mail et le mot de passe doivent être vérifiés avant.
     
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION, SQLWARNING
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION, SQLWARNING
 	BEGIN
 		ROLLBACK;
-		SIGNAL SQLSTATE VALUE '03999'
-		SET	MYSQL_ERRNO = 9999,
-			MESSAGE_TEXT = 'Une erreur est survenue, l\' enregistrement à échoué.';
+		RESIGNAL;
 	END;
-    
+
     START TRANSACTION READ WRITE;
 
 		UPDATE utilisateur

@@ -1,3 +1,5 @@
+import store from '../../store/index';
+
 export default {
   postSignup(data) {
     return fetch('http://localhost:3000/user/signup', {
@@ -23,14 +25,14 @@ export default {
       if (res.status >= 400) {
         throw res.json()
       } else {
-        return res.json()
+        return res.json();
       }
     })
   },
   putInfos(data) {
     return fetch('http://localhost:3000/user/putInfos', {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: store.state.headers,
       body: JSON.stringify(data)
     })
     .then((res) => {
@@ -44,7 +46,7 @@ export default {
   putEmail(data) {
     return fetch('http://localhost:3000/user/putEmail', {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: store.state.headers,
       body: JSON.stringify(data)
     })
     .then((res) => {
@@ -58,7 +60,7 @@ export default {
   putPass(data) {
     return fetch('http://localhost:3000/user/putPass', {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: store.state.headers,
       body: JSON.stringify(data)
     })
     .then((res) => {
@@ -69,7 +71,7 @@ export default {
       }
     })
   },
-  deptsList() {
+  getDeptsList() {
     return fetch('http://localhost:3000/gpm/depts')
     .then((res) => {
       if (res.status >= 400) {
@@ -79,8 +81,8 @@ export default {
       }
     })
   },
-  lastAnnonce() {
-    return fetch('http://localhost:3000/gpm/lastAnnonce')
+  getLastAnnonce() {
+    return fetch('http://localhost:3000/gpm/lastAnnonce', { headers : store.state.headers })
     .then((res) => {
       if (res.status >= 400) {
         throw res.json()
@@ -89,8 +91,11 @@ export default {
       }
     })
   },
-  groupeList() {
-    return fetch('http://localhost:3000/gpm/groupe')
+  getGroupeList() {
+    return fetch('http://localhost:3000/gpm/groupe', {
+      method: "GET",
+      headers: store.state.headers
+    })
     .then((res) => {
       if (res.status >= 400) {
         throw res.json()
@@ -99,8 +104,44 @@ export default {
       }
     })
   },
-  groupeContent(groupe) {
-    return fetch('http://localhost:3000/gpm/groupe/' + encodeURIComponent(groupe))
+  getGroupeContent(groupe) {
+    return fetch('http://localhost:3000/gpm/groupe/' + encodeURIComponent(groupe), {
+      method: "GET",
+      headers: store.state.headers
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw res.json()
+      } else {
+        return res.json()
+      }
+    })
+    .then((res) => {
+      let list = {};
+      list[groupe] = res;
+      return list
+    })
+  },
+  postGroupe(data) {
+    return fetch('http://localhost:3000/gpm/groupe/create', {
+      method: "POST",
+      headers: store.state.headers,
+      body: JSON.stringify(data)
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw res.json()
+      } else {
+        return res.json()
+      }
+    })
+  },
+  postParticipation(data) {
+    return fetch('http://localhost:3000/gpm/participation/create', {
+      method: "POST",
+      headers: store.state.headers,
+      body: JSON.stringify(data)
+    })
     .then((res) => {
       if (res.status >= 400) {
         throw res.json()

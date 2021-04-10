@@ -16,7 +16,7 @@
     </div>
 
     <AnimSlideDrop>
-      <mdb-card class="w-100 pt-4 p-3"
+      <mdb-card class="w-100 p-3"
       :class="color">
 
         <slot></slot>
@@ -49,7 +49,7 @@ export default {
 <style lang="scss" scoped>
 .viewActive {
   z-index: 1;
-  box-shadow: 0 0px 4px 2px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.12) !important;
   position: relative;
   overflow: visible;
 }

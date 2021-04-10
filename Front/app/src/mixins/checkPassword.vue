@@ -21,10 +21,11 @@ export default {
         return ''
       }
     },
-    checkPassword(input) {
-      const custError = this.setError(input.value);
-      input.setCustomValidity(custError);
-      var nextSibling = input.nextSibling;
+    checkPassword(event) {
+      let pass = event.target;
+      const custError = this.setError(pass.value);
+      pass.setCustomValidity(custError);
+      var nextSibling = pass.nextSibling;
       while (nextSibling) {
         if (
           nextSibling.nodeType == Node.ELEMENT_NODE
@@ -35,15 +36,19 @@ export default {
         }
         nextSibling = nextSibling.nextSibling;
       }
-    },
-    mounted() {
+    }
+  },
+  mounted() {
+    window.onload = () => { // Attendre le chargement complet car le Mainform est construit avant le formulaire
       document.querySelectorAll("[type='password']").forEach(pass => {
-        addEventListener('change', this.checkPassword(pass))
-      })
-    },
-    beforeDestroy() {
-      document.removeEventListener('change', this.checkPassword)
-    },
+        pass.addEventListener('change', this.checkPassword)
+      })      
+    }
+  },
+  beforeDestroy() {
+    document.querySelectorAll("[type='password']").forEach(pass => {
+      pass.removeEventListener('change', this.checkPassword)
+    })
   }
 }
 </script>
