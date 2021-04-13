@@ -93,9 +93,8 @@ export default {
       }
     },
     sendForm(data) {
-      if (!data.email) {
-        data['email'] = this.$store.state.profil.email
-      }
+      data['id'] = this.$store.state.profil.id;
+
       if (this.$route.params.groupeName) {
         data['groupe'] = this.$route.params.groupeName
       }

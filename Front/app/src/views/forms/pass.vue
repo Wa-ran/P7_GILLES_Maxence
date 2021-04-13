@@ -2,18 +2,18 @@
   <wrap withComp="AnimBlockSlide">
     <mdb-input
       class="d-flex input-group gpm-mist" 
-      id="newPassword" name="newPassword" label="Nouveau mot de passe"
+      id="passwordNew" name="passwordNew" label="Nouveau mot de passe"
       icon="lock-open" type="password" 
       validate required lazy
       invalidFeedback="Non rempli"
       @change.native="inputConf($event, 'password', true)"/>
     <mdb-input
       class="d-flex input-group gpm-mist" 
-      id="newPasswordConf" name="newPasswordConf" label="Veuillez confirmer"
+      id="passwordNewConf" name="passwordNewConf" label="Veuillez confirmer"
       icon="lock-open" type="password" 
       validate required
       invalidFeedback="Non rempli"
-      @change.native="inputConf($event, 'newPassword')"/>
+      @change.native="inputConf($event, 'passwordNew')"/>
 
     <hr class="my-4 mb-3 gpm-base w-100">
     <mdb-input
@@ -28,7 +28,7 @@
       icon="lock" type="password" 
       validate required lazy
       invalidFeedback="Non rempli"
-      @change.native="inputConf($event, 'newPassword', true)"/>
+      @change.native="inputConf($event, 'passwordNew', true)"/>
   </wrap>
 </template>
 

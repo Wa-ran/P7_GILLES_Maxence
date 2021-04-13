@@ -6,8 +6,8 @@ const userCtrl = require('../controllers/user');
 
 router.post('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
-router.put('/putInfos', auth, userCtrl.modifUserInfos);
-router.put('/putEmail', auth, userCtrl.modifUserEmail);
-router.put('/putPass', auth, userCtrl.modifUserPass);
+router.put('/putInfos', auth, userCtrl.putInfos);
+router.put('/putEmail', auth, userCtrl.putEmail);
+router.put('/putPass', auth, userCtrl.putPass);
 
 module.exports = router;

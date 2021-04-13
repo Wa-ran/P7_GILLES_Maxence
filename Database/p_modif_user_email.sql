@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `modif_user_email`(p_email VARCHAR(100), p_email_origin VARCHAR(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modif_user_email`(p_email VARCHAR(100), p_id INT)
 BEGIN
     
     DECLARE EXIT HANDLER FOR 1062
@@ -19,7 +19,7 @@ BEGIN
 
 		UPDATE utilisateur
 		SET email = p_email
-		WHERE email = p_email_origin;
+		WHERE id = p_id;
     
     COMMIT;
 END

@@ -1,5 +1,5 @@
 const gpm = require('../middlewares/gpm');
-const { cryptGPM, decryptGPM } = require('../middlewares/sanitizer')
+const { cryptData, decryptData } = require('../middlewares/sanitizer');
 
 exports.getDeptsList = (req, res, next) => {
   gpm.getDeptsList()
@@ -15,7 +15,7 @@ exports.getDeptsList = (req, res, next) => {
 exports.getLastAnnonce = (req, res, next) => {
   gpm.getLastAnnonce()
   .then(async (annonce) => {
-    let decrypt = await decryptGPM(annonce);
+    let decrypt = await decryptData(annonce);
     res.send(decrypt)
   })
   .catch((error) => {
@@ -26,13 +26,13 @@ exports.getLastAnnonce = (req, res, next) => {
 
 exports.getGroupeList = (req, res, next) => {
   gpm.getGroupeList()
-  .then(async (list) => {
-    let readable = [];
+  .then((list) => {
+    let content = [];
     list.forEach(async groupe => {
-      let decrypt = await decryptGPM(groupe);
-      readable.push(decrypt)
+      let decrypt = await decryptData(groupe);
+      content.push(decrypt)
     });
-    return readable
+    return content
   })
   .then((list) => {
     res.send(list)
@@ -43,20 +43,22 @@ exports.getGroupeList = (req, res, next) => {
   })
 };
 
-exports.getGroupeContent = async (req, res, next) => {
+// Groupes
+
+exports.getGroupeContent = (req, res, next) => {
   req.body.groupe = decodeURIComponent(req.params.groupe);
 
-  await cryptGPM(req.body)
+  cryptData(req.body)
   .then((sane) => {
     return gpm.getGroupeContent(sane.groupe)
   })
-  .then(async (groupe) => {
-    let readable = [];
-    groupe.forEach(async part => {
-      let decrypt = await decryptGPM(part);
-      readable.push(decrypt)
+  .then((groupe) => {
+    let content = [];
+    groupe.forEach(async participation => {
+      let decrypt = await decryptData(participation);
+      content.push(decrypt)
     });
-    return readable
+    return content
   })
   .then((list) => {
     res.send(list)
@@ -67,32 +69,149 @@ exports.getGroupeContent = async (req, res, next) => {
   })
 };
 
-exports.postGroupe = async (req, res, next) => {
-  await cryptGPM(req.body)
+exports.postGroupe = (req, res, next) => {
+  cryptData(req.body)
   .then((groupe) => {
-    gpm.postGroupe(groupe)
+    return gpm.postGroupe(groupe)
   })
   .then(() => {
-    res.status(201)
+    res.sendStatus(201)
   })
   .catch((error) => {
     console.log(error);
-    let msg = error.custMsg;
-    res.status(500).send({msg})
+    res.status(500).json(error.custMsg)
   })
 };
 
-exports.postParticipation = async (req, res, next) => {
-  await cryptGPM(req.body)
+exports.getGroupeMember = (req, res, next) => {
+  req.body.groupe = decodeURIComponent(req.params.groupe);
+
+  cryptData(req.body)
   .then((data) => {
-    gpm.postParticipation(data)
+    return gpm.getGroupeMember(data.groupe)
   })
-  .then(() => {
-    res.status(201)
+  .then((groupe) => {
+    let content = [];
+    groupe.forEach(async participation => {
+      let decrypt = await decryptData(participation);
+      content.push(decrypt)
+    });
+    return content
+  })
+  .then((list) => {
+    res.send(list)
   })
   .catch((error) => {
     console.log(error);
-    let msg = error.custMsg;
-    res.status(500).send({msg})
+    res.status(500).json(error.custMsg)
+  })
+};
+
+exports.putGroupeMember = (req, res, next) => {
+  req.body.groupe = decodeURIComponent(req.params.groupe);
+
+  cryptData(req.body)
+  .then((data) => {
+    return gpm.putGroupeMember(data.groupe)
+  })
+  .then(() => {
+    res.sendStatus(201)
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).json(error.custMsg)
+  })
+};
+
+// Participations
+
+exports.getParticipation = (req, res, next) => {
+  if (!req.params.participationId.isInteger()) {
+    throw { custMsg: 'Participation non trouvée.' }
+  }
+
+  gpm.getParticipation(req.body.participationId)
+  .then((participation) => {
+    let content = [];
+    participation.forEach(async comm => {
+      let decrypt = await decryptData(comm);
+      content.push(decrypt)
+    });
+    return content
+  })
+  .then((list) => {
+    res.send(list)
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).json(error.custMsg)
+  })
+};
+
+exports.postParticipation = (req, res, next) => {
+  cryptData(req.body)
+  .then((data) => {
+    return gpm.postParticipation(data)
+  })
+  .then(() => {
+    res.sendStatus(201)
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).json(error.custMsg)
+  })
+};
+
+exports.getParticipationMember = (req, res, next) => {
+  cryptData(req.body)
+  .then((data) => {
+    return gpm.getGroupeMember(data.groupe)
+  })
+  .then((groupe) => {
+    let content = [];
+    groupe.forEach(async participation => {
+      let decrypt = await decryptData(participation);
+      content.push(decrypt)
+    });
+    return content
+  })
+  .then((list) => {
+    res.send(list)
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).json(error.custMsg)
+  })
+};
+
+exports.putParticipationMember = (req, res, next) => {
+  cryptData(req.body)
+  .then((data) => {
+    return gpm.putGroupeMember(data.groupe)
+  })
+  .then(() => {
+    res.sendStatus(201)
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).json(error.custMsg)
+  })
+};
+
+exports.postCommentaire = (req, res, next) => {
+  if (!req.participationId.isInteger()) {
+    throw { custMsg: 'Participation non trouvée.' }
+  }
+
+  cryptData(req.body)
+  .then((data) => {
+    return gpm.postCommentaire(data)
+  })
+  .then(() => {
+    res.sendStatus(201)
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).json(error.custMsg)
   })
 };

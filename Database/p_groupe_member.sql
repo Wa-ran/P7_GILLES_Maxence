@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `groupe_content`(p_groupe_nom VARCHAR(200))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `groupe_member`(p_groupe_nom VARCHAR(200))
 BEGIN
 	DECLARE check_groupe INT;
     
@@ -30,9 +30,9 @@ BEGIN
 			END;
 		END IF;
 
-		SELECT JSON_OBJECT('id', id, 'titre', titre, 'preview', preview, 'date_creation', date_creation, 'importance', importance, 'createur', createur)
-		FROM participation
-		WHERE groupe_nom = p_groupe_nom;
+		SELECT JSON_OBJECT('user', utilisateur_id, 'admin', admin)
+		FROM utilisateur_groupe
+        WHERE groupe_nom = p_groupe_nom;
     
     COMMIT;
 END

@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `modif_user_infos`(p_nom VARCHAR(100), p_prenom VARCHAR(100), p_email VARCHAR(100), p_departement VARCHAR(50))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modif_user_infos`(p_nom VARCHAR(100), p_prenom VARCHAR(100), p_departement VARCHAR(50), p_id INT)
 BEGIN
     
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION, SQLWARNING
@@ -13,11 +13,11 @@ BEGIN
 		SET nom = p_nom,
 			prenom = p_prenom,
 			departement_nom = p_departement
-		WHERE email = p_email;
+		WHERE id = p_id;
 		
-		SELECT JSON_OBJECT('nom', nom, 'prenom', prenom, 'email', email, 'departement', departement_nom)
+		SELECT JSON_OBJECT('nom', nom, 'prenom', prenom, 'departement', departement_nom)
 		FROM utilisateur
-		WHERE email = p_email;
+		WHERE id = p_id;
     
     COMMIT;
 END

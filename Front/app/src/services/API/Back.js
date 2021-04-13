@@ -1,8 +1,8 @@
 import store from '../../store/index';
 
 export default {
-  postSignup(data) {
-    return fetch('http://localhost:3000/user/signup', {
+  async postSignup(data) {
+    return await fetch('http://localhost:3000/user/signup', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
@@ -10,8 +10,6 @@ export default {
     .then((res) => {
       if (res.status >= 400) {
         throw res.json()
-      } else {
-        return res.json()
       }
     })
   },
@@ -52,8 +50,6 @@ export default {
     .then((res) => {
       if (res.status >= 400) {
         throw res.json()
-      } else {
-        return res.json()
       }
     })
   },
@@ -66,8 +62,6 @@ export default {
     .then((res) => {
       if (res.status >= 400) {
         throw res.json()
-      } else {
-        return res.json()
       }
     })
   },
@@ -92,7 +86,7 @@ export default {
     })
   },
   getGroupeList() {
-    return fetch('http://localhost:3000/gpm/groupe', {
+    return fetch('http://localhost:3000/gpm/groupeList', {
       method: "GET",
       headers: store.state.headers
     })
@@ -131,8 +125,6 @@ export default {
     .then((res) => {
       if (res.status >= 400) {
         throw res.json()
-      } else {
-        return res.json()
       }
     })
   },
@@ -145,8 +137,6 @@ export default {
     .then((res) => {
       if (res.status >= 400) {
         throw res.json()
-      } else {
-        return res.json()
       }
     })
   },

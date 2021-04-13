@@ -14,7 +14,7 @@
 
     <hr class="my-4 mb-3 gpm-base w-100">
     <mdb-input
-      class="d-flex input-group gpm-mist" 
+      class="d-flex input-group gpm-mist disabled" 
       id="email" label="Email" name="email" :value='this.$store.state.profil.email'
       icon="envelope" type="email" 
       validate required autofocus lazy
@@ -43,10 +43,11 @@ export default {
   },
   computed: {
     profil() {
-      let profil = {...this.$store.state.profil};
+      let profil = { ...this.$store.state.profil };
       delete profil.departement;
       delete profil.email;
       delete profil.password;
+      delete profil.id;
       return profil
     }
   },

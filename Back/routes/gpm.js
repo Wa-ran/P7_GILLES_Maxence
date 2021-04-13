@@ -6,9 +6,18 @@ const gpm = require('../controllers/gpm');
 
 router.get('/depts', gpm.getDeptsList);
 router.get('/lastAnnonce', auth, gpm.getLastAnnonce);
-router.get('/groupe', auth, gpm.getGroupeList);
+router.get('/groupeList', auth, gpm.getGroupeList);
+
 router.get('/groupe/:groupe', auth, gpm.getGroupeContent);
 router.post('/groupe/create', auth, gpm.postGroupe);
+router.get('/groupe/:groupe/member', auth, gpm.getGroupeMember);
+router.put('/groupe/grant', auth, gpm.putGroupeMember);
+
+router.get('/participation/:participationId', auth, gpm.getParticipation);
 router.post('/participation/create', auth, gpm.postParticipation);
+router.put('/participation/:participationId/member', auth, gpm.getParticipationMember);
+router.put('/participation/:participationId/grant', auth, gpm.putParticipationMember);
+
+router.post('/participation/:participationId/commentaire', auth, gpm.postCommentaire);
 
 module.exports = router;

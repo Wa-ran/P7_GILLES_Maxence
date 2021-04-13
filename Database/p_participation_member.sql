@@ -1,6 +1,6 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `groupe_content`(p_groupe_nom VARCHAR(200))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `participation_member`(p_participation_id INT)
 BEGIN
-	DECLARE check_groupe INT;
+	DECLARE check_participation INT;
     
     DECLARE EXIT HANDLER FOR SQLSTATE '03000'
     BEGIN
@@ -19,20 +19,20 @@ BEGIN
     START TRANSACTION READ ONLY;
 
 		SELECT COUNT(*)
-		INTO check_groupe
-		FROM groupe
-		WHERE nom = p_groupe_nom;
+		INTO check_participation
+		FROM participation
+		WHERE id = p_participation_id;
 		
-		IF check_groupe = 0
+		IF check_participation = 0
 		THEN
 			BEGIN 
 				SIGNAL SQLSTATE VALUE '03000';
 			END;
 		END IF;
 
-		SELECT JSON_OBJECT('id', id, 'titre', titre, 'preview', preview, 'date_creation', date_creation, 'importance', importance, 'createur', createur)
-		FROM participation
-		WHERE groupe_nom = p_groupe_nom;
+		SELECT JSON_OBJECT('user', utilisateur_id, 'admin', admin)
+		FROM utilisateur_participation
+        WHERE participation_id = p_participation_id;
     
     COMMIT;
 END

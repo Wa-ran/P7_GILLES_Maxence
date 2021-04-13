@@ -1,32 +1,17 @@
 const jwt = require('jsonwebtoken');
-
 const user = require('../middlewares/user');
-const { decrypt } = require('../middlewares/crypto');
-const { cryptData } = require('../middlewares/sanitizer')
+const { cryptData, decryptData } = require('../middlewares/sanitizer')
 
-exports.standardizeProfil = (data) => {
-  let profil = {};
-  try {
-    profil.email = decrypt(data.email);
-    profil.nom = decrypt(data.nom);
-    profil.prenom = decrypt(data.prenom);
-    profil.departement = data.departement;
-    return profil
-  } catch (error) {
-    throw {custMsg: "Problème serveur : Le format n'est pas accepté."}
-  }
-};
-
-exports.signup = async (req, res, next) => {
+exports.signup = (req, res, next) => {
   let profil = {};
   profil.email = req.body.email;
   
-  await cryptData(req.body)
-  .then(async (cryptData) => {
-    await user.createUser(cryptData)
+  cryptData(req.body)
+  .then((cryptData) => {
+    return user.createUser(cryptData)
   })
   .then(() => {
-    res.status(201).send(profil)
+    res.sendStatus(201)
   })
   .catch((error) => {
     console.log(error);
@@ -34,15 +19,16 @@ exports.signup = async (req, res, next) => {
   })
 };
 
-exports.login = async (req, res, next) => {
-  let tokenId = req.body.email;
-
-  await cryptData(req.body)
-  .then(async (cryptData) => {
-    return await user.selectProfil(cryptData)
+exports.login = (req, res, next) => {
+  cryptData(req.body)
+  .then((cryptData) => {
+    return user.selectProfil(cryptData)
   })
-  .then((profil) => {
-    profil = this.standardizeProfil(profil);
+  .then(async (profil) => {
+    profil = await decryptData(profil);
+    delete profil.password;
+
+    let tokenId = profil.id;
     profil.token = jwt.sign(
       { tokenId },
       'RANDOM_TOKEN_SECRET',
@@ -56,28 +42,14 @@ exports.login = async (req, res, next) => {
   })
 };
 
-exports.modifUserInfos = async (req, res, next) => {
-  await cryptData(req.body)
-  .then(async (cryptData) => {
-    return await user.modifUserInfos(cryptData)
+exports.putInfos = (req, res, next) => {
+  cryptData(req.body)
+  .then((cryptData) => {
+    return user.putInfos(cryptData)
   })
-  .then((profil) => {
-    profil = this.standardizeProfil(profil);
-    res.status(201).send(profil)
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json(error.custMsg)
-  })
-};
-
-exports.modifUserEmail = async (req, res, next) => {
-  await cryptData(req.body)
-  .then(async (cryptData) => {
-    return await user.modifUserEmail(cryptData)
-  })
-  .then(() => {
-    res.status(201).json("Email modifié avec succès !")
+  .then(async (profil) => {
+    profil = await decryptData(profil);
+    res.status(200).send(profil)
   })
   .catch((error) => {
     console.log(error);
@@ -85,13 +57,27 @@ exports.modifUserEmail = async (req, res, next) => {
   })
 };
 
-exports.modifUserPass = async (req, res, next) => {
-  await cryptData(req.body)
-  .then(async (cryptData) => {
-    return await user.modifUserPass(cryptData)
-  })  
+exports.putEmail = (req, res, next) => {
+  cryptData(req.body)
+  .then((cryptData) => {
+    return user.putEmail(cryptData)
+  })
   .then(() => {
-    res.status(201).json("Mot de passe modifié avec succès !")
+    res.sendStatus(204)
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).json(error.custMsg)
+  })
+};
+
+exports.putPass = (req, res, next) => {
+  cryptData(req.body)
+  .then((cryptData) => {
+    return user.putPass(cryptData)
+  })
+  .then(() => {
+    res.sendStatus(204)
   })
   .catch((error) => {
     console.log(error);

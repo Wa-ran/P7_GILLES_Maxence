@@ -19,7 +19,7 @@
               <template #title>
                 <h3 class="mx-auto mb-2 pb-0"
                 :class="isGroupes ? 'h4' : 'h5'">
-                  <router-link :to="'/home/groupes/' + item.title">
+                  <router-link :to="$route.path + '/' + item.title">
                     {{ item.title }}
                   </router-link>
                 </h3>

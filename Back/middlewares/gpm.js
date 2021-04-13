@@ -9,8 +9,7 @@ exports.getDeptsList = async () => {
   await groupomania.connect
   .then(function () {
     return session.sql('SELECT nom FROM departement')
-    .execute(
-      function (row) {
+    .execute((row) => {
         row.forEach(nom => {
           dept.push(nom)
         })
@@ -18,13 +17,13 @@ exports.getDeptsList = async () => {
     }
   )
   .catch(() => {
-    throw {custMsg : 'Problème lors de la récupération des départements.'}
+    throw { custMsg : 'Problème lors de la récupération des départements.' }
   })
   return dept
 };
 
-exports.checkDept = async (departement) => {
-  await this.getDeptsList()
+exports.checkDept = (departement) => {
+  return this.getDeptsList()
   .then((depts) => { // Check de l'input departement
     let match = false;
     depts.forEach((dept) => {
@@ -34,7 +33,7 @@ exports.checkDept = async (departement) => {
       }
     });
     if (!match) {
-      throw {custMsg : ' !! dept ne correspond pas !! '}
+      throw { custMsg : ' !! dept ne correspond pas !! ' }
     }
   })
 };
@@ -42,17 +41,9 @@ exports.checkDept = async (departement) => {
 exports.getLastAnnonce = async () => {
   let annonce = {};
   await groupomania.connect
-  .then(function () {
+  .then(() => {
     return session.sql('CALL last_annonce()')
-    .execute(object => { annonce = object[0] })
-    .catch((error) => {
-      if (error.info.code === 9999) {
-        throw {custMsg: error.info.msg}
-      } else {
-        console.log(error);
-        throw {custMsg: 'Problème lors de la procédure...'}
-      }
-    })
+    .execute(row => { annonce = row[0] })
   })
   return annonce;
 };
@@ -60,10 +51,9 @@ exports.getLastAnnonce = async () => {
 exports.getGroupeList = async () => {
   let groupeList = [];
   await groupomania.connect
-  .then(function () {
+  .then(() => {
     return session.sql('SELECT JSON_OBJECT(\'nom\', nom, \'description\', description) FROM groupe;')
-    .execute(
-      function (row) {
+    .execute((row) => {
         row.forEach(groupe => {
           groupeList.push(groupe)
         })
@@ -71,64 +61,73 @@ exports.getGroupeList = async () => {
     )
   })
   .catch(() => {
-    throw {custMsg : 'Problème lors de la récupération des groupes.'}
+    throw { custMsg : 'Problème lors de la récupération des groupes.' }
   })
   return groupeList;
 };
 
+// Groupes
+
 exports.getGroupeContent = async (groupeName) => {
   let content = [];
-  await groupomania.connect
-  .then(function () {
-    return session.sql('CALL groupe_content(\'' + groupeName + '\')')
-    .execute(
-      function (row) {
-        row.forEach(part => {
-          content.push(part)
-        })
-      }
-    )
-    .catch((error) => {
-      if (error.info.code === 9999) {
-        throw {custMsg: error.info.msg}
-      } else {
-        console.log(error);
-        throw {custMsg: 'Erreur lors de la récupération du contenu de ' + groupeName + '.'}
-      }
+  await groupomania.call('groupe_content', groupeName)
+    .then((row) => {
+      row.forEach(part => {
+        content.push(part)
+      })
     })
-  })
   return content;
 };
 
 exports.postGroupe = async (req) => {
-  await groupomania.connect
-  .then(() => {
-    return session.sql('CALL create_groupe(\''+ req.groupe +'\', \''+ req.description +'\', \''+ req.email +'\');')
-    .execute() // pas de renvoi sauf erreurs
-    .catch((error) => {
-      if (error.info.code === 9999) {
-        throw {custMsg: error.info.msg}
-      } else {
-        console.log(error);
-        throw {custMsg: 'Problème lors de la procédure...'}
-      }
+  req.public ? req.public = 1 : req.public = 0;
+
+  await groupomania.call('create_groupe', req.groupe, req.description, req.id, req.public)
+};
+
+exports.getGroupeMember = async (groupeName) => {
+  let content = [];
+  await groupomania.call('groupe_member', groupeName)
+    .then((row) => {
+      row.forEach(part => {
+        content.push(part)
+      })
     })
-  })
+  return content;
+};
+
+exports.putGroupeMember = async (req) => {
+  await groupomania.call('grant_groupe_right', req.groupe, req.id, req.idNewMember, req.newAdmin)
+};
+
+// Participations
+
+exports.getParticipation = async (participationId) => {
+  await groupomania.call('participation_content', participationId)
 };
 
 exports.postParticipation = async (req) => {
-  await groupomania.connect
-  .then(() => {
-    console.log(req)
-    return session.sql('CALL create_participation(\''+ req.groupe +'\', \''+ req.email +'\', \''+ req.titre +'\', \''+ req.preview +'\', \''+ req.article +'\');')
-    .execute() // pas de renvoi sauf erreurs
-    .catch((error) => {
-      if (error.info.code === 9999) {
-        throw {custMsg: error.info.msg}
-      } else {
-        console.log(error);
-        throw {custMsg: 'Problème lors de la procédure...'}
-      }
+  req.public ? req.public = 1 : req.public = 0;
+  req.importance ? req.importance = 100 : req.importance = 0;
+
+  await groupomania.call('create_participation', req.groupe, req.id, req.titre, req.preview, req.article, req.importance, req.public)
+};
+
+exports.getParticipationMember = async (participationId) => {
+  let content = [];
+  await groupomania.call('participation_member', participationId)
+    .then((row) => {
+      row.forEach(part => {
+        content.push(part)
+      })
     })
-  })
+  return content;
+};
+
+exports.putParticipationMember = async (req) => {
+  await groupomania.call('grant_participation_right', req.participationId, req.id, req.idNewMember, req.newAdmin)
+};
+
+exports.postCommentaire = async (req) => {
+  await groupomania.call('create_commentaire', req.id, req.participationId, req.contenu)
 };

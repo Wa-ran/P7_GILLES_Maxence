@@ -7,14 +7,14 @@ exports.cryptData = async (data) => {
   saneData['verifPass'] = data.password;
   try {
     for (const [key, value] of Object.entries(data)) {
-      if (key.match(/(departement)/)) { // la vérifiaction des département est gérée postérieurement
-        saneData[key] = value
+      if (key.match(/(email)|(nom)|(groupe)|(titre)/)) { // la vérifiaction des département est gérée postérieurement
+        saneData[key] = encrypt(value)
       }
-      else if (key.match(/(assword)/)) {
+      else if (key.match(/(password)/)) {
         saneData[key] = await bcrypt.hash(value, 10)
       }
       else {
-        saneData[key] = encrypt(value)
+        saneData[key] = value
       }
     }
     return saneData
@@ -23,22 +23,9 @@ exports.cryptData = async (data) => {
   }
 };
 
-exports.cryptGPM = async (data) => {
-  try {
+exports.decryptData = async (data) => {
     for (const [key, value] of Object.entries(data)) {
-      if ((key === 'groupe') || (key === 'titre')) {
-        data[key] = encrypt(value)
-      }
-    }
-    return data
-  } catch (error) {
-    throw { log: 'cryptGPM', custMsg: "Le format des données n'est pas accepté." }
-  }
-};
-
-exports.decryptGPM = async (data) => {
-    for (const [key, value] of Object.entries(data)) {
-      if ((key.match(/(nom)/)) || (key.match(/(titre)/))) {
+      if (key.match(/(email)|(nom)|(groupe)|(titre)/)) {
         data[key] = decrypt(value)
       }
     }

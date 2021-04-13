@@ -32,7 +32,7 @@ export default {
       if (event.target.tagName === 'TEXTAREA') {
         this.$nextTick(() => {
           event.target.style.minHeight = 0;
-          event.target.style.minHeight = event.target.scrollHeight + 3 + 'px'
+          event.target.style.minHeight = event.target.scrollHeight + 'px'
         });
         if (event.key === 'Enter') {
           this.addLine(event)

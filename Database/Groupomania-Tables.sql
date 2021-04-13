@@ -5,6 +5,7 @@ USE groupomania;
 CREATE TABLE groupe (
                 nom VARCHAR(200) NOT NULL,
                 description TEXT,
+                public BOOLEAN NOT NULL,
                 PRIMARY KEY (nom)
 );
 
@@ -14,6 +15,7 @@ CREATE TABLE participation (
                 preview TEXT,
                 article TEXT,
                 importance TINYINT ZEROFILL,
+                public BOOLEAN NOT NULL,
                 createur VARCHAR(100),
                 date_creation DATETIME NOT NULL,
                 groupe_nom VARCHAR(200) NOT NULL,
@@ -30,30 +32,30 @@ CREATE TABLE departement (
 );
 
 CREATE TABLE utilisateur (
+				id INT UNSIGNED AUTO_INCREMENT NOT NULL,
                 nom VARCHAR(100) NOT NULL,
                 email VARCHAR(100) NOT NULL,
                 password VARCHAR(60) NOT NULL,
                 departement_nom VARCHAR(50),
                 prenom VARCHAR(100) NOT NULL,
-                PRIMARY KEY (email)
+                PRIMARY KEY (id)
 );
 
 CREATE INDEX utilisateur_idx_nom_prenom
  ON utilisateur (nom, prenom);
 
 CREATE TABLE utilisateur_participation (
-                utilisateur_email VARCHAR(100) NOT NULL,
+                utilisateur_id INT UNSIGNED NOT NULL,
                 participation_id INT UNSIGNED NOT NULL,
                 admin BOOLEAN NOT NULL,
-                PRIMARY KEY (utilisateur_email, participation_id)
+                PRIMARY KEY (utilisateur_id, participation_id)
 );
 
 CREATE TABLE utilisateur_groupe (
-                utilisateur_email VARCHAR(100) NOT NULL,
+                utilisateur_id INT UNSIGNED NOT NULL,
                 groupe_nom VARCHAR(200) NOT NULL,
-                membre BOOLEAN NOT NULL,
                 admin BOOLEAN NOT NULL,
-                PRIMARY KEY (utilisateur_email, groupe_nom)
+                PRIMARY KEY (utilisateur_id, groupe_nom)
 );
 
 ALTER TABLE participation ADD CONSTRAINT t_participation_t_groupe_fk
@@ -75,8 +77,8 @@ ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 ALTER TABLE utilisateur_groupe ADD CONSTRAINT t_utilisateur_groupe_t_utilisateur_fk
-FOREIGN KEY (utilisateur_email)
-REFERENCES utilisateur (email)
+FOREIGN KEY (utilisateur_id)
+REFERENCES utilisateur (id)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
 
@@ -87,7 +89,7 @@ ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 ALTER TABLE utilisateur_participation ADD CONSTRAINT t_utilisateur_participation_t_utilisateur_fk
-FOREIGN KEY (utilisateur_email)
-REFERENCES utilisateur (email)
+FOREIGN KEY (utilisateur_id)
+REFERENCES utilisateur (id)
 ON DELETE CASCADE
 ON UPDATE CASCADE;

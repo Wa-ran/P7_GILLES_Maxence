@@ -77,6 +77,7 @@ export default {
     infos() {
       let infos = { ...this.$store.state.profil };
       delete infos.email;
+      delete infos.id;
       return infos
     }
   }

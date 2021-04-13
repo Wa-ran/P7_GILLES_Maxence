@@ -29,7 +29,7 @@ BEGIN
 			END;
 		END IF;
 
-		SELECT JSON_OBJECT('nom', nom, 'prenom', prenom, 'email', email, 'password', password, 'departement', departement_nom)
+		SELECT JSON_OBJECT('id', id, 'nom', nom, 'prenom', prenom, 'email', email, 'password', password, 'departement', departement_nom)
 		FROM utilisateur
 		WHERE email = p_email;
     

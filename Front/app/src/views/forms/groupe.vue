@@ -4,7 +4,7 @@
       class="d-flex input-group gpm-mist" 
       id="groupe" label="Nom du groupe" name="groupe"
       v-model="groupeName"
-      type="text" maxlength="50"
+      type="text" maxlength="100"
       validate required autofocus lazy
       invalidFeedback="Non rempli"/>
     <mdb-input
@@ -13,6 +13,11 @@
       value="Pas de description." @focus="$event.target.select()"
       type="textarea"
       validate required lazy/>
+    <div class="custom-control custom-switch"
+    title="Un groupe publique permet à n'importe quel utilisateur d'y créer des participations.">
+      <input type="checkbox" class="custom-control-input" id="public" name="public">
+      <label class="custom-control-label" for="public">Publique</label>
+    </div>
   </wrap>
 </template>
 
@@ -34,7 +39,7 @@ export default {
   },
   watch : {
     groupeName() {
-      this.$store.dispatch('chooseSubmit', { backFct: 'postGroupe', submitPath: '/home/groupe/' + this.groupename });    
+      this.$store.dispatch('chooseSubmit', { backFct: 'postGroupe', submitPath: '/home/groupes/' + this.groupeName });    
     }
   }
 }

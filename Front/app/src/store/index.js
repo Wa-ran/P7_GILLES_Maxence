@@ -31,17 +31,18 @@ export default new Vuex.Store({
       state.form.submitPath = payload.submitPath;
     },
     setProfil(state, payload) {
-      state.profil = {};
-      for (const [key, value] of Object.entries(payload)) {
-        if (key.match(/(token)/)) {
-          state.token = value;
-          state.headers = {
-          'Authorization': state.token,
-          'Content-Type': 'application/json'
+      if (payload) {
+        for (const [key, value] of Object.entries(payload)) {
+          if (key.match(/(token)/)) {
+            state.token = value;
+            state.headers = {
+            'Authorization': state.token,
+            'Content-Type': 'application/json'
+            }
+          } else {
+            state.profil[key] = value
           }
-        } else {
-          state.profil[key] = value
-        }
+        }        
       }
     },
     getDeptsList(state, payload) {

@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `create_groupe`(p_groupe_nom VARCHAR(200), p_groupe_description TEXT, p_user_email VARCHAR(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_groupe`(p_groupe_nom VARCHAR(200), p_groupe_description TEXT, p_id INT, p_public BOOLEAN)
 BEGIN
 
 	DECLARE EXIT HANDLER FOR 1062
@@ -17,11 +17,11 @@ BEGIN
     
     START TRANSACTION;
 
-		INSERT INTO groupe (nom, description)
-		VALUES (p_groupe_nom, p_groupe_description);
+		INSERT INTO groupe (nom, description, public)
+		VALUES (p_groupe_nom, p_groupe_description, p_public);
 		
-		INSERT INTO utilisateur_groupe (utilisateur_email, groupe_nom, membre, admin)
-		VALUES (p_user_email, p_groupe_nom, 1, 1);
+		INSERT INTO utilisateur_groupe (utilisateur_id, groupe_nom, admin)
+		VALUES (p_id, p_groupe_nom, 1);
 		
     COMMIT;
 END
