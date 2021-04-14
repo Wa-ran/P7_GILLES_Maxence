@@ -21,9 +21,7 @@
       <div class="overhid">
         <AnimSlideDrop>
           <div v-show="this.showAnnonce">
-            <span class="lecture">
-              <slot name="text"></slot>
-            </span>
+            <slot name="text"></slot>
             <hr class="mt-3 mb-2 gpm-grey-light w-100">
           </div>
         </AnimSlideDrop>

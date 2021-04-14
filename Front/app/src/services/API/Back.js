@@ -128,6 +128,19 @@ export default {
       }
     })
   },
+  getParticipation(participationId) {
+    return fetch('http://localhost:3000/gpm/participation/' + participationId, {
+      method: "GET",
+      headers: store.state.headers
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw res.json()
+      } else {
+        return res.json()
+      }
+    })
+  },
   postParticipation(data) {
     return fetch('http://localhost:3000/gpm/participation/create', {
       method: "POST",

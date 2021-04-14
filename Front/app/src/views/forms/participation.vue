@@ -17,8 +17,8 @@
       <div class="w-50">
         <div class="custom-control custom-switch"
         title="Une participation publique permet à n'importe quel utilisateur d'y commenter.">
-          <input type="checkbox" class="custom-control-input" id="public" name="public">
-          <label class="custom-control-label" for="public">Publique</label>
+          <input type="checkbox" class="custom-control-input" id="publique" name="publique">
+          <label class="custom-control-label" for="publique">Publique</label>
         </div>
       </div>
       <div class="w-50">

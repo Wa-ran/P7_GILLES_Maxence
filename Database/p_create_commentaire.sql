@@ -2,7 +2,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `create_commentaire`(p_user_id INT, 
 BEGIN
 	DECLARE is_public BOOLEAN;
 	DECLARE as_right BOOLEAN;
-    DECLARE comm_title VARCHAR(100);
     
     DECLARE EXIT HANDLER FOR SQLSTATE '03000'
     BEGIN
@@ -20,7 +19,7 @@ BEGIN
     
     START TRANSACTION READ WRITE;
     
-		SELECT public
+		SELECT publique
         INTO is_public
 		FROM participation
 		WHERE id = p_participation_id;
@@ -42,12 +41,9 @@ BEGIN
         
 			END;
 		END IF;
-        
-		SELECT CONCAT('commentaires_', p_participation_id)
-		INTO comm_title;
 
-		INSERT INTO comm_title (utilisateur_id, contenu, date_creation)
-		VALUES (p_user_id, p_contenu, CURRENT_TIMESTAMP());
+		INSERT INTO commentaire (participation_id, utilisateur_id, contenu, date_creation)
+		VALUES (p_participation_id, p_user_id, p_contenu, CURRENT_TIMESTAMP());
 
     COMMIT;
 END

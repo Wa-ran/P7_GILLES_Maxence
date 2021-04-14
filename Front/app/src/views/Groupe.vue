@@ -19,7 +19,7 @@
               <template #title>
                 <h3 class="mx-auto mb-2 pb-0"
                 :class="isGroupes ? 'h4' : 'h5'">
-                  <router-link :to="$route.path + '/' + item.title">
+                  <router-link :to="pathToContent(item)">
                     {{ item.title }}
                   </router-link>
                 </h3>
@@ -115,6 +115,9 @@ export default {
     }
   },
   methods: {
+    pathToContent(item) {
+      return this.groupeName ? this.$route.path + '/' + item.id : this.$route.path + '/' + item.title
+    },
     async dispatch() {
       if (this.$route.name == 'groupeName') {
         await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeContent', data: this.groupeName })

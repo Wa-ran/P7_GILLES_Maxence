@@ -18,6 +18,7 @@ router.post('/participation/create', auth, gpm.postParticipation);
 router.put('/participation/:participationId/member', auth, gpm.getParticipationMember);
 router.put('/participation/:participationId/grant', auth, gpm.putParticipationMember);
 
+router.get('/participation/:participationId/commentaire', auth, gpm.getCommentaire);
 router.post('/participation/:participationId/commentaire', auth, gpm.postCommentaire);
 
 module.exports = router;

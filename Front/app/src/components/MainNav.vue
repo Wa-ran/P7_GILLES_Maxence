@@ -40,12 +40,14 @@
 
     <div class="mt-n2 pt-2 w-100 d-flex flex-wrap rounded z-depth-2 zind2 gpm-base breadCrumb"
     aria-label="Breadcrumb">
-      <div v-for="(path, name) in breadCrumb" :key="name">
+      <div v-for="(path, name, index) in breadCrumb" :key="index"
+      >
         <router-link
         :to="path.replace('/', '')"
-        :title="decodeURIComponent(name)">
-        <!-- router-link 'to' rajoute un '/' au début, mais dans notre cas il est déjà présent -->
-          {{ decodeURIComponent(name) }}
+        :title="decodeURIComponent(name)"
+        :class="lastBreadClass(index)">
+          <!-- router-link 'to' rajoute un '/' au début, mais dans notre cas il est déjà présent -->
+          {{ breadName(name) }}
         </router-link>
         <span class="mr-1">-</span>
       </div>
@@ -102,7 +104,24 @@ export default {
       let link = Object.values(this.breadCrumb)[Object.keys(this.breadCrumb).length-2].replace('/','');
       return link
     }
-  }
+  },
+  methods: {
+    breadName(name) {
+      let props = this.$route.params.participation;
+      let text = decodeURIComponent(name);
+
+      if (props && (text == props)) {
+        return  'Participation actuelle'
+      } else {
+        return text
+      }
+    },
+    lastBreadClass(index) {
+      if (index == Object.keys(this.breadCrumb).length-1) {
+        return 'disabled'
+      }
+    }
+  },
 }
 </script>
 

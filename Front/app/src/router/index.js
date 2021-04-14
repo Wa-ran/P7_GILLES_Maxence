@@ -58,6 +58,13 @@ const routes = [
             ]
           }
         ]
+      },
+
+      {
+        path: 'groupes/:groupeName/:participation',
+        name: 'participation',
+        component: () => import('../views/Participation.vue'),
+        props: true
       }
     ]
   },

@@ -126,21 +126,24 @@ exports.putGroupeMember = (req, res, next) => {
 // Participations
 
 exports.getParticipation = (req, res, next) => {
-  if (!req.params.participationId.isInteger()) {
-    throw { custMsg: 'Participation non trouvée.' }
+  let id = parseInt(req.params.participationId);
+  if (!Number.isInteger(id)) {
+    let error = {};
+    error.custMsg = 'Participation non trouvée.';
+    return res.status(500).json(error.custMsg)
   }
 
-  gpm.getParticipation(req.body.participationId)
+  gpm.getParticipation(id, req.body.id)
   .then((participation) => {
     let content = [];
-    participation.forEach(async comm => {
-      let decrypt = await decryptData(comm);
+    participation.forEach(async info => {
+      let decrypt = await decryptData(info);
       content.push(decrypt)
     });
     return content
   })
-  .then((list) => {
-    res.send(list)
+  .then((participation) => {
+    res.send(participation)
   })
   .catch((error) => {
     console.log(error);
@@ -191,6 +194,32 @@ exports.putParticipationMember = (req, res, next) => {
   })
   .then(() => {
     res.sendStatus(201)
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).json(error.custMsg)
+  })
+};
+
+// Commentaires
+
+exports.getCommentaire = (req, res, next) => {
+  let id = parseInt(req.params.participationId);
+  if (!id.isInteger) {
+    throw { custMsg: 'Participation non trouvée.' }
+  }
+
+  gpm.getParticipation(id)
+  .then((participation) => {
+    let content = [];
+    participation.forEach(async comm => {
+      let decrypt = await decryptData(comm);
+      content.push(decrypt)
+    });
+    return content
+  })
+  .then((list) => {
+    res.send(list)
   })
   .catch((error) => {
     console.log(error);

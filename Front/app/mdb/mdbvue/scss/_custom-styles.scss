@@ -42,6 +42,9 @@ body {
 
 a {
   color: inherit !important;
+  &.disabled {
+    color: $gpm-grey-light !important;
+  }
 }
 
 button:focus span {

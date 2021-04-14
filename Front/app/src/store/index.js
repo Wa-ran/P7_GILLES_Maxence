@@ -24,6 +24,7 @@ export default new Vuex.Store({
     lastAnnonce: {},
     groupeList: [],
     groupe: {},
+    participation: {},
   },
   mutations: {
     setSubmit(state, payload) {
@@ -56,6 +57,11 @@ export default new Vuex.Store({
     },
     getGroupeContent(state, payload) {
       state.groupe[Object.keys(payload)[0]] = Object.values(payload)[0]
+    },
+    getParticipation(state, payload) {
+      for (const [key, value] of Object.entries(payload[0])) {
+        state.participation[key] = value
+      }  
     }
   },
   actions: {

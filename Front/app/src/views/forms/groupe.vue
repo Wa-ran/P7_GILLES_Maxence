@@ -15,8 +15,8 @@
       validate required lazy/>
     <div class="custom-control custom-switch"
     title="Un groupe publique permet à n'importe quel utilisateur d'y créer des participations.">
-      <input type="checkbox" class="custom-control-input" id="public" name="public">
-      <label class="custom-control-label" for="public">Publique</label>
+      <input type="checkbox" class="custom-control-input" id="publique" name="publique">
+      <label class="custom-control-label" for="publique">Publique</label>
     </div>
   </wrap>
 </template>

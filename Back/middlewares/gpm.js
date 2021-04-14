@@ -102,8 +102,15 @@ exports.putGroupeMember = async (req) => {
 
 // Participations
 
-exports.getParticipation = async (participationId) => {
-  await groupomania.call('participation_content', participationId)
+exports.getParticipation = async (participationId, userId) => {
+  let content = [];
+  await groupomania.call('participation_content', participationId, userId)
+    .then((row) => {
+      row.forEach(part => {
+        content.push(part)
+      })
+    })
+  return content;
 };
 
 exports.postParticipation = async (req) => {

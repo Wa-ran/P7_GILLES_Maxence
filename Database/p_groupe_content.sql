@@ -30,7 +30,7 @@ BEGIN
 			END;
 		END IF;
 
-		SELECT JSON_OBJECT('id', id, 'titre', titre, 'preview', preview, 'date_creation', date_creation, 'importance', importance, 'createur', createur)
+		SELECT JSON_OBJECT('id', id, 'titre', titre, 'preview', preview, 'date_creation', date_creation, 'importance', importance, 'publique', publique, 'prive', prive, 'createur', createur)
 		FROM participation
 		WHERE groupe_nom = p_groupe_nom;
     

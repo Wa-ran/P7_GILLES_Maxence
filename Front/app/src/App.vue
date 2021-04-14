@@ -18,6 +18,7 @@ $image-path: '~@/../mdb/mdbvue/img'; // image path variable update
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  overflow: scroll;
 }
 .dessus {
   position: relative;

@@ -14,8 +14,9 @@ CREATE TABLE participation (
                 titre VARCHAR(400) NOT NULL,
                 preview TEXT,
                 article TEXT,
-                importance TINYINT ZEROFILL,
-                public BOOLEAN NOT NULL,
+                importance TINYINT,
+                publique BOOLEAN NOT NULL,
+                prive BOOLEAN NOT NULL,
                 createur VARCHAR(100),
                 date_creation DATETIME NOT NULL,
                 groupe_nom VARCHAR(200) NOT NULL,
@@ -25,11 +26,19 @@ CREATE TABLE participation (
 CREATE INDEX participation_idx_groupe_titre
  ON participation (titre, groupe_nom);
 
-
 CREATE TABLE departement (
                 nom VARCHAR(50) NOT NULL,
                 PRIMARY KEY (nom)
 );
+
+CREATE TABLE commentaire (
+				id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+				contenu TEXT,
+				date_creation DATETIME NOT NULL,
+                participation_id INT UNSIGNED NOT NULL,
+				utilisateur_id INT UNSIGNED,
+				PRIMARY KEY (id)
+				);
 
 CREATE TABLE utilisateur (
 				id INT UNSIGNED AUTO_INCREMENT NOT NULL,
@@ -91,5 +100,17 @@ ON UPDATE CASCADE;
 ALTER TABLE utilisateur_participation ADD CONSTRAINT t_utilisateur_participation_t_utilisateur_fk
 FOREIGN KEY (utilisateur_id)
 REFERENCES utilisateur (id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+ALTER TABLE commentaire ADD CONSTRAINT t_commentaire_t_utilisateur_fk
+FOREIGN KEY (utilisateur_id)
+REFERENCES utilisateur (id)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+ALTER TABLE commentaire ADD CONSTRAINT t_commentaire_t_participation_fk
+FOREIGN KEY (participation_id)
+REFERENCES participation (id)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
