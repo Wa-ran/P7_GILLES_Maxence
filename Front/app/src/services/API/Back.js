@@ -1,8 +1,8 @@
 import store from '../../store/index';
 
 export default {
-  async postSignup(data) {
-    return await fetch('http://localhost:3000/user/signup', {
+  postSignup(data) {
+    return fetch('http://localhost:3000/user/signup', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
@@ -62,6 +62,16 @@ export default {
     .then((res) => {
       if (res.status >= 400) {
         throw res.json()
+      }
+    })
+  },
+  getUsersList() {
+    return fetch('http://localhost:3000/gpm/users', { headers : store.state.headers })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw res.json()
+      } else {
+        return res.json()
       }
     })
   },
@@ -128,7 +138,7 @@ export default {
       }
     })
   },
-  getParticipation(participationId) {
+  getParticipationInfos(participationId) {
     return fetch('http://localhost:3000/gpm/participation/' + participationId, {
       method: "GET",
       headers: store.state.headers
@@ -143,6 +153,31 @@ export default {
   },
   postParticipation(data) {
     return fetch('http://localhost:3000/gpm/participation/create', {
+      method: "POST",
+      headers: store.state.headers,
+      body: JSON.stringify(data)
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw res.json()
+      }
+    })
+  },
+  getParticipationComment(participationId) {
+    return fetch('http://localhost:3000/gpm/participation/' + participationId + '/commentaire', {
+      method: "GET",
+      headers: store.state.headers
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw res.json()
+      } else {
+        return res.json()
+      }
+    })
+  },
+  postCommentaire(data) {
+    return fetch('http://localhost:3000/gpm/participation/' + data.idParticipation + '/commentaire', {
       method: "POST",
       headers: store.state.headers,
       body: JSON.stringify(data)

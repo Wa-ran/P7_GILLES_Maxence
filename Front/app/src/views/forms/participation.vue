@@ -2,16 +2,12 @@
   <wrap withComp="AnimBlockSlide" class="w-100 mb-n3">
     <h3 class="h5">Nouvelle Participation</h3>
     <TextArea
-      :hasClass="'d-flex flex-column input-group textarea'" 
       :id="'titre'" :name="'titre'" :label="'Titre'"
       maxlength="200"/>
     <TextArea
-      :hasClass="'d-flex flex-column input-group textarea'" 
       :id="'preview'" :name="'preview'" :label="'Résumé du contenu / Objectif.'"/>
     <TextArea
-      :hasClass="'d-flex flex-column input-group textarea'" 
-      :id="'article'" :name="'article'" :label="'Article ou premier commentaire.'"
-      type="textarea"/>
+      :id="'article'" :name="'article'" :label="'Article ou premier commentaire.'"/>
     
     <div class="w-100 d-flex justify-content-between">
       <div class="w-50">

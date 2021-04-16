@@ -46,11 +46,9 @@ exports.getGroupeList = (req, res, next) => {
 // Groupes
 
 exports.getGroupeContent = (req, res, next) => {
-  req.body.groupe = decodeURIComponent(req.params.groupe);
-
-  cryptData(req.body)
-  .then((sane) => {
-    return gpm.getGroupeContent(sane.groupe)
+  cryptData(req)
+  .then((data) => {
+    return gpm.getGroupeContent(data)
   })
   .then((groupe) => {
     let content = [];
@@ -70,9 +68,9 @@ exports.getGroupeContent = (req, res, next) => {
 };
 
 exports.postGroupe = (req, res, next) => {
-  cryptData(req.body)
-  .then((groupe) => {
-    return gpm.postGroupe(groupe)
+  cryptData(req)
+  .then((data) => {
+    return gpm.postGroupe(data)
   })
   .then(() => {
     res.sendStatus(201)
@@ -84,11 +82,9 @@ exports.postGroupe = (req, res, next) => {
 };
 
 exports.getGroupeMember = (req, res, next) => {
-  req.body.groupe = decodeURIComponent(req.params.groupe);
-
-  cryptData(req.body)
+  cryptData(req)
   .then((data) => {
-    return gpm.getGroupeMember(data.groupe)
+    return gpm.getGroupeMember(data)
   })
   .then((groupe) => {
     let content = [];
@@ -108,11 +104,9 @@ exports.getGroupeMember = (req, res, next) => {
 };
 
 exports.putGroupeMember = (req, res, next) => {
-  req.body.groupe = decodeURIComponent(req.params.groupe);
-
-  cryptData(req.body)
+  cryptData(req)
   .then((data) => {
-    return gpm.putGroupeMember(data.groupe)
+    return gpm.putGroupeMember(data)
   })
   .then(() => {
     res.sendStatus(201)
@@ -125,15 +119,11 @@ exports.putGroupeMember = (req, res, next) => {
 
 // Participations
 
-exports.getParticipation = (req, res, next) => {
-  let id = parseInt(req.params.participationId);
-  if (!Number.isInteger(id)) {
-    let error = {};
-    error.custMsg = 'Participation non trouvée.';
-    return res.status(500).json(error.custMsg)
-  }
-
-  gpm.getParticipation(id, req.body.id)
+exports.getParticipationInfos = (req, res, next) => {
+  cryptData(req)
+  .then((data) => {
+    return gpm.getParticipationInfos(data)
+  })
   .then((participation) => {
     let content = [];
     participation.forEach(async info => {
@@ -152,7 +142,7 @@ exports.getParticipation = (req, res, next) => {
 };
 
 exports.postParticipation = (req, res, next) => {
-  cryptData(req.body)
+  cryptData(req)
   .then((data) => {
     return gpm.postParticipation(data)
   })
@@ -166,9 +156,9 @@ exports.postParticipation = (req, res, next) => {
 };
 
 exports.getParticipationMember = (req, res, next) => {
-  cryptData(req.body)
+  cryptData(req)
   .then((data) => {
-    return gpm.getGroupeMember(data.groupe)
+    return gpm.getGroupeMember(data)
   })
   .then((groupe) => {
     let content = [];
@@ -188,9 +178,9 @@ exports.getParticipationMember = (req, res, next) => {
 };
 
 exports.putParticipationMember = (req, res, next) => {
-  cryptData(req.body)
+  cryptData(req)
   .then((data) => {
-    return gpm.putGroupeMember(data.groupe)
+    return gpm.putParticipationMember(data)
   })
   .then(() => {
     res.sendStatus(201)
@@ -203,23 +193,21 @@ exports.putParticipationMember = (req, res, next) => {
 
 // Commentaires
 
-exports.getCommentaire = (req, res, next) => {
-  let id = parseInt(req.params.participationId);
-  if (!id.isInteger) {
-    throw { custMsg: 'Participation non trouvée.' }
-  }
-
-  gpm.getParticipation(id)
+exports.getParticipationComment = (req, res, next) => {
+  cryptData(req)
+  .then((data) => {
+    return gpm.getParticipationComment(data)  
+  })
   .then((participation) => {
     let content = [];
     participation.forEach(async comm => {
       let decrypt = await decryptData(comm);
       content.push(decrypt)
-    });
+    })
     return content
   })
-  .then((list) => {
-    res.send(list)
+  .then((participation) => {
+    res.send(participation)
   })
   .catch((error) => {
     console.log(error);
@@ -228,11 +216,7 @@ exports.getCommentaire = (req, res, next) => {
 };
 
 exports.postCommentaire = (req, res, next) => {
-  if (!req.participationId.isInteger()) {
-    throw { custMsg: 'Participation non trouvée.' }
-  }
-
-  cryptData(req.body)
+  cryptData(req)
   .then((data) => {
     return gpm.postCommentaire(data)
   })

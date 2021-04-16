@@ -16,11 +16,25 @@ exports.connect = mysqlx.getSession(config)
   throw 'La connexion à la BDR a échouée !'
 });
 
+exports.connect = mysqlx.getSession(config)
+.then(function (s) {
+  session = s;
+  return session.sql('USE groupomania').execute();
+})
+.catch(() => {
+  throw 'La connexion à la BDR a échouée !'
+});
+
 exports.call = async function(proc, ...args) {
   let row = [];
 
   let list = '';
   args.forEach(arg => {
+    if ((arg === undefined) || (arg === '')) {
+      console.log(arg)
+      this.errorHandler(new Error, 'Veuillez remplir tous les champs.')
+    }
+
     let el = "\'" + arg + "\',";
     list = list + el;
   });
@@ -38,17 +52,19 @@ exports.call = async function(proc, ...args) {
 };
 
 exports.errorHandler = function(error, msg) {
+  let custMsg;
   console.log(error);
+  if (msg) {
+    custMsg = msg
+  } else {
+    custMsg = "Erreur lors de la procédure."
+  }
   try {
     if (error.info.code === 9999) {
       custMsg = error.info.msg
-    } else if (msg) {
-      custMsg = msg
-    } else {
-      custMsg = "Erreur lors de la procédure."
-    }  
+    }
   } catch (error) {
-    custMsg = "Erreur lors de la procédure."
+    throw { custMsg }
   }
   throw { custMsg }
 }

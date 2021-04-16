@@ -13,12 +13,12 @@ router.post('/groupe/create', auth, gpm.postGroupe);
 router.get('/groupe/:groupe/member', auth, gpm.getGroupeMember);
 router.put('/groupe/grant', auth, gpm.putGroupeMember);
 
-router.get('/participation/:participationId', auth, gpm.getParticipation);
+router.get('/participation/:participationId', auth, gpm.getParticipationInfos);
 router.post('/participation/create', auth, gpm.postParticipation);
-router.put('/participation/:participationId/member', auth, gpm.getParticipationMember);
+router.get('/participation/:participationId/member', auth, gpm.getParticipationMember);
 router.put('/participation/:participationId/grant', auth, gpm.putParticipationMember);
 
-router.get('/participation/:participationId/commentaire', auth, gpm.getCommentaire);
+router.get('/participation/:participationId/commentaire', auth, gpm.getParticipationComment);
 router.post('/participation/:participationId/commentaire', auth, gpm.postCommentaire);
 
 module.exports = router;

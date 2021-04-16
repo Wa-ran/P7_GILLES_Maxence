@@ -1,6 +1,6 @@
 <template>
   <div class="h-100">
-    <TitleDoc :color="'gpm-default'" :key="groupeName">
+    <DocCard :color="'gpm-default'" :key="groupeName">
 
       <template #title>
         <h2 class="h4 m-1">
@@ -41,7 +41,7 @@
           </main-form>
         </div>
       </template>
-    </TitleDoc>
+    </DocCard>
     <ButtonDoc
     v-show="!isCreation"
     @action="$router.push(pathToForm)"
@@ -54,7 +54,7 @@
 import ButtonDoc from "@/components/ButtonDoc.vue"
 import ArticlePreview from '@/components/ArticlePreview';
 import MainForm from '@/components/MainForm';
-import TitleDoc from '@/components/TitleDoc';
+import DocCard from '@/components/DocCard';
 import Wrap from '@/components/Wrap';
 
 const groupe = () => ({
@@ -70,7 +70,7 @@ export default {
     ButtonDoc,
     ArticlePreview,
     MainForm,
-    TitleDoc,
+    DocCard,
     Wrap,
     groupe,
     participation

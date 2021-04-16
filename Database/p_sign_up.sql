@@ -1,12 +1,11 @@
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sign_up`(p_nom VARCHAR(100), p_prenom VARCHAR(100), p_email VARCHAR(100), p_password VARCHAR(60), p_departement VARCHAR(50))
 BEGIN
-	DECLARE check_email INT;
-    
-    DECLARE EXIT HANDLER FOR SQLSTATE '03000'
-    BEGIN
+
+	DECLARE EXIT HANDLER FOR 1062
+	BEGIN
 		ROLLBACK;
 		SIGNAL SQLSTATE VALUE '03000'
-		SET MYSQL_ERRNO = 9999,
+		SET	MYSQL_ERRNO = 9999,
 		MESSAGE_TEXT = 'Cet email est déjà utilisé.';
 	END;
     
@@ -17,17 +16,6 @@ BEGIN
 	END;
     
     START TRANSACTION READ WRITE;
-
-		SELECT COUNT(*)
-		INTO check_email 
-		FROM Utilisateur
-		WHERE email = p_email;
-		
-		IF check_email > 0
-		THEN BEGIN 
-				SIGNAL SQLSTATE VALUE '03000';
-			END;
-		END IF;
 
 		INSERT INTO Utilisateur (nom, prenom, email, password, departement_nom)
 		VALUES

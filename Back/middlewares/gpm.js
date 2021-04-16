@@ -2,13 +2,68 @@ const groupomania = require('./groupomania');
 
 const { encrypt, decrypt } = require('../middlewares/crypto');
 
+exports.verifRight = async (identifier, userId, accesReq) => {
+  let publique = 0;
+  let member = 0;
+  let prive = 0;
+
+  let table = Number.isInteger(identifier) ? 'participation' : 'groupe';
+  let column = Number.isInteger(identifier) ? 'id' : 'nom';
+
+  await groupomania.connect
+  .then(function () {
+    return session.sql('SELECT COUNT(*) FROM utilisateur_' + table + ' WHERE ' + table + '_' + column + ' = \'' + identifier + '\' AND utilisateur_id = ' + userId + ';')
+    .execute((row) => { member = row[0] })
+  })
+  .then(function () {
+    if (member === 0) {
+      return session.sql('SELECT publique FROM ' + table + ' WHERE ' + column + ' = ' + identifier + ';')
+      .execute((row) => { publique = row[0] })    
+    }
+  })
+  .then(function () {
+    if ((member + publique) === 0 && (table === 'participation')) {
+      return session.sql('SELECT prive FROM participation WHERE id = ' + identifier + ';')
+      .execute((row) => { prive = row[0] })
+    }
+  })
+  .catch((error) => {
+    console.log(error);
+    throw { custMsg : 'Problème lors de la vérification des droits.' }
+  })
+console.log(publique + ' ' + member + ' ' + prive + ' ' + accesReq)
+  if ((publique + member - prive) < accesReq) {
+    throw { custMsg : 'Vous n\'avez pas les droits.' }
+  }
+  // -1 => privé, non visible
+  // 0 => visible, non membre
+  // 1 ou 2 => membre, peut participer
+};
+
+exports.verifAdmin = async (identifier, userId) => {
+  let admin = 0;
+
+  let table = Number.isInteger(identifier) ? 'participation' : 'groupe';
+  let column = Number.isInteger(identifier) ? 'id' : 'nom';
+
+  await groupomania.connect
+  .then(function () {
+    return session.sql('SELECT admin FROM utilisateur_' + table + ' WHERE ' + table + '_' + column + ' = ' + identifier + ' AND utilisateur_id = ' + userId + ';')
+    .execute((row) => { admin = row[0] })
+  })
+  .catch((error) => {
+    console.log(error);
+    throw { custMsg : 'Problème lors de la vérification des droits d\'admin.' }
+  })
+  return admin
+};
 
 exports.getDeptsList = async () => {
   let dept = [];
 
   await groupomania.connect
   .then(function () {
-    return session.sql('SELECT nom FROM departement')
+    return session.sql('SELECT nom FROM departement;')
     .execute((row) => {
         row.forEach(nom => {
           dept.push(nom)
@@ -22,7 +77,9 @@ exports.getDeptsList = async () => {
   return dept
 };
 
-exports.checkDept = (departement) => {
+exports.checkDept = (data) => {
+  let departement = data.departement;
+
   return this.getDeptsList()
   .then((depts) => { // Check de l'input departement
     let match = false;
@@ -68,73 +125,93 @@ exports.getGroupeList = async () => {
 
 // Groupes
 
-exports.getGroupeContent = async (groupeName) => {
+exports.getGroupeContent = async (data) => {
   let content = [];
-  await groupomania.call('groupe_content', groupeName)
-    .then((row) => {
-      row.forEach(part => {
-        content.push(part)
-      })
+  await groupomania.call('groupe_content', data.groupe)
+  .then((row) => {
+    row.forEach(part => {
+      content.push(part)
     })
+  })
   return content;
 };
 
-exports.postGroupe = async (req) => {
-  req.public ? req.public = 1 : req.public = 0;
+exports.postGroupe = async (data) => {
+  data.publique ? data.publique = 1 : data.publique = 0;
 
-  await groupomania.call('create_groupe', req.groupe, req.description, req.id, req.public)
+  await groupomania.call('create_groupe', data.groupe, data.description, data.id, data.publique)
 };
 
-exports.getGroupeMember = async (groupeName) => {
+exports.getGroupeMember = async (data) => {
   let content = [];
-  await groupomania.call('groupe_member', groupeName)
-    .then((row) => {
-      row.forEach(part => {
-        content.push(part)
-      })
+  await groupomania.call('groupe_member', data.groupe)
+  .then((row) => {
+    row.forEach(el => {
+      content.push(el)
     })
-  return content;
+  })
+  return content;    
 };
 
-exports.putGroupeMember = async (req) => {
-  await groupomania.call('grant_groupe_right', req.groupe, req.id, req.idNewMember, req.newAdmin)
+exports.putGroupeMember = async (data) => {
+  await this.verifAdmin(data.groupe, data.id, 1);
+  await groupomania.call('grant_groupe_right', data.groupe, data.id, data.idNewMember, data.newAdmin)
 };
 
 // Participations
 
-exports.getParticipation = async (participationId, userId) => {
+exports.getParticipationInfos = async (data) => {
   let content = [];
-  await groupomania.call('participation_content', participationId, userId)
-    .then((row) => {
-      row.forEach(part => {
-        content.push(part)
-      })
+  await groupomania.call('participation_infos', data.idParticipation)
+  .then((row) => {
+    row.forEach(el => {
+      content.push(el)
     })
+  })
   return content;
 };
 
-exports.postParticipation = async (req) => {
-  req.public ? req.public = 1 : req.public = 0;
-  req.importance ? req.importance = 100 : req.importance = 0;
+exports.postParticipation = async (data) => {
+  data.publique ? data.publique = 1 : data.publique = 0;
+  data.prive ? data.prive = 1 : data.prive = 0;
+  data.importance ? data.importance = 100 : data.importance = 0;
 
-  await groupomania.call('create_participation', req.groupe, req.id, req.titre, req.preview, req.article, req.importance, req.public)
+  if ((data.publique + data.prive) === 2) {
+    throw { custMsg: "Une participation ne peut être publique et privée !" }
+  }
+  await this.verifRight(data.groupe, data.id, 0);
+  await groupomania.call('create_participation', data.groupe, data.id, data.titre, data.preview, data.article, data.importance, data.publique, data.prive)
 };
 
-exports.getParticipationMember = async (participationId) => {
+exports.getParticipationMember = async (data) => {
   let content = [];
-  await groupomania.call('participation_member', participationId)
-    .then((row) => {
-      row.forEach(part => {
-        content.push(part)
-      })
+  await groupomania.call('participation_member', data.idParticipation)
+  .then((row) => {
+    row.forEach(el => {
+      content.push(el)
     })
+  })
   return content;
 };
 
-exports.putParticipationMember = async (req) => {
-  await groupomania.call('grant_participation_right', req.participationId, req.id, req.idNewMember, req.newAdmin)
+exports.putParticipationMember = async (data) => {
+  this.verifAdmin(data.idParticipation, data.id, 0);
+  await groupomania.call('grant_participation_right', data.idParticipation, data.id, data.idNewMember, data.newAdmin)  
 };
 
-exports.postCommentaire = async (req) => {
-  await groupomania.call('create_commentaire', req.id, req.participationId, req.contenu)
+exports.getParticipationComment = async (data) => {
+  let content = [];
+  await this.verifRight(data.idParticipation, data.id, -1);
+  await groupomania.call('participation_comment', data.idParticipation)
+  .then((row) => {
+    row.forEach(el => {
+      content.push(el)
+    })
+  })
+  return content;
+};
+
+exports.postCommentaire = async (data) => {
+  await this.verifRight(data.idParticipation, data.id, 0);
+  await groupomania.call('create_commentaire', data.id, data.idParticipation, data.contenu)  
 };

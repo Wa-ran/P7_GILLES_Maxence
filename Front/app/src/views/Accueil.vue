@@ -71,11 +71,7 @@ export default {
       return str.substring(str.lastIndexOf('/')+1)
     }
   },
-  mounted() {
-    window.sessionStorage.clear()
-  },
   updated() {
-    window.sessionStorage.clear();
     setTimeout(() => {
       document.querySelector('[autofocus]').focus();
     }, 300)

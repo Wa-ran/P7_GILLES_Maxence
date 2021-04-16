@@ -2,22 +2,22 @@ const groupomania = require('./groupomania');
 const gpm = require('../middlewares/gpm');
 const bcrypt = require('bcrypt');
 
-exports.createUser = (req) => {
-  return gpm.checkDept(req.departement)
+exports.createUser = (data) => {
+  return gpm.checkDept(data)
   .then(() => {
-    return groupomania.call('sign_up', req.nom, req.prenom, req.email, req.password, req.departement)
+    return groupomania.call('sign_up', data.nom, data.prenom, data.email, data.password, data.departement)
   })
 };
 
-exports.selectProfil = async (req) => {
+exports.selectProfil = async (data) => {
   let profil;
 
-  await groupomania.call('log_in', req.email)
+  await groupomania.call('log_in', data.email)
   .then((res) => {
     return profil = res[0]
   })
   .then(() => {
-    return bcrypt.compare(req.verifPass, profil.password)
+    return bcrypt.compare(data.verifPass, profil.password)
   })
   .then((valid) => {
     if (!valid) {
@@ -27,15 +27,15 @@ exports.selectProfil = async (req) => {
   return profil
 };
 
-exports.putInfos = async (req) => {
+exports.putInfos = async (data) => {
   let profil;
 
-  await gpm.checkDept(req.departement)
+  await gpm.checkDept(data)
   .then(() => {
-    return this.selectProfil(req)
+    return this.selectProfil(data)
   })
   .then(() => {
-    return groupomania.call('modif_user_infos', req.nom, req.prenom, req.departement, req.id)
+    return groupomania.call('modif_user_infos', data.nom, data.prenom, data.departement, data.id)
     .then(res => {
       return profil = res[0]
     })
@@ -43,16 +43,16 @@ exports.putInfos = async (req) => {
   return profil
 };
 
-exports.putEmail = (req) => {
-  return this.selectProfil(req)
+exports.putEmail = (data) => {
+  return this.selectProfil(data)
   .then(() => {
-    return groupomania.call('modif_user_email', req.emailNew, req.id)
+    return groupomania.call('modif_user_email', data.emailNew, data.id)
   })
 };
 
-exports.putPass = (req) => {
-  return this.selectProfil(req)
+exports.putPass = (data) => {
+  return this.selectProfil(data)
   .then(() => {
-    return groupomania.call('modif_user_pass', req.passwordNew, req.id)
+    return groupomania.call('modif_user_pass', data.passwordNew, data.id)
   })
 };

@@ -8,9 +8,11 @@ BEGIN
     
     START TRANSACTION READ ONLY;
 
-		SELECT JSON_OBJECT('id', id, 'user', utilisateur_id, 'contenu', contenu, 'date', date_creation)
+		SELECT JSON_OBJECT('id', commentaire.id, 'nom', utilisateur.nom, 'prenom', utilisateur.prenom, 'contenu', commentaire.contenu, 'date', commentaire.date_creation)
 		FROM commentaire
-        WHERE participation_id = p_participation_id;
+        INNER JOIN utilisateur
+        ON commentaire.utilisateur_id = utilisateur.id
+        WHERE commentaire.participation_id = p_participation_id;
     
     COMMIT;
 END

@@ -40,16 +40,14 @@
 
     <div class="mt-n2 pt-2 w-100 d-flex flex-wrap rounded z-depth-2 zind2 gpm-base breadCrumb"
     aria-label="Breadcrumb">
-      <div v-for="(path, name, index) in breadCrumb" :key="index"
-      >
+      <div v-for="(link, index) in breadCrumb" :key="index">
+        <span class="ml-2">-</span>
         <router-link
-        :to="path.replace('/', '')"
-        :title="decodeURIComponent(name)"
+        :to="link.path"
+        :title="decodeURIComponent(link.name)"
         :class="lastBreadClass(index)">
-          <!-- router-link 'to' rajoute un '/' au début, mais dans notre cas il est déjà présent -->
-          {{ breadName(name) }}
+          {{ breadName(link.name, index) }}
         </router-link>
-        <span class="mr-1">-</span>
       </div>
     </div>
 
@@ -91,27 +89,32 @@ export default {
   },
   computed: {
     breadCrumb() {
-      let list = this.$route.path.split('/');
-      let links = {};
+      let list = this.$route.path.replace('/', '').split('/');
+
+      let link = [];
       let path = '';
+
       for (let name of list) {
+        let pair = {};
         path = path + '/' + name;
-        links[name] = path;
+        pair['name'] = name;
+        pair['path'] = path;
+        link.push(pair);
       }
-      return links
+      return link
     },
     retourLink() {
-      let link = Object.values(this.breadCrumb)[Object.keys(this.breadCrumb).length-2].replace('/','');
+      let link = Object.values(this.breadCrumb)[Object.keys(this.breadCrumb).length-2].path;
       return link
     }
   },
   methods: {
-    breadName(name) {
+    breadName(name, index) {
       let props = this.$route.params.participation;
       let text = decodeURIComponent(name);
 
-      if (props && (text == props)) {
-        return  'Participation actuelle'
+      if (props && (index == Object.keys(this.breadCrumb).length-1)) {
+        return 'Participation'
       } else {
         return text
       }

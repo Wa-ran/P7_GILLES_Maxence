@@ -1,5 +1,5 @@
 <template>
-  <TitleDoc :color="'gpm-default'">
+  <DocCard :color="'gpm-default'">
     <template #title>
       <h2 class="h4 m-1">
         Profil
@@ -57,12 +57,12 @@
         </wrap>
       </div>
     </template>
-  </TitleDoc>
+  </DocCard>
 </template>
 
 <script>
 import Wrap from '@/components/Wrap';
-import TitleDoc from '@/components/TitleDoc.vue';
+import DocCard from '@/components/DocCard.vue';
 import ButtonPiti from '@/components/ButtonPiti.vue';
 
 export default {
@@ -70,7 +70,7 @@ export default {
   components: {
     Wrap,
     ButtonPiti,
-    TitleDoc
+    DocCard
   },
   computed: {
     mail() { return this.$store.state.profil.email },

@@ -33,7 +33,7 @@ CREATE TABLE departement (
 
 CREATE TABLE commentaire (
 				id INT UNSIGNED AUTO_INCREMENT NOT NULL,
-				contenu TEXT,
+				contenu TEXT NOT NULL,
 				date_creation DATETIME NOT NULL,
                 participation_id INT UNSIGNED NOT NULL,
 				utilisateur_id INT UNSIGNED,
@@ -43,7 +43,7 @@ CREATE TABLE commentaire (
 CREATE TABLE utilisateur (
 				id INT UNSIGNED AUTO_INCREMENT NOT NULL,
                 nom VARCHAR(100) NOT NULL,
-                email VARCHAR(100) NOT NULL,
+                email VARCHAR(100) NOT NULL UNIQUE,
                 password VARCHAR(60) NOT NULL,
                 departement_nom VARCHAR(50),
                 prenom VARCHAR(100) NOT NULL,

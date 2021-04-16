@@ -35,8 +35,8 @@ export default {
       return value
     }
   },
-  async created() {
-    await this.$store.dispatch('chooseSubmit', { backFct: 'postLogin', submitPath: 'home' })
+  created() {
+    this.$store.dispatch('chooseSubmit', { backFct: 'postLogin', submitPath: 'home' })
   }
 }
 </script>

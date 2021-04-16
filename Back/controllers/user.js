@@ -3,12 +3,9 @@ const user = require('../middlewares/user');
 const { cryptData, decryptData } = require('../middlewares/sanitizer')
 
 exports.signup = (req, res, next) => {
-  let profil = {};
-  profil.email = req.body.email;
-  
-  cryptData(req.body)
-  .then((cryptData) => {
-    return user.createUser(cryptData)
+  cryptData(req)
+  .then((data) => {
+    return user.createUser(data)
   })
   .then(() => {
     res.sendStatus(201)
@@ -20,9 +17,10 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-  cryptData(req.body)
-  .then((cryptData) => {
-    return user.selectProfil(cryptData)
+  delete req.body.id;
+  cryptData(req)
+  .then((data) => {
+    return user.selectProfil(data)
   })
   .then(async (profil) => {
     profil = await decryptData(profil);
@@ -43,9 +41,9 @@ exports.login = (req, res, next) => {
 };
 
 exports.putInfos = (req, res, next) => {
-  cryptData(req.body)
-  .then((cryptData) => {
-    return user.putInfos(cryptData)
+  cryptData(req)
+  .then((data) => {
+    return user.putInfos(data)
   })
   .then(async (profil) => {
     profil = await decryptData(profil);
@@ -58,9 +56,9 @@ exports.putInfos = (req, res, next) => {
 };
 
 exports.putEmail = (req, res, next) => {
-  cryptData(req.body)
-  .then((cryptData) => {
-    return user.putEmail(cryptData)
+  cryptData(req)
+  .then((data) => {
+    return user.putEmail(data)
   })
   .then(() => {
     res.sendStatus(204)
@@ -72,9 +70,9 @@ exports.putEmail = (req, res, next) => {
 };
 
 exports.putPass = (req, res, next) => {
-  cryptData(req.body)
-  .then((cryptData) => {
-    return user.putPass(cryptData)
+  cryptData(req)
+  .then((data) => {
+    return user.putPass(data)
   })
   .then(() => {
     res.sendStatus(204)

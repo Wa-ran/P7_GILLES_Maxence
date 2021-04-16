@@ -7,12 +7,8 @@
       type="text" maxlength="100"
       validate required autofocus lazy
       invalidFeedback="Non rempli"/>
-    <mdb-input
-      class="d-flex flex-column input-group textarea" 
-      id="description" name="description" label="Une petite description ?"
-      value="Pas de description." @focus="$event.target.select()"
-      type="textarea"
-      validate required lazy/>
+    <TextArea
+      :id="'description'" :name="'description'" :label="'Description'"/>
     <div class="custom-control custom-switch"
     title="Un groupe publique permet à n'importe quel utilisateur d'y créer des participations.">
       <input type="checkbox" class="custom-control-input" id="publique" name="publique">
@@ -24,12 +20,14 @@
 <script>
 import mdbInput from 'mdbvue/lib/components/mdbInput';
 
+import TextArea from '@/components/TextArea';
 import Wrap from '@/components/Wrap';
 
 export default {
   name: 'groupe',
   components: {
     mdbInput,
+    TextArea,
     Wrap
   },
   data() {

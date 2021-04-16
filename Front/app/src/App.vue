@@ -6,6 +6,47 @@
   </div>
 </template>
 
+<script>
+export default {
+  computed: {
+    pathName() {
+      return this.$route.name
+    }
+  },
+  methods: {
+    restart() {
+      this.$store.replaceState({
+        form: {
+          backFct: null,
+          submitPath: null
+        },
+        profil: {},
+        token: null,
+        headers: {},
+        contacts: {},
+        depts: [],
+        lastAnnonce: {},
+        groupeList: [],
+        groupe: {},
+        participation: {},
+      })
+    }
+  },
+  watch: {
+    pathName() {
+      if (this.pathName === 'accueil' ) {
+        this.restart()
+      }
+    }
+  },
+  created() {
+    if (this.pathName === 'accueil' ) {
+      this.restart()
+    }
+  }
+}
+</script>
+
 <style lang="scss">
 
 $image-path: '~@/../mdb/mdbvue/img'; // image path variable update

@@ -46,7 +46,8 @@ export default {
   },
   props: {
     submitButton: {
-      type: String
+      type: String,
+      default: 'Envoyer'
     }
   },
   data() {
@@ -98,6 +99,10 @@ export default {
       if (this.$route.params.groupeName) {
         data['groupe'] = this.$route.params.groupeName
       }
+      if (this.$route.params.participation) {
+        data['idParticipation'] = parseInt(this.$route.params.participation)
+      }
+
       this.$store.dispatch('sendForm', { backFct: this.backFct, data: data })
       .then(() => this.$router.push(this.submitPath))
       .catch((error) => {

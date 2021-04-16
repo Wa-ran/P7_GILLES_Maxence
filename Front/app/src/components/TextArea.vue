@@ -1,6 +1,7 @@
 <template>
   <mdb-input
   @focus="setEvent"
+  class="d-flex flex-column input-group textarea"
     :class="this.hasClass"
     :id="this.id" :name="this.name" :label="this.label"
     type="textarea"
@@ -17,7 +18,10 @@ export default {
   name: 'TextArea',
   components: { mdbInput },
   props: {
-    hasClass: String,
+    hasClass: {
+      type: String,
+      default: ''
+    },
     id: String,
     name: String,
     label: String,

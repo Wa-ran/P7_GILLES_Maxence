@@ -1,5 +1,5 @@
 <template>
-    <TitleDoc :color="'gpm-default'">
+    <DocCard :color="'gpm-default'">
     <template #title>
       <h2 class="h4 m-1">
         Modifez votre profil
@@ -14,13 +14,13 @@
           <component :is='this.formComponent'></component>
         </main-form>
       </template>
-    </TitleDoc>
+    </DocCard>
 </template>
 
 <script>
 import AnimSlideDrop from '@/components/AnimSlideDrop';
 import MainForm from '@/components/MainForm';
-import TitleDoc from '@/components/TitleDoc';
+import DocCard from '@/components/DocCard';
 
 const infos = () => ({
   component: import('@/views/forms/infos')
@@ -37,7 +37,7 @@ export default {
   components: {
     AnimSlideDrop,
     MainForm,
-    TitleDoc,
+    DocCard,
     infos,
     mail,
     pass
