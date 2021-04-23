@@ -13,6 +13,7 @@ export default new Vuex.Store({
     })
   ],
   state: {
+    loading: true,
     form: {
       backFct: null,
       submitPath: null
@@ -28,6 +29,9 @@ export default new Vuex.Store({
     commentaires: [],
   },
   mutations: {
+    isLoading(state, payload) {
+      state.loading = payload
+    },
     setSubmit(state, payload) {
       state.form.backFct = payload.backFct;
       state.form.submitPath = payload.submitPath;
@@ -57,7 +61,7 @@ export default new Vuex.Store({
       state.groupeList = payload
     },
     getGroupeContent(state, payload) {
-      state.groupe[Object.keys(payload)[0]] = Object.values(payload)[0]
+      Vue.set(state.groupe , Object.keys(payload)[0], Object.values(payload)[0])
     },
     getParticipationInfos(state, payload) {
       for (const [key, value] of Object.entries(payload[0])) {
@@ -69,6 +73,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    setLoading(context, payload) {
+      context.commit('isLoading', payload)
+    },
     chooseSubmit(context, payload) {
       context.commit('setSubmit', payload)
     },
@@ -77,8 +84,12 @@ export default new Vuex.Store({
       .then(res => context.commit('setProfil', res)) // Pas de res pour la création de groupes/participations/commentaires
     },
     GPMRequest(context, req) {
+      context.commit('isLoading', true);
       return Back[req.backFct](req.data ? req.data : null)
-      .then(res => context.commit(req.backFct, res))
+      .then(res => {
+        context.commit(req.backFct, res);
+        if (res) context.commit('isLoading', false)
+      })
     },
   },
   getters: {

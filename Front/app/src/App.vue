@@ -16,6 +16,7 @@ export default {
   methods: {
     restart() {
       this.$store.replaceState({
+        loading: true,
         form: {
           backFct: null,
           submitPath: null
@@ -23,12 +24,12 @@ export default {
         profil: {},
         token: null,
         headers: {},
-        contacts: {},
         depts: [],
         lastAnnonce: {},
         groupeList: [],
         groupe: {},
-        participation: {},
+        participationInfos: {},
+        commentaires: [],
       })
     }
   },

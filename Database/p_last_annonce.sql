@@ -14,7 +14,9 @@ BEGIN
         INTO last_annonce
         FROM participation
         WHERE groupe_nom = '3b265bff7bd75e95dc0d84a9d8d6274b565ab1'
-        AND date_creation = (SELECT MAX(date_creation) FROM participation);
+        AND date_creation = (SELECT MAX(date_creation)
+							FROM participation
+                            WHERE groupe_nom = '3b265bff7bd75e95dc0d84a9d8d6274b565ab1');
 
 		SELECT JSON_OBJECT('id', id, 'titre', titre, 'preview', preview, 'article', article, 'date_creation', date_creation, 'groupe_nom', groupe_nom, 'importance', importance, 'createur', createur)
 		FROM participation

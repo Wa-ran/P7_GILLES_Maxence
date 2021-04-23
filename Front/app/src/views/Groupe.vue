@@ -10,12 +10,18 @@
 
       <template>
         <div v-show="!isCreation" class="w-100">
+
+          <div class="spinner-border" role="status" v-if="loading">
+            <span class="sr-only">Chargement...</span>
+          </div>
+
           <wrap withComp="AnimBlockSlide" class="w-100 mt-n3">
             <ArticlePreview
             v-for="(item, index) of contentList" :key="index"
             class="w-100 mt-3 gpm-lecture"
             :btnColor="'gpm-attention gpm-warning-active'"
             :isGroupe="isGroupes">
+
               <template #title>
                 <h3 class="mx-auto mb-2 pb-0"
                 :class="isGroupes ? 'h4' : 'h5'">
@@ -24,11 +30,13 @@
                   </router-link>
                 </h3>
               </template>
+
               <template #text>
                 <div class="mt-2">
                   {{ item.text }}
                 </div>
               </template>
+
             </ArticlePreview>
           </wrap>
         </div>
@@ -40,13 +48,16 @@
             <component :is='this.formComponent'></component>
           </main-form>
         </div>
+
       </template>
     </DocCard>
+
     <ButtonDoc
     v-show="!isCreation"
     @action="$router.push(pathToForm)"
     :text="isGroupes ? 'Créer un nouveau groupe' : 'Nouvelle participation'"
     class="mx-auto my-3 gpm-attention gpm-warning-active gpm-shadow-focus"/>
+
   </div>
 </template>
 
@@ -77,6 +88,9 @@ export default {
   },
   props: ['groupeName'],
   computed: {
+    loading() {
+      return this.$store.state.loading
+    },
     isGroupes() {
       return this.$route.name == 'groupes' ? true : false
     },
@@ -91,8 +105,8 @@ export default {
     },
     contentList() {
       let data = this.groupeName ?
-      this.$store.state.groupe[this.groupeName] :
-      this.$store.state.groupeList;
+        this.$store.state.groupe[this.groupeName] :
+        this.$store.state.groupeList;
 
       let list = [];
 
@@ -121,16 +135,21 @@ export default {
     async dispatch() {
       if (this.$route.name == 'groupeName') {
         await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeContent', data: this.groupeName })
-        .catch(error => console.log(error));      
+        .catch(error => console.log(error))
       }
       else {
         await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeList' })
-        .catch(error => console.log(error));    
+        .catch(error => console.log(error));
       }
     }
   },
-  async created() {
-    await this.dispatch()
+  created() {
+    this.dispatch()
+  },
+  watch: {
+    groupeName() {
+      this.dispatch()
+    }
   }
 }
 </script>
