@@ -81,16 +81,13 @@ export default {
       return contact.nom + ' ' + contact.prenom
     },
     async getInfos() {
-      await this.$store.dispatch('GPMRequest', { backFct: 'getParticipationInfos', data: this.participation })
-      .catch(error => console.log(error));      
+      await this.$store.dispatch('GPMRequest', { backFct: 'getParticipationInfos', data: this.participation })      
     },
     async getComment() {
-      await this.$store.dispatch('GPMRequest', { backFct: 'getParticipationComment', data: this.participation })
-      .catch(error => console.log(error));      
+      await this.$store.dispatch('GPMRequest', { backFct: 'getParticipationComment', data: this.participation })      
     },
     async setSubmit() {
       await this.$store.dispatch('chooseSubmit', { backFct: 'postCommentaire', submitPath: this.$route.path })
-      .catch(error => console.log(error));
     }
   },
   async created() {

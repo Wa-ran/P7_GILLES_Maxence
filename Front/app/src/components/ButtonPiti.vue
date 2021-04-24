@@ -4,7 +4,11 @@
     role="button"
     class="px-2 py-0 font-weight-bold rounded"
     darkWaves block>
-    <span class="btn-text-normal">{{ text }}</span>
+
+    <slot>
+      <span class="btn-text-normal">{{ text }}</span>
+    </slot>
+
   </mdb-btn>
 </template>
 
@@ -19,7 +23,7 @@ export default {
   props: {
     text: {
       type: String,
-      required: true
+      required: false
     }
   }
 }

@@ -3,8 +3,15 @@ const { cryptData, decryptData } = require('../middlewares/sanitizer');
 
 exports.getDeptsList = (req, res, next) => {
   gpm.getDeptsList()
-  .then((depts) => {
-    res.send(depts)
+  .then((content) => {
+    if (!content) {
+      res.sendStatus(201)
+    } else {
+      if (Object.entries(content).length === 0 ) {
+        res.status(404)
+      }
+      res.send(content)
+    }
   })
   .catch((error) => {
     console.log(error);
@@ -15,8 +22,15 @@ exports.getDeptsList = (req, res, next) => {
 exports.getLastAnnonce = (req, res, next) => {
   gpm.getLastAnnonce()
   .then(async (annonce) => {
-    let decrypt = await decryptData(annonce);
-    res.send(decrypt)
+    let content = await decryptData(annonce);
+    if (!content) {
+      res.sendStatus(201)
+    } else {
+      if (Object.entries(content).length === 0 ) {
+        res.status(404)
+      }
+      res.send(content)
+    }
   })
   .catch((error) => {
     console.log(error);
@@ -34,8 +48,15 @@ exports.getGroupeList = (req, res, next) => {
     });
     return content
   })
-  .then((list) => {
-    res.send(list)
+  .then((content) => {
+    if (!content) {
+      res.sendStatus(201)
+    } else {
+      if (Object.entries(content).length === 0 ) {
+        res.status(404)
+      }
+      res.send(content)
+    }
   })
   .catch((error) => {
     console.log(error);
@@ -58,8 +79,15 @@ exports.getGroupeContent = (req, res, next) => {
     });
     return content
   })
-  .then((list) => {
-    res.send(list)
+  .then((content) => {
+    if (!content) {
+      res.sendStatus(201)
+    } else {
+      if (Object.entries(content).length === 0 ) {
+        res.status(404)
+      }
+      res.send(content)
+    }
   })
   .catch((error) => {
     console.log(error);
@@ -72,8 +100,15 @@ exports.postGroupe = (req, res, next) => {
   .then((data) => {
     return gpm.postGroupe(data)
   })
-  .then(() => {
-    res.sendStatus(201)
+  .then((content) => {
+    if (!content) {
+      res.sendStatus(201)
+    } else {
+      if (Object.entries(content).length === 0 ) {
+        res.status(404)
+      }
+      res.send(content)
+    }
   })
   .catch((error) => {
     console.log(error);
@@ -94,8 +129,15 @@ exports.getGroupeMember = (req, res, next) => {
     });
     return content
   })
-  .then((list) => {
-    res.send(list)
+  .then((content) => {
+    if (!content) {
+      res.sendStatus(201)
+    } else {
+      if (Object.entries(content).length === 0 ) {
+        res.status(404)
+      }
+      res.send(content)
+    }
   })
   .catch((error) => {
     console.log(error);
@@ -108,8 +150,15 @@ exports.putGroupeMember = (req, res, next) => {
   .then((data) => {
     return gpm.putGroupeMember(data)
   })
-  .then(() => {
-    res.sendStatus(201)
+  .then((content) => {
+    if (!content) {
+      res.sendStatus(201)
+    } else {
+      if (Object.entries(content).length === 0 ) {
+        res.status(404)
+      }
+      res.send(content)
+    }
   })
   .catch((error) => {
     console.log(error);
@@ -132,8 +181,15 @@ exports.getParticipationInfos = (req, res, next) => {
     });
     return content
   })
-  .then((participation) => {
-    res.send(participation)
+  .then((content) => {
+    if (!content) {
+      res.sendStatus(201)
+    } else {
+      if (Object.entries(content).length === 0 ) {
+        res.status(404)
+      }
+      res.send(content)
+    }
   })
   .catch((error) => {
     console.log(error);
@@ -146,8 +202,15 @@ exports.postParticipation = (req, res, next) => {
   .then((data) => {
     return gpm.postParticipation(data)
   })
-  .then(() => {
-    res.sendStatus(201)
+  .then((content) => {
+    if (!content) {
+      res.sendStatus(201)
+    } else {
+      if (Object.entries(content).length === 0 ) {
+        res.status(404)
+      }
+      res.send(content)
+    }
   })
   .catch((error) => {
     console.log(error);
@@ -168,8 +231,15 @@ exports.getParticipationMember = (req, res, next) => {
     });
     return content
   })
-  .then((list) => {
-    res.send(list)
+  .then((content) => {
+    if (!content) {
+      res.sendStatus(201)
+    } else {
+      if (Object.entries(content).length === 0 ) {
+        res.status(404)
+      }
+      res.send(content)
+    }
   })
   .catch((error) => {
     console.log(error);
@@ -182,8 +252,15 @@ exports.putParticipationMember = (req, res, next) => {
   .then((data) => {
     return gpm.putParticipationMember(data)
   })
-  .then(() => {
-    res.sendStatus(201)
+  .then((content) => {
+    if (!content) {
+      res.sendStatus(201)
+    } else {
+      if (Object.entries(content).length === 0 ) {
+        res.status(404)
+      }
+      res.send(content)
+    }
   })
   .catch((error) => {
     console.log(error);
@@ -206,8 +283,15 @@ exports.getParticipationComment = (req, res, next) => {
     })
     return content
   })
-  .then((participation) => {
-    res.send(participation)
+  .then((content) => {
+    if (!content) {
+      res.sendStatus(201)
+    } else {
+      if (Object.entries(content).length === 0 ) {
+        res.status(404)
+      }
+      res.send(content)
+    }
   })
   .catch((error) => {
     console.log(error);
@@ -220,8 +304,15 @@ exports.postCommentaire = (req, res, next) => {
   .then((data) => {
     return gpm.postCommentaire(data)
   })
-  .then(() => {
-    res.sendStatus(201)
+  .then((content) => {
+    if (!content) {
+      res.sendStatus(201)
+    } else {
+      if (Object.entries(content).length === 0 ) {
+        res.status(404)
+      }
+      res.send(content)
+    }
   })
   .catch((error) => {
     console.log(error);

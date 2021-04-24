@@ -52,12 +52,13 @@ export default {
   },
   data() {
     return {
-      loading: false,
-      error: false,
       timeout: null
     }
   },
   computed: {
+    error() {
+      return this.$store.state.error
+    },
     backFct() {
       return this.$store.state.form.backFct
     },
@@ -83,7 +84,7 @@ export default {
       let form = document.querySelector('form[novalidate]');
       let data = {};
       form.classList.add('was-validated');
-      if (form.checkValidity() && !this.loading && !this.error) {
+      if (form.checkValidity() && !this.error) {
         this.loading = true;
         document.querySelectorAll('[required]').forEach(function(elem) {
           if (!elem.name.match(/(Conf)/)) {
@@ -93,7 +94,7 @@ export default {
         this.sendForm(data)
       }
     },
-    sendForm(data) {
+    async sendForm(data) {
       data['id'] = this.$store.state.profil.id;
 
       if (this.$route.params.groupeName) {
@@ -103,12 +104,9 @@ export default {
         data['idParticipation'] = parseInt(this.$route.params.participation)
       }
 
-      this.$store.dispatch('sendForm', { backFct: this.backFct, data: data })
-      .then(() => this.$router.push(this.submitPath))
-      .catch((error) => {
-        this.loading = false;
-        // this.error = true;
-        return console.error(error)
+      await this.$store.dispatch('sendForm', { backFct: this.backFct, data: data })
+      .then(() => {
+        if (!this.$store.state.error) this.$router.push(this.submitPath)
       })
     }
   },

@@ -1,6 +1,7 @@
 <template>
   <mdb-btn
     @click="$emit('actionBtnCircle')"
+    class="buttonCircle"
     role="button"
     darkWaves block>
     <slot></slot>
@@ -14,19 +15,28 @@ export default {
   name: "ButtonCircle",
   components: {
     mdbBtn
+  },
+  methods: {
+    roundify() {
+      document.querySelectorAll('.buttonCircle').forEach(btn => {
+        let width = btn.offsetWidth;
+        let height = btn.offsetHeight;
+        if (width >= height) {
+          btn.style.minHeight = width + 'px'
+        } else {
+          btn.style.minWidth = height + 'px'
+        }
+      })
+    }
+  },
+  mounted() {
+    this.roundify()
   }
 }
 </script>
 
 <style lang="scss" scoped>
-span {
-  font-size: 1.1rem !important;
-}
 button {
-  min-width: 50px;
-  min-height: 50px;
-  max-width: 50px;
-  max-height: 50px;
   padding: 0;
   border-radius: 50%;
 }

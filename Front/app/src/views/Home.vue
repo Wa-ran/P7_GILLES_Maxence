@@ -55,7 +55,6 @@ export default {
     async dispatch() {
       if (this.$route.path == '/home') {
         await this.$store.dispatch('GPMRequest', { backFct: 'getLastAnnonce' })
-        .catch(error => console.log(error))
       }
     },
   },

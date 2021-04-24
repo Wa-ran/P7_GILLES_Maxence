@@ -105,7 +105,7 @@ export default {
     },
     contentList() {
       let data = this.groupeName ?
-        this.$store.state.groupe[this.groupeName] :
+        this.$store.state.groupe :
         this.$store.state.groupeList;
 
       let list = [];
@@ -135,11 +135,9 @@ export default {
     async dispatch() {
       if (this.$route.name == 'groupeName') {
         await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeContent', data: this.groupeName })
-        .catch(error => console.log(error))
       }
       else {
         await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeList' })
-        .catch(error => console.log(error));
       }
     }
   },

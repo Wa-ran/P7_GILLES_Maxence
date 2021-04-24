@@ -6,7 +6,11 @@
     :class="[isActive ? 'viewActive ' + activeColor : defaultColor]"
     :tabindex="isActive ? -1 : ''"
     darkWaves block>
-      <span class="btn-text-normal">{{ text }}</span>
+
+      <slot>
+        <span class="btn-text-normal">{{ text }}</span>      
+      </slot>
+
       <div v-if="isActive"
       class="w-100 coverShadow"
       :class="activeColor">
@@ -25,7 +29,7 @@ export default {
   props: {
     text: {
       type: String,
-      required: true
+      required: false
     },
     path: {
       type: String,

@@ -6,7 +6,7 @@
     @actionBtnCircle="triggerAnnonce()"
     class="zind1 btn-circle d-flex"
     :class="btnColor">
-      <div class="m-auto icon-size d-flex">
+      <div class="m-auto p-1 icon-size d-flex">
         <i v-show="this.showAnnonce" class="fas fa-angle-up"></i>
         <i v-show="!this.showAnnonce" class="fas fa-angle-down"></i>
       </div>

@@ -31,7 +31,7 @@ exports.verifRight = async (identifier, userId, accesReq) => {
     console.log(error);
     throw { custMsg : 'Problème lors de la vérification des droits.' }
   })
-console.log(publique + ' ' + member + ' ' + prive + ' ' + accesReq)
+
   if ((publique + member - prive) < accesReq) {
     throw { custMsg : 'Vous n\'avez pas les droits.' }
   }

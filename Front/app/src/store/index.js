@@ -13,24 +13,30 @@ export default new Vuex.Store({
     })
   ],
   state: {
-    loading: true,
+    commentaires: [],
+    depts: [],
+    error: false,
+    errorMsg: '',
     form: {
       backFct: null,
       submitPath: null
     },
+    groupe: {},
+    groupeList: [],
+    headers: {},
+    lastAnnonce: {},
+    loading: true,
+    participationInfos: {},
     profil: {},
     token: null,
-    headers: {},
-    depts: [],
-    lastAnnonce: {},
-    groupeList: [],
-    groupe: {},
-    participationInfos: {},
-    commentaires: [],
   },
   mutations: {
     isLoading(state, payload) {
       state.loading = payload
+    },
+    triggError(state, payload) {
+      state.error = payload.bool;
+      state.errorMsg = payload.msg;
     },
     setSubmit(state, payload) {
       state.form.backFct = payload.backFct;
@@ -48,7 +54,7 @@ export default new Vuex.Store({
           } else {
             state.profil[key] = value
           }
-        }        
+        }
       }
     },
     getDeptsList(state, payload) {
@@ -61,34 +67,46 @@ export default new Vuex.Store({
       state.groupeList = payload
     },
     getGroupeContent(state, payload) {
-      Vue.set(state.groupe , Object.keys(payload)[0], Object.values(payload)[0])
+      state.groupe = payload
     },
     getParticipationInfos(state, payload) {
       for (const [key, value] of Object.entries(payload[0])) {
         state.participationInfos[key] = value
-      }  
+      }
     },
     getParticipationComment(state, payload) {
-      state.commentaires = payload  
+      state.commentaires = payload
     }
   },
   actions: {
     setLoading(context, payload) {
       context.commit('isLoading', payload)
     },
+    setError(context, payload) {
+      context.commit('triggError', { bool: payload, msg: '' });
+    },
     chooseSubmit(context, payload) {
       context.commit('setSubmit', payload)
     },
     sendForm(context, req) {
-      return Back[req.backFct](req.data)
+      return Back.request(req.backFct, req.data)
       .then(res => context.commit('setProfil', res)) // Pas de res pour la création de groupes/participations/commentaires
+      .catch(async error => {
+        console.log(await error);
+        context.commit('triggError', { bool: true, msg: await error });
+      })
     },
     GPMRequest(context, req) {
       context.commit('isLoading', true);
-      return Back[req.backFct](req.data ? req.data : null)
+      return Back.request(req.backFct, req.data ? req.data : null)
       .then(res => {
         context.commit(req.backFct, res);
         if (res) context.commit('isLoading', false)
+      })
+      .catch(async error => {
+        console.log(await error);
+        context.commit('triggError', { bool: true, msg: await error.msg });
+        context.commit('isLoading', false);
       })
     },
   },

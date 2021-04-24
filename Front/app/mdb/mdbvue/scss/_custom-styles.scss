@@ -145,6 +145,11 @@ button:focus span {
   z-index: 1;
 }
 
+.modal-dialog {
+  max-width: 80%;
+  margin: 20% auto !important;
+}
+
 .overhid {
   overflow: hidden;
 }

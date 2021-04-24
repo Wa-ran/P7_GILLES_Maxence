@@ -3,11 +3,19 @@
     <router-view name="MainNav" class="zind10 dessus"/>
     <router-view class="w-100 h-100 flex-grow-1"/>
     <router-view name="Footer" class="w-100"/>
+
+    <ErrorModal/>
+
   </div>
 </template>
 
 <script>
+import ErrorModal from "@/components/ErrorModal.vue"
+
 export default {
+  components: {
+    ErrorModal
+  },
   computed: {
     pathName() {
       return this.$route.name
@@ -16,20 +24,22 @@ export default {
   methods: {
     restart() {
       this.$store.replaceState({
-        loading: true,
+        commentaires: [],
+        depts: [],
+        error: false,
+        errorMsg: {},
         form: {
           backFct: null,
           submitPath: null
         },
+        groupe: {},
+        groupeList: [],
+        headers: {},
+        lastAnnonce: {},
+        loading: true,
+        participationInfos: {},
         profil: {},
         token: null,
-        headers: {},
-        depts: [],
-        lastAnnonce: {},
-        groupeList: [],
-        groupe: {},
-        participationInfos: {},
-        commentaires: [],
       })
     }
   },
