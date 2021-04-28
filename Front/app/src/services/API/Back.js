@@ -3,11 +3,30 @@ import store from '../../store/index';
 export default {
   request(fct, data) {
     return this[fct](data ? data : '')
-    .then((res) => {
+    .then(async (res) => {
       if (res.status >= 400) {
-        throw res.json()
-      } else if (res) {
-        return res.json();
+        let err = {};
+        let status = res.status;
+        let msg = {};
+
+        try {
+          msg = await res.json() // Si le serveur ne renvoie qu'un statut sans corps, '.json' va fail
+        } catch (error) {
+          msg = res.statusText
+        }
+
+        err['status'] = status;
+        err['msg'] = msg;
+
+        throw err
+      }
+      else if (res) {
+        try {
+          res = await res.json();
+          return res
+        } catch (error) {
+          return res // Le serveur renvois parfois un statut seul
+        }
       }
     })
   },
@@ -44,6 +63,13 @@ export default {
       method: "PUT",
       headers: store.state.headers,
       body: JSON.stringify(data)
+    })
+  },
+  postAvatar(data) {
+    return fetch('http://localhost:3000/user/avatar', {
+      method: "POST",
+      headers: { 'Authorization': store.state.headers.Authorization },
+      body: data
     })
   },
   getUsersList() {

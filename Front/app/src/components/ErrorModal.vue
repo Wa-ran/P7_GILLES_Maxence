@@ -11,14 +11,14 @@
 
       <header class="w-100">
         <h1 class="h5 m-auto">
-          Erreur
+          Erreur {{ errStatus }}
         </h1>
       </header>
 
       <hr class="mt-1 mb-3 mx-auto gpm-alert w-75">
 
       <div class="mx-auto mb-2">
-        {{ message ? message : 'Erreur 404 !' }}
+        {{ errMessage }}
       </div>
 
       <footer class="w-100 d-flex">
@@ -49,7 +49,10 @@ export default {
     error() {
       return this.$store.state.error
     },
-    message() {
+    errStatus() {
+      return this.$store.state.errorStatus
+    },
+    errMessage() {
       return this.$store.state.errorMsg
     }
   },

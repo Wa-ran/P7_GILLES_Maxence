@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 const user = require('../middlewares/user');
 const { cryptData, decryptData } = require('../middlewares/sanitizer')
 
@@ -17,7 +18,6 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-  delete req.body.id;
   cryptData(req)
   .then((data) => {
     return user.selectProfil(data)
@@ -76,6 +76,24 @@ exports.putPass = (req, res, next) => {
   })
   .then(() => {
     res.sendStatus(204)
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).json(error.custMsg)
+  })
+};
+
+exports.avatar = (req, res, next) => {
+  cryptData(req)
+  .then((data) => {
+    return user.selectProfil(data)
+  })
+  .then(() => {
+    let path = req.file.path;
+    var ext = path.substring(path.lastIndexOf('.') + 1);
+    fs.rename(path, 'images/avatars/' + req.body.id + '_avatar.' + ext, () => {
+      res.sendStatus(201)
+    });
   })
   .catch((error) => {
     console.log(error);

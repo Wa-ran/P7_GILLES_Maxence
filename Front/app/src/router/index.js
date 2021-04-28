@@ -38,6 +38,7 @@ const routes = [
         component: () => import('../views/ProfilModif.vue'),
         children: [
           { path: 'infos', name: 'infos' },
+          { path: 'avatar', name: 'avatar' },
           { path: 'mail', name: 'mail' },
           { path: 'pass', name: 'pass' }
         ]

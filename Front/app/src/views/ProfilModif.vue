@@ -7,12 +7,12 @@
     </template>
 
       <template>
-        <main-form
+        <MainForm
         :submitButton="'Confirmer'"
         :key="this.formComponent"
         class="w-100 px-4 gpm-lecture">
           <component :is='this.formComponent'></component>
-        </main-form>
+        </MainForm>
       </template>
     </DocCard>
 </template>
@@ -24,6 +24,9 @@ import DocCard from '@/components/DocCard';
 
 const infos = () => ({
   component: import('@/views/forms/infos')
+});
+const avatar = () => ({
+  component: import('@/views/forms/avatar')
 });
 const mail = () => ({
   component: import('@/views/forms/mail')
@@ -39,6 +42,7 @@ export default {
     MainForm,
     DocCard,
     infos,
+    avatar,
     mail,
     pass
   },

@@ -71,6 +71,32 @@ button:focus span {
   height: fit-content;
 }
 
+.custom-file-input {
+  border-bottom: none !important;
+}
+
+.custom-file-label {
+  margin: 0 !important;
+  background-color: $white;
+  box-shadow: inset 0 0 10px 10px $gpm-lecture !important;
+  &::after {
+    content: "Parcourir";
+    background-color: $gpm-attention;
+    color: $black;
+    border: solid 1px $gpm-grey;
+  }
+}
+
+.custom-file:focus-within .custom-file-label {
+  background-color: $white;
+  border: solid 1px $gpm-warning;
+  box-shadow: inset 0 0 15px 7px $gpm-attention !important;
+  &::after {
+    background-color: $gpm-warning;
+    border: solid 1px $gpm-warning;
+  }
+}
+
 .custom-select { // style du select quand choix des options
   border-color: $gpm-default;
   &:focus, &:focus-within {

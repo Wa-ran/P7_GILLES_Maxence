@@ -17,6 +17,7 @@ export default new Vuex.Store({
     depts: [],
     error: false,
     errorMsg: '',
+    errorStatus: '',
     form: {
       backFct: null,
       submitPath: null
@@ -37,6 +38,7 @@ export default new Vuex.Store({
     triggError(state, payload) {
       state.error = payload.bool;
       state.errorMsg = payload.msg;
+      state.errorStatus = payload.status;
     },
     setSubmit(state, payload) {
       state.form.backFct = payload.backFct;
@@ -88,24 +90,25 @@ export default new Vuex.Store({
     chooseSubmit(context, payload) {
       context.commit('setSubmit', payload)
     },
-    sendForm(context, req) {
+    sendForm(context, req) { // req = { backFct: ..., data: ...}
       return Back.request(req.backFct, req.data)
-      .then(res => context.commit('setProfil', res)) // Pas de res pour la création de groupes/participations/commentaires
-      .catch(async error => {
-        console.log(await error);
-        context.commit('triggError', { bool: true, msg: await error });
+      .then(res => { if (res) context.commit('setProfil', res) }) // Pas de res pour la création de groupes/participations/commentaires, seul les formulaires "utilisateur" renvoient des données qui seront traitées par 'setProfil'
+      .catch(error => {
+        console.log(error);
+        context.commit('triggError', { bool: true, status: error.status, msg: error.msg });
+        context.commit('isLoading', false);
       })
     },
-    GPMRequest(context, req) {
+    GPMRequest(context, req) { // req = { backFct: ..., data: ...}
       context.commit('isLoading', true);
       return Back.request(req.backFct, req.data ? req.data : null)
       .then(res => {
         context.commit(req.backFct, res);
-        if (res) context.commit('isLoading', false)
+        context.commit('isLoading', false)
       })
-      .catch(async error => {
-        console.log(await error);
-        context.commit('triggError', { bool: true, msg: await error.msg });
+      .catch(error => {
+        console.log(error);
+        context.commit('triggError', { bool: true, status: error.status, msg: error.msg });
         context.commit('isLoading', false);
       })
     },

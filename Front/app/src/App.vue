@@ -27,7 +27,8 @@ export default {
         commentaires: [],
         depts: [],
         error: false,
-        errorMsg: {},
+        errorMsg: '',
+        errorStatus: '',
         form: {
           backFct: null,
           submitPath: null

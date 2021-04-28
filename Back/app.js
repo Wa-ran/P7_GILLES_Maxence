@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const userRoutes = require('./routes/user');
+const user = require('./routes/user');
 const gpm = require('./routes/gpm');
 
 // const path = require('path');
@@ -15,16 +15,12 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   next();
 });
-// // Parser pour exploiter les données plus facilement
+// Parser pour exploiter les données plus facilement
 app.use(bodyParser.json());
 
 // app.use('/images', express.static(path.join(__dirname, 'images')));
 
-app.use('/user', userRoutes);
+app.use('/user', user);
 app.use('/gpm', gpm);
-// app.use((req, res) => {
-//   res.json({ user: 'Votre requête a bien été reçue !' }); 
-// });
-// app.use('/api/sauces', saucesRoutes);
 
 module.exports = app;

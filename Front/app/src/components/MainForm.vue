@@ -1,7 +1,7 @@
 <template>
   <AnimSlideDrop>
     <mdb-card>
-      <form
+      <form id="MainForm"
       novalidate @keydown.prevent.enter="nextInput"
       class="w-100 p-3">
 
@@ -81,29 +81,39 @@ export default {
       this.debounce(this.checkForm())
     },
     checkForm() {
-      let form = document.querySelector('form[novalidate]');
-      let data = {};
+      let form = document.querySelector('#MainForm');
+      let data;
       form.classList.add('was-validated');
+
       if (form.checkValidity() && !this.error) {
-        this.loading = true;
-        document.querySelectorAll('[required]').forEach(function(elem) {
-          if (!elem.name.match(/(Conf)/)) {
-            data[elem.name] = elem.value;
+        if (document.querySelector('[type="file"]')) {
+          data = new FormData(form);
+
+          data.append('id', this.$store.state.profil.id);
+          if (this.$route.params.groupeName)
+            data.append('groupe', this.$route.params.groupeName);
+          if (this.$route.params.participation)
+            data.append('idParticipation', parseInt(this.$route.params.participation));
+        } 
+        else {
+          data = {};
+          
+          for (let elem of form) {
+            if (!elem.name.match(/(Conf)/) && elem.name != '')
+              data[elem.name] = elem.value;
           }
-        });
+
+          data['id'] = this.$store.state.profil.id;
+          if (this.$route.params.groupeName)
+            data['groupe'] = this.$route.params.groupeName;
+          if (this.$route.params.participation)
+            data['idParticipation'] = parseInt(this.$route.params.participation);
+        }
+
         this.sendForm(data)
       }
     },
     async sendForm(data) {
-      data['id'] = this.$store.state.profil.id;
-
-      if (this.$route.params.groupeName) {
-        data['groupe'] = this.$route.params.groupeName
-      }
-      if (this.$route.params.participation) {
-        data['idParticipation'] = parseInt(this.$route.params.participation)
-      }
-
       await this.$store.dispatch('sendForm', { backFct: this.backFct, data: data })
       .then(() => {
         if (!this.$store.state.error) this.$router.push(this.submitPath)

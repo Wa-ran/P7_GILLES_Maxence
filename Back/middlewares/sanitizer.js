@@ -3,6 +3,12 @@ const bcrypt = require('bcrypt');
 const { encrypt, decrypt } = require('../middlewares/crypto');
 
 exports.cryptData = async (req) => {
+  if (req.body.id) req.body['id'] = parseInt(req.body.id); // JWT 'stringify' tous les payloads
+
+  if (req.body.tokenId && req.body.tokenId !== req.body.id) { // Uniquement en envoi de file
+    throw { custMsg: "Identifiant utilisateur invalide !" }
+  }
+
   let saneData = {};
   saneData['verifPass'] = req.body.password;
   req.params.participationId ? req.body['idParticipation'] = parseInt(req.params.participationId) : '';
@@ -35,16 +41,6 @@ exports.cryptData = async (req) => {
     throw { custMsg: "Le format des données n'est pas accepté." }
   }
 };
-
-// exports.decryptData = async (data) => {
-//     for (const [key, value] of Object.entries(data)) {
-//       if (key.match(/(email)|(nom)|(groupe)|(titre)/)) {
-//         data[key] = decrypt(value)
-//       }
-//     }
-//     console.log(data)
-//   return data
-// };
 
 exports.decryptData = async (data) => {
   for (const [key, value] of Object.entries(data)) {

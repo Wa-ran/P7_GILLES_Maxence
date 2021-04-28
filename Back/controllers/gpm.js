@@ -8,9 +8,10 @@ exports.getDeptsList = (req, res, next) => {
       res.sendStatus(201)
     } else {
       if (Object.entries(content).length === 0 ) {
-        res.status(404)
+        res.sendStatus(404)
+      } else {
+        res.send(content)
       }
-      res.send(content)
     }
   })
   .catch((error) => {
@@ -27,9 +28,10 @@ exports.getLastAnnonce = (req, res, next) => {
       res.sendStatus(201)
     } else {
       if (Object.entries(content).length === 0 ) {
-        res.status(404)
+        res.sendStatus(404)
+      } else {
+        res.send(content)
       }
-      res.send(content)
     }
   })
   .catch((error) => {
@@ -53,9 +55,10 @@ exports.getGroupeList = (req, res, next) => {
       res.sendStatus(201)
     } else {
       if (Object.entries(content).length === 0 ) {
-        res.status(404)
+        res.sendStatus(404)
+      } else {
+        res.send(content)
       }
-      res.send(content)
     }
   })
   .catch((error) => {
@@ -84,9 +87,10 @@ exports.getGroupeContent = (req, res, next) => {
       res.sendStatus(201)
     } else {
       if (Object.entries(content).length === 0 ) {
-        res.status(404)
+        res.sendStatus(404)
+      } else {
+        res.send(content)
       }
-      res.send(content)
     }
   })
   .catch((error) => {
@@ -105,9 +109,10 @@ exports.postGroupe = (req, res, next) => {
       res.sendStatus(201)
     } else {
       if (Object.entries(content).length === 0 ) {
-        res.status(404)
+        res.sendStatus(404)
+      } else {
+        res.send(content)
       }
-      res.send(content)
     }
   })
   .catch((error) => {
@@ -134,9 +139,10 @@ exports.getGroupeMember = (req, res, next) => {
       res.sendStatus(201)
     } else {
       if (Object.entries(content).length === 0 ) {
-        res.status(404)
+        res.sendStatus(404)
+      } else {
+        res.send(content)
       }
-      res.send(content)
     }
   })
   .catch((error) => {
@@ -155,9 +161,10 @@ exports.putGroupeMember = (req, res, next) => {
       res.sendStatus(201)
     } else {
       if (Object.entries(content).length === 0 ) {
-        res.status(404)
+        res.sendStatus(404)
+      } else {
+        res.send(content)
       }
-      res.send(content)
     }
   })
   .catch((error) => {
@@ -186,9 +193,10 @@ exports.getParticipationInfos = (req, res, next) => {
       res.sendStatus(201)
     } else {
       if (Object.entries(content).length === 0 ) {
-        res.status(404)
+        res.sendStatus(404)
+      } else {
+        res.send(content)
       }
-      res.send(content)
     }
   })
   .catch((error) => {
@@ -207,9 +215,10 @@ exports.postParticipation = (req, res, next) => {
       res.sendStatus(201)
     } else {
       if (Object.entries(content).length === 0 ) {
-        res.status(404)
+        res.sendStatus(404)
+      } else {
+        res.send(content)
       }
-      res.send(content)
     }
   })
   .catch((error) => {
@@ -236,9 +245,10 @@ exports.getParticipationMember = (req, res, next) => {
       res.sendStatus(201)
     } else {
       if (Object.entries(content).length === 0 ) {
-        res.status(404)
+        res.sendStatus(404)
+      } else {
+        res.send(content)
       }
-      res.send(content)
     }
   })
   .catch((error) => {
@@ -257,9 +267,10 @@ exports.putParticipationMember = (req, res, next) => {
       res.sendStatus(201)
     } else {
       if (Object.entries(content).length === 0 ) {
-        res.status(404)
+        res.sendStatus(404)
+      } else {
+        res.send(content)
       }
-      res.send(content)
     }
   })
   .catch((error) => {
@@ -288,9 +299,10 @@ exports.getParticipationComment = (req, res, next) => {
       res.sendStatus(201)
     } else {
       if (Object.entries(content).length === 0 ) {
-        res.status(404)
+        res.sendStatus(404)
+      } else {
+        res.send(content)
       }
-      res.send(content)
     }
   })
   .catch((error) => {
@@ -309,9 +321,10 @@ exports.postCommentaire = (req, res, next) => {
       res.sendStatus(201)
     } else {
       if (Object.entries(content).length === 0 ) {
-        res.status(404)
+        res.sendStatus(404)
+      } else {
+        res.send(content)
       }
-      res.send(content)
     }
   })
   .catch((error) => {

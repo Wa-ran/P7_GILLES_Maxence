@@ -24,8 +24,23 @@
           <ButtonPiti
           @action="$router.push('profil/modification/infos')"
           :text="'Modifier'"
-          class="mt-3 ml-auto gpm-attention gpm-warning-active"
-          />
+          class="mt-3 ml-auto gpm-attention gpm-warning-active"/>
+        </wrap>
+      </div>
+
+      <div class="w-100">
+        <wrap withComp="AnimBlockSlide" class="w-100">
+          <hr class="my-3 gpm-base w-100">
+          <div class="my-3">
+            <h3 class="h5 text-left">Votre avatar :</h3>
+          </div>
+          <div class="pl-2 w-100 d-flex justify-content-between">
+            <div class="font-weight-bold">Avatar</div>
+            <ButtonPiti
+            @action="$router.push('profil/modification/avatar')"
+            :text="'Modifier'"
+            class="my-auto ml-3 gpm-attention gpm-warning-active"/>
+          </div>
         </wrap>
       </div>
 
@@ -40,8 +55,7 @@
             <ButtonPiti
             @action="$router.push('profil/modification/mail')"
             :text="'Modifier'"
-            class="my-auto ml-3 gpm-attention gpm-warning-active"
-            />
+            class="my-auto ml-3 gpm-attention gpm-warning-active"/>
           </div>
         </wrap>
       </div>
@@ -52,8 +66,7 @@
           <ButtonPiti
           @action="$router.push('profil/modification/pass')"
           :text="'Modifier votre mot de passe ?'"
-          class="w-100 gpm-attention gpm-warning-active"
-          />
+          class="w-100 gpm-attention gpm-warning-active"/>
         </wrap>
       </div>
     </template>

@@ -1,5 +1,10 @@
 <template>
   <wrap withComp="AnimBlockSlide">
+
+    <h3 class="h5 mb-4">
+      Modifier mon mot de passe
+    </h3>
+
     <mdb-input
       class="d-flex input-group gpm-mist" 
       id="passwordNew" name="passwordNew" label="Nouveau mot de passe"

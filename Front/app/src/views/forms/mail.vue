@@ -1,5 +1,9 @@
 <template>
   <wrap withComp="AnimBlockSlide">
+    <h3 class="h5 mb-4">
+      Nouvel Email
+    </h3>
+
     <mdb-input
       class="d-flex input-group gpm-mist" 
       id="emailNew" label="Nouvel email" name="emailNew"
