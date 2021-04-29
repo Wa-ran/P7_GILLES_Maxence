@@ -34,17 +34,17 @@
       </Commentaire>
     </div>
 
-    <Commentaire>
-      <template #sticker>
-        Participez !
-      </template>
+    <MainForm class="w-100 z-depth-0 transparent">
+      <Commentaire class="w-100">
+        <template #sticker>
+          Participez !
+        </template>
 
-      <TextArea
-      class="mt-3 zind1"
-      :id="'commentaire'" :name="'contenu'" :label="'Votre commentaire.'"/>
-    </Commentaire>
-
-    <MainForm class="mt-n5 w-100 z-depth-0 transparent"/>
+        <TextArea
+        class="mt-3 zind1"
+        :id="'commentaire'" :name="'contenu'" :label="'Votre commentaire.'"/>
+      </Commentaire>
+    </Mainform>
 
   </div>
 </template>

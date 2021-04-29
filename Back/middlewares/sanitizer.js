@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const { encrypt, decrypt } = require('../middlewares/crypto');
 
 exports.cryptData = async (req) => {
+  if (!req) return
+
   if (req.body.id) req.body['id'] = parseInt(req.body.id); // JWT 'stringify' tous les payloads
 
   if (req.body.tokenId && req.body.tokenId !== req.body.id) { // Uniquement en envoi de file
@@ -42,11 +44,49 @@ exports.cryptData = async (req) => {
   }
 };
 
+// exports.decryptData = async (data) => {
+//   if (typeof data === 'object' && !Array.isArray(data)) { // objet
+//     for (const [key, value] of Object.entries(data)) {
+//       if (!key.match(/(departement)|(password)|(date)/)) {
+//         data[key] = decrypt(value);
+//         if (data[key].value === '') data[key] = value // '' = decryptage d'un string non crypté
+//       }
+//     }
+//   }
+//   else if (Array.isArray(data)) { // liste classique
+//     let list = [];
+//     for (const elem of data) {
+//       let sane = decrypt(elem);
+//       if (!sane.value) sane = elem // '' = decryptage d'un string non crypté
+//       list.push(sane)
+//     }
+//     data = list;
+//   }
+//   else {
+//     data = decrypt(data)
+//   }
+// return data
+// };
+
 exports.decryptData = async (data) => {
-  for (const [key, value] of Object.entries(data)) {
-    if (!Number.isInteger(value) && !key.match(/(departement)|(password)|(date)/)) {
-      data[key] = decrypt(value)
+  if (Array.isArray(data)) {
+    let list = [];
+    for (let elem of data) {
+      list.push(await this.decryptData(elem))
+    }
+    data = list
+  }
+  else if (typeof data === 'object') {
+    for (const [key, value] of Object.entries(data)) {
+      if (!(value instanceof Date)) {
+        data[key] = await this.decryptData(value)
+      }
     }
   }
-return data
+  else {
+    let decData = decrypt(data);
+    if (decData === '') decData = data; // '' = decryptage d'un string non crypté
+    data = decData
+  }
+  return data
 };

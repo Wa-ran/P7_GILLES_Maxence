@@ -1,330 +1,63 @@
 const gpm = require('../middlewares/gpm');
 const { cryptData, decryptData } = require('../middlewares/sanitizer');
 
-exports.getDeptsList = (req, res, next) => {
-  gpm.getDeptsList()
-  .then((content) => {
-    if (!content) {
-      res.sendStatus(201)
-    } else {
-      if (Object.entries(content).length === 0 ) {
-        res.sendStatus(404)
-      } else {
-        res.send(content)
-      }
+let fctMap = [
+  {route: '/depts', fct: 'DeptsList'},
+  {route: '/lastAnnonce', fct: 'LastAnnonce'},
+  // Groupes
+  {route: '/groupeList', fct: 'GroupeList'},
+  {route: '/groupe/:groupe', fct: 'GroupeContent'},
+  {route: '/groupe/create', fct: 'Groupe'},
+  {route: '/groupe/:groupe/member', fct: 'GroupeMember'},
+  {route: '/groupe/grant', fct: 'GroupeMember'},
+  // Participations
+  {route: '/participation/:participationId', fct: 'ParticipationInfos'},
+  {route: '/participation/create', fct: 'Participation'},
+  {route: '/participation/:participationId/member', fct: 'ParticipationMember'},
+  {route: '/participation/:participationId/grant', fct: 'ParticipationMember'},
+  // Commentaires
+  {route: '/participation/:participationId/commentaire', fct: 'ParticipationComment'},
+];
+
+exports.setFct = (req, res, next) => { // Impoosible de définir dynamiquement la gpm.fct sans passer par le req (la callback du router doit avoir les arguments (req, res, next) et RIEN d'autre, gpm.sendIt('ma fct') ne marche pas)
+  let params = { ...req.params };
+  let path = req.path.split('/');
+  let route = '';
+  if (Object.entries(params).length > 0) {
+    for (const [key, value] of Object.entries(params)) {
+      path.forEach(el => {
+        if (value === decodeURIComponent(el)) route = route + '/:' + key
+        else if (el !== '') route = route + '/' + el;
+      })
     }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json(error.custMsg)
-  })
+  } else {
+    route = req.path
+  };
+
+  for (let pair of fctMap) {
+    if (route === pair.route) {
+      req['fct'] = req.method.toLowerCase() + pair.fct
+    }
+  };
+
+  next();
 };
 
-exports.getLastAnnonce = (req, res, next) => {
-  gpm.getLastAnnonce()
-  .then(async (annonce) => {
-    let content = await decryptData(annonce);
-    if (!content) {
-      res.sendStatus(201)
-    } else {
-      if (Object.entries(content).length === 0 ) {
-        res.sendStatus(404)
-      } else {
-        res.send(content)
-      }
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json(error.custMsg)
-  })
-};
-
-exports.getGroupeList = (req, res, next) => {
-  gpm.getGroupeList()
-  .then((list) => {
-    let content = [];
-    list.forEach(async groupe => {
-      let decrypt = await decryptData(groupe);
-      content.push(decrypt)
-    });
-    return content
-  })
-  .then((content) => {
-    if (!content) {
-      res.sendStatus(201)
-    } else {
-      if (Object.entries(content).length === 0 ) {
-        res.sendStatus(404)
-      } else {
-        res.send(content)
-      }
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json(error.custMsg)
-  })
-};
-
-// Groupes
-
-exports.getGroupeContent = (req, res, next) => {
-  cryptData(req)
+exports.sendIt = async (req, res) => {
+  await cryptData(req)
   .then((data) => {
-    return gpm.getGroupeContent(data)
+    return gpm[req.fct](data)
   })
-  .then((groupe) => {
-    let content = [];
-    groupe.forEach(async participation => {
-      let decrypt = await decryptData(participation);
-      content.push(decrypt)
-    });
-    return content
-  })
-  .then((content) => {
-    if (!content) {
+  .then(async (data) => {
+    if (!data) { // Pas de contenu = objet créé
       res.sendStatus(201)
-    } else {
-      if (Object.entries(content).length === 0 ) {
-        res.sendStatus(404)
-      } else {
-        res.send(content)
-      }
     }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json(error.custMsg)
-  })
-};
-
-exports.postGroupe = (req, res, next) => {
-  cryptData(req)
-  .then((data) => {
-    return gpm.postGroupe(data)
-  })
-  .then((content) => {
-    if (!content) {
-      res.sendStatus(201)
-    } else {
-      if (Object.entries(content).length === 0 ) {
-        res.sendStatus(404)
-      } else {
-        res.send(content)
-      }
+    else if (!data.value && data.length === 0) { 
+      res.sendStatus(404)
     }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json(error.custMsg)
-  })
-};
-
-exports.getGroupeMember = (req, res, next) => {
-  cryptData(req)
-  .then((data) => {
-    return gpm.getGroupeMember(data)
-  })
-  .then((groupe) => {
-    let content = [];
-    groupe.forEach(async participation => {
-      let decrypt = await decryptData(participation);
-      content.push(decrypt)
-    });
-    return content
-  })
-  .then((content) => {
-    if (!content) {
-      res.sendStatus(201)
-    } else {
-      if (Object.entries(content).length === 0 ) {
-        res.sendStatus(404)
-      } else {
-        res.send(content)
-      }
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json(error.custMsg)
-  })
-};
-
-exports.putGroupeMember = (req, res, next) => {
-  cryptData(req)
-  .then((data) => {
-    return gpm.putGroupeMember(data)
-  })
-  .then((content) => {
-    if (!content) {
-      res.sendStatus(201)
-    } else {
-      if (Object.entries(content).length === 0 ) {
-        res.sendStatus(404)
-      } else {
-        res.send(content)
-      }
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json(error.custMsg)
-  })
-};
-
-// Participations
-
-exports.getParticipationInfos = (req, res, next) => {
-  cryptData(req)
-  .then((data) => {
-    return gpm.getParticipationInfos(data)
-  })
-  .then((participation) => {
-    let content = [];
-    participation.forEach(async info => {
-      let decrypt = await decryptData(info);
-      content.push(decrypt)
-    });
-    return content
-  })
-  .then((content) => {
-    if (!content) {
-      res.sendStatus(201)
-    } else {
-      if (Object.entries(content).length === 0 ) {
-        res.sendStatus(404)
-      } else {
-        res.send(content)
-      }
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json(error.custMsg)
-  })
-};
-
-exports.postParticipation = (req, res, next) => {
-  cryptData(req)
-  .then((data) => {
-    return gpm.postParticipation(data)
-  })
-  .then((content) => {
-    if (!content) {
-      res.sendStatus(201)
-    } else {
-      if (Object.entries(content).length === 0 ) {
-        res.sendStatus(404)
-      } else {
-        res.send(content)
-      }
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json(error.custMsg)
-  })
-};
-
-exports.getParticipationMember = (req, res, next) => {
-  cryptData(req)
-  .then((data) => {
-    return gpm.getGroupeMember(data)
-  })
-  .then((groupe) => {
-    let content = [];
-    groupe.forEach(async participation => {
-      let decrypt = await decryptData(participation);
-      content.push(decrypt)
-    });
-    return content
-  })
-  .then((content) => {
-    if (!content) {
-      res.sendStatus(201)
-    } else {
-      if (Object.entries(content).length === 0 ) {
-        res.sendStatus(404)
-      } else {
-        res.send(content)
-      }
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json(error.custMsg)
-  })
-};
-
-exports.putParticipationMember = (req, res, next) => {
-  cryptData(req)
-  .then((data) => {
-    return gpm.putParticipationMember(data)
-  })
-  .then((content) => {
-    if (!content) {
-      res.sendStatus(201)
-    } else {
-      if (Object.entries(content).length === 0 ) {
-        res.sendStatus(404)
-      } else {
-        res.send(content)
-      }
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json(error.custMsg)
-  })
-};
-
-// Commentaires
-
-exports.getParticipationComment = (req, res, next) => {
-  cryptData(req)
-  .then((data) => {
-    return gpm.getParticipationComment(data)  
-  })
-  .then((participation) => {
-    let content = [];
-    participation.forEach(async comm => {
-      let decrypt = await decryptData(comm);
-      content.push(decrypt)
-    })
-    return content
-  })
-  .then((content) => {
-    if (!content) {
-      res.sendStatus(201)
-    } else {
-      if (Object.entries(content).length === 0 ) {
-        res.sendStatus(404)
-      } else {
-        res.send(content)
-      }
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).json(error.custMsg)
-  })
-};
-
-exports.postCommentaire = (req, res, next) => {
-  cryptData(req)
-  .then((data) => {
-    return gpm.postCommentaire(data)
-  })
-  .then((content) => {
-    if (!content) {
-      res.sendStatus(201)
-    } else {
-      if (Object.entries(content).length === 0 ) {
-        res.sendStatus(404)
-      } else {
-        res.send(content)
-      }
+    else {
+      data = await decryptData(data);
+      res.send(data)
     }
   })
   .catch((error) => {

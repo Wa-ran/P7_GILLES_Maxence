@@ -38,7 +38,7 @@ CREATE TABLE commentaire (
                 participation_id INT UNSIGNED NOT NULL,
 				utilisateur_id INT UNSIGNED,
 				PRIMARY KEY (id)
-				);
+);
 
 CREATE TABLE utilisateur (
 				id INT UNSIGNED AUTO_INCREMENT NOT NULL,

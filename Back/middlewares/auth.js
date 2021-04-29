@@ -18,6 +18,7 @@ module.exports = (req, res, next) => {
         throw { custMsg: 'Identifiant utilisateur non reconnu' }
       }
       else {
+        req.body['id'] = tokenId;
         next();
       }
     } catch (error) {

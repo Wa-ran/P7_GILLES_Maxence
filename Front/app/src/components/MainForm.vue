@@ -3,7 +3,7 @@
     <mdb-card>
       <form id="MainForm"
       novalidate @keydown.prevent.enter="nextInput"
-      class="w-100 p-3">
+      class="w-100">
 
         <slot class="h-auto"></slot>
 

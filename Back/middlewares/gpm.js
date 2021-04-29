@@ -6,13 +6,13 @@ exports.verifRight = async (identifier, userId, accesReq) => {
   let publique = 0;
   let member = 0;
   let prive = 0;
-
+// identifier = idparticipation ou groupeName = clause pour WHERE
   let table = Number.isInteger(identifier) ? 'participation' : 'groupe';
   let column = Number.isInteger(identifier) ? 'id' : 'nom';
 
   await groupomania.connect
   .then(function () {
-    return session.sql('SELECT COUNT(*) FROM utilisateur_' + table + ' WHERE ' + table + '_' + column + ' = \'' + identifier + '\' AND utilisateur_id = ' + userId + ';')
+    return session.sql('SELECT COUNT(*) FROM utilisateur_' + table + ' WHERE ' + table + '_' + column + ' = ' + identifier + ' AND utilisateur_id = ' + userId + ';')
     .execute((row) => { member = row[0] })
   })
   .then(function () {
@@ -208,10 +208,13 @@ exports.getParticipationComment = async (data) => {
       content.push(el)
     })
   })
+  if (content.length === 0) {
+    content = [{ contenu: 'Soyez le premier à commenter !' }]
+  };
   return content;
 };
 
-exports.postCommentaire = async (data) => {
+exports.postParticipationComment = async (data) => {
   await this.verifRight(data.idParticipation, data.id, 0);
   await groupomania.call('create_commentaire', data.id, data.idParticipation, data.contenu)  
 };
