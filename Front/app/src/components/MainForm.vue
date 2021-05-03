@@ -57,17 +57,17 @@ export default {
   },
   computed: {
     error() {
-      return this.$store.state.error
+      return this.$store.state.error.pending
     },
-    backFct() {
+    backFct() { // Définie au 'created' par les formulaires (dir. 'forms')
       return this.$store.state.form.backFct
     },
-    submitPath() {
+    submitPath() { // Définie au 'created' par les formulaires (dir. 'forms')
       return this.$store.state.form.submitPath
     }
   },
   methods: {
-    nextInput($event) {
+    nextInput($event) { // Pour focus le prochain input au clic sur Enter
       if ($event.target == document.querySelector('[type="submit"]')) {
         this.checkForm()
       }
@@ -83,13 +83,13 @@ export default {
     checkForm() {
       let form = document.querySelector('#MainForm');
       let data;
-      form.classList.add('was-validated');
+      form.classList.add('was-validated'); // Mdb
 
       if (form.checkValidity() && !this.error) {
-        if (document.querySelector('[type="file"]')) {
+        if (document.querySelector('[type="file"]')) { // Check si envoi multipart
           data = new FormData(form);
 
-          data.append('id', this.$store.state.profil.id);
+          data.append('id', this.$store.state.profil.id); // Ajout systématique d'infos requises par le serveur
           if (this.$route.params.groupeName)
             data.append('groupe', this.$route.params.groupeName);
           if (this.$route.params.participation)
@@ -116,7 +116,10 @@ export default {
     async sendForm(data) {
       await this.$store.dispatch('sendForm', { backFct: this.backFct, data: data })
       .then(() => {
-        if (!this.$store.state.error) this.$router.push(this.submitPath)
+        if (!this.$store.state.error.pending) {
+          if (this.submitPath === 'return') this.$router.go(-1)
+          else this.$router.push(this.submitPath)
+        }
       })
     }
   },

@@ -10,7 +10,7 @@
         <MainForm
         :submitButton="'Confirmer'"
         :key="this.formComponent"
-        class="w-100 px-4 gpm-lecture">
+        class="w-100 px-4 py-3 gpm-lecture">
           <component :is='this.formComponent'></component>
         </MainForm>
       </template>

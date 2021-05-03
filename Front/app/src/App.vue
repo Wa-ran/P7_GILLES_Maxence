@@ -24,11 +24,17 @@ export default {
   methods: {
     restart() {
       this.$store.replaceState({
+        avatar: {
+          big: '',
+          mini: ''
+        },
         commentaires: [],
         depts: [],
-        error: false,
-        errorMsg: '',
-        errorStatus: '',
+        error: {
+          pending: false,
+          msg: '',
+          status: ''
+        },
         form: {
           backFct: null,
           submitPath: null

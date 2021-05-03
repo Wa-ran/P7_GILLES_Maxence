@@ -6,6 +6,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import Avatar from "@/components/Avatar.vue"
+Vue.component('Avatar', Avatar)
 
 Vue.config.productionTip = false
 Vue.config.errorHandler = function () {

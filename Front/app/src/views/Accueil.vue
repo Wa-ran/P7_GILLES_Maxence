@@ -2,7 +2,7 @@
   <div>
     <mdb-card class="accueil m-2 mt-4 pb-2 gpm-base gpm-big-shadow">
       <mdb-card v-mdb-waves="{ dark: true }" class="m-3 mt-n3 gpm-grey-light gpm-attention-active">
-        <MainBrand class="mx-auto my-2"/>
+        <MainBrand class="mx-auto my-2 px-3"/>
       </mdb-card>
       <div class="d-flex justify-content-between px-3 pt-1 w-100">
         <ButtonDoc
@@ -29,7 +29,7 @@
         v-if="this.$route.path !== '/'"
         :key="this.formComponent"
         :submitButton="'Envoyer'"
-        class="w-auto mt-n2 mb-3 mx-3 p-3 gpm-shadow-focus gpm-lecture">
+        class="w-auto mt-n2 mb-3 mx-3 px-4 py-5 gpm-shadow-focus gpm-lecture">
           <component :is='this.formComponent'></component>
         </main-form>
       </AnimSlideDrop>

@@ -7,29 +7,31 @@
           <div class="d-flex flex-column justify-content-between w-100">
             <hr class="mt-2 mb-3 gpm-default w-100">
             <div class="w-100 d-flex justify-content-between">
+
               <ButtonDoc
-              key="profil"
-              text="Mon Profil"
               @action="$router.push('/home/profil')"
-              class="w-50 mr-2 gpm-grey-light gpm-attention-active"
-              />
+              class="w-50 mr-2 gpm-grey-light gpm-attention-active with-avatar">
+                <Avatar/>
+                <span class="ml-3 btn-text-normal">Mon Profil</span>
+              </ButtonDoc>
+
               <ButtonDoc
-              key="deco"
               text="Déconnexion"
               @action="$router.push('/')"
-              class="w-50 ml-2 gpm-attention gpm-warning-active"
-              />
+              class="w-50 ml-2 gpm-attention gpm-warning-active"/>
             </div>
+
             <hr class="mt-3 mb-2 gpm-default w-100">
+
             <ButtonDoc
             v-for="page in pages"
             :key="page.id"
             :text="page.name"
             @action="$router.push(page.path)"
-            class="my-2 w-75 gpm-grey-light gpm-attention-active"
-            />
+            class="my-2 w-75 gpm-grey-light gpm-attention-active"/>
           </div>
         </mdb-navbar-nav>
+
         <form class="w-100 my-3">
           <mdb-form-inline class="w-100">
             <input class="gpm-default gpm-lecture-active form-control" type="text" placeholder="Search" aria-label="Search"/>
@@ -128,7 +130,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .container-fluid * {
   position: relative; //Pour que les objets apparaissent sous les autres
   & .ripple {
@@ -138,10 +140,20 @@ export default {
 .logo {
   max-width: 80%;
 }
-.animated-icon2 * {
-  background-color: #141414 !important;
-}
+
 .breadCrumb > a {
   color: inherit !important;
+}
+
+.with-avatar {
+  overflow: visible;
+}
+
+.avatar {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  z-index: 1;
+  max-height: 100%;
 }
 </style>

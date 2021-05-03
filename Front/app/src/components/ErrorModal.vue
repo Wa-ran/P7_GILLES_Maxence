@@ -47,18 +47,19 @@ export default {
   },
   computed: {
     error() {
-      return this.$store.state.error
+      return this.$store.state.error.pending
     },
     errStatus() {
-      return this.$store.state.errorStatus
+      return this.$store.state.error.status
     },
     errMessage() {
-      return this.$store.state.errorMsg
+      return this.$store.state.error.msg
     }
   },
   methods: {
     endError() {
-      this.$store.dispatch('setError', false)
+      this.$store.dispatch('setError', false);
+      window.removeEventListener('unload', this.endError())
     }
   },
   created() {

@@ -30,12 +30,12 @@ const routes = [
       {
         path: 'profil',
         name: 'profil',
-        component: () => import('../views/Profil.vue'),
+        component: () => /* webpackPrefetch: true */ import('../views/Profil.vue'),
       },
 
       {
         path: 'profil/modification',
-        component: () => import('../views/ProfilModif.vue'),
+        component: () => /* webpackPrefetch: true */ import('../views/ProfilModif.vue'),
         children: [
           { path: 'infos', name: 'infos' },
           { path: 'avatar', name: 'avatar' },
@@ -47,7 +47,7 @@ const routes = [
       {
         path: 'groupes',
         name: 'groupes',
-        component: () => import('../views/Groupe.vue'),
+        component: () => /* webpackPrefetch: true */ import('../views/Groupe.vue'),
         props: true,
         children: [
           { path: 'creation', name: 'creationGroupe' },
@@ -64,7 +64,7 @@ const routes = [
       {
         path: 'groupes/:groupeName/:participation',
         name: 'participation',
-        component: () => import('../views/Participation.vue'),
+        component: () => /* webpackPrefetch: true */ import('../views/Participation.vue'),
         props: true
       }
     ]

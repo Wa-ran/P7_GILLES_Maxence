@@ -32,22 +32,6 @@
         <wrap withComp="AnimBlockSlide" class="w-100">
           <hr class="my-3 gpm-base w-100">
           <div class="my-3">
-            <h3 class="h5 text-left">Votre avatar :</h3>
-          </div>
-          <div class="pl-2 w-100 d-flex justify-content-between">
-            <div class="font-weight-bold">Avatar</div>
-            <ButtonPiti
-            @action="$router.push('profil/modification/avatar')"
-            :text="'Modifier'"
-            class="my-auto ml-3 gpm-attention gpm-warning-active"/>
-          </div>
-        </wrap>
-      </div>
-
-      <div class="w-100">
-        <wrap withComp="AnimBlockSlide" class="w-100">
-          <hr class="my-3 gpm-base w-100">
-          <div class="my-3">
             <h3 class="h5 text-left">Votre mail :</h3>
           </div>
           <div class="pl-2 w-100 d-flex justify-content-between">
@@ -57,6 +41,25 @@
             :text="'Modifier'"
             class="my-auto ml-3 gpm-attention gpm-warning-active"/>
           </div>
+        </wrap>
+      </div>
+
+      <div class="w-100">
+        <wrap withComp="AnimBlockSlide" class="w-100">
+          <hr class="my-3 gpm-base w-100">
+          <div class="w-100 d-flex">
+            <div class="my-3 w-100">
+              <h3 class="h5 text-left">Photo de Profil :</h3>
+            </div>
+            <div class="w-50 d-flex flex-column">
+              <Avatar :mini="false"
+              class="w-100 rounded"/>
+              <ButtonPiti
+              @action="$router.push('profil/modification/avatar')"
+              :text="'Modifier'"
+              class="mt-n1 w-100 gpm-attention gpm-warning-active"/>
+            </div>
+          </div> 
         </wrap>
       </div>
 
@@ -96,3 +99,11 @@ export default {
   }
 }
 </script>
+
+// <style lang="scss" scoped>
+// .avatar {
+//   max-width: 100%;
+//   max-height: 100%;
+
+// }
+// </style>

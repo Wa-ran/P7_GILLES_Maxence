@@ -52,7 +52,7 @@ export default {
     }
   },
   async created() {
-    await this.$store.dispatch('chooseSubmit', { backFct: 'putInfos', submitPath: '/home/profil' });
+    await this.$store.dispatch('chooseSubmit', { backFct: 'putInfos', submitPath: 'return' });
   }
 }
 </script>

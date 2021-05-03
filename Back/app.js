@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const user = require('./routes/user');
 const gpm = require('./routes/gpm');
 
-// const path = require('path');
+const path = require('path');
 
 const app = express();
 
@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 // Parser pour exploiter les données plus facilement
 app.use(bodyParser.json());
 
-// app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/user', user);
 app.use('/gpm', gpm);

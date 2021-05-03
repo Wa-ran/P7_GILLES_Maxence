@@ -13,11 +13,17 @@ export default new Vuex.Store({
     })
   ],
   state: {
+    avatar: {
+      big: '',
+      mini: ''
+    },
     commentaires: [],
     depts: [],
-    error: false,
-    errorMsg: '',
-    errorStatus: '',
+    error: {
+      pending: false,
+      msg: '',
+      status: ''
+    },
     form: {
       backFct: null,
       submitPath: null
@@ -36,9 +42,9 @@ export default new Vuex.Store({
       state.loading = payload
     },
     triggError(state, payload) {
-      state.error = payload.bool;
-      state.errorMsg = payload.msg;
-      state.errorStatus = payload.status;
+      state.error.pending = payload.bool;
+      state.error.msg = payload.msg;
+      state.error.status = payload.status;
     },
     setSubmit(state, payload) {
       state.form.backFct = payload.backFct;
@@ -57,6 +63,9 @@ export default new Vuex.Store({
             state.profil[key] = value
           }
         }
+        state.avatar.big = 'http://localhost:3000/images/avatars/' + state.profil.id + '_avatar.webp' + '?rand=' + Date.now();
+        state.avatar.mini = 'http://localhost:3000/images/avatars/' + state.profil.id + '_avatar_mini.webp' + '?rand=' + Date.now();
+        // rand sert à reload l'image au changement
       }
     },
     getDeptsList(state, payload) {
@@ -92,7 +101,8 @@ export default new Vuex.Store({
     },
     sendForm(context, req) { // req = { backFct: ..., data: ...}
       return Back.request(req.backFct, req.data)
-      .then(res => { if (res) context.commit('setProfil', res) }) // Pas de res pour la création de groupes/participations/commentaires, seul les formulaires "utilisateur" renvoient des données qui seront traitées par 'setProfil'
+      .then(res => { if (res) context.commit('setProfil', res) })
+      // Pas de res pour la création de groupes/participations/commentaires, seuls les formulaires "utilisateur" renvoient des données qui seront traitées par 'setProfil'
       .catch(error => {
         console.log(error);
         context.commit('triggError', { bool: true, status: error.status, msg: error.msg });

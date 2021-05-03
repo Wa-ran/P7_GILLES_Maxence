@@ -47,6 +47,14 @@ a {
   }
 }
 
+.animated-icon2 * {
+  background-color: #141414 !important;
+}
+
+.avatar {
+  object-fit: cover;
+}
+
 button:focus span {
   font-weight: bold;
   text-decoration: underline;
