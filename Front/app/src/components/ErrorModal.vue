@@ -59,12 +59,8 @@ export default {
   methods: {
     endError() {
       this.$store.dispatch('setError', false);
-      window.removeEventListener('unload', this.endError())
     }
-  },
-  created() {
-    window.addEventListener('unload', this.endError())
-  },
+  }
 }
 </script>
 

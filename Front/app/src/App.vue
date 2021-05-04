@@ -1,8 +1,8 @@
 <template>
   <div id="app" class="w-100 d-flex flex-column position-absolute page">
-    <router-view name="MainNav" class="zind10 dessus"/>
-    <router-view class="w-100 h-100 flex-grow-1"/>
-    <router-view name="Footer" class="w-100"/>
+    <router-view name="MainNav" class="zind10"/>
+    <router-view class="w-100 h-100 flex-grow-1 zind5"/>
+    <router-view name="Footer" class="w-100 zind10"/>
 
     <ErrorModal/>
 
@@ -78,9 +78,6 @@ $image-path: '~@/../mdb/mdbvue/img'; // image path variable update
   text-align: center;
   color: #2c3e50;
   overflow: scroll;
-}
-.dessus {
-  position: relative;
 }
 .page {
   min-height: 100%;

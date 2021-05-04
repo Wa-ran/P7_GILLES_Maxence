@@ -1,21 +1,22 @@
 <script>
 export default {
   methods: {
-    debounceLead: function(func, timeout = 300) {
-      let timer;
-      let ctx = this;
-      return (...args) => {
-        if (!timer) {
-          func.apply(ctx, args);
-        }
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          timer = undefined;
-        }, timeout);
+    debounce(func, wait, immediate=true) {
+      let timeout;
+      return function (...args) {
+        const later = () => {
+          timeout = null;
+          if (!immediate) func.apply(this, args);
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(this, args);
       }
-    },
-    debounce: function(fctToDeb) {
-      this.debounceLead(() => fctToDeb)
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds. If `immediate` is passed, trigger the function on the
+// leading edge, instead of the trailing.
     }
   }
 }

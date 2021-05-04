@@ -78,7 +78,7 @@ export default {
     onSubmit(event) {
       event.preventDefault();
       event.stopPropagation();
-      this.debounce(this.checkForm())
+      this.debounce(this.checkForm(), 300)
     },
     checkForm() {
       let form = document.querySelector('#MainForm');

@@ -1,64 +1,68 @@
 <template>
-  <mdb-container class="container-fluid p-0 mb-n3" fluid>
-    <mdb-navbar class="gpm-base navbar-3 z-depth-2 zind3" animated animation="2">
-      <MainBrand class="my-2"/>
-      <mdb-navbar-toggler class="m-auto">
-        <mdb-navbar-nav class="d-flex flex-row flex-wrap w-100 m-0">
-          <div class="d-flex flex-column justify-content-between w-100">
-            <hr class="mt-2 mb-3 gpm-default w-100">
-            <div class="w-100 d-flex justify-content-between">
+  <div class="mb-n2 w-100 sticky-top" id="MainNav">
+    <mdb-container class="container-fluid p-0 mb-n3" fluid>
+      <mdb-navbar class="gpm-base navbar-3 z-depth-2 zind3" animated animation="2">
+        <MainBrand class="my-2"/>
+        <mdb-navbar-toggler class="m-auto">
+          <mdb-navbar-nav class="d-flex flex-row flex-wrap w-100 m-0">
+            <div class="d-flex flex-column justify-content-between w-100">
+              <hr class="mt-2 mb-3 gpm-default w-100">
+              <div class="w-100 d-flex justify-content-between">
+
+                <ButtonDoc
+                @action="$router.push('/home/profil')"
+                class="w-50 mr-2 gpm-grey-light gpm-attention-active with-avatar">
+                  <Avatar/>
+                  <span class="ml-3 btn-text-normal">Mon Profil</span>
+                </ButtonDoc>
+
+                <ButtonDoc
+                text="Déconnexion"
+                @action="$router.push('/')"
+                class="w-50 ml-2 gpm-attention gpm-warning-active"/>
+              </div>
+
+              <hr class="mt-3 mb-2 gpm-default w-100">
 
               <ButtonDoc
-              @action="$router.push('/home/profil')"
-              class="w-50 mr-2 gpm-grey-light gpm-attention-active with-avatar">
-                <Avatar/>
-                <span class="ml-3 btn-text-normal">Mon Profil</span>
-              </ButtonDoc>
-
-              <ButtonDoc
-              text="Déconnexion"
-              @action="$router.push('/')"
-              class="w-50 ml-2 gpm-attention gpm-warning-active"/>
+              v-for="page in pages"
+              :key="page.id"
+              :text="page.name"
+              @action="$router.push(page.path)"
+              class="my-2 w-75 gpm-grey-light gpm-attention-active"/>
             </div>
+          </mdb-navbar-nav>
 
-            <hr class="mt-3 mb-2 gpm-default w-100">
+          <form class="w-100 my-3">
+            <mdb-form-inline class="w-100">
+              <input class="gpm-default gpm-lecture-active form-control" type="text" placeholder="Search" aria-label="Search"/>
+            </mdb-form-inline>
+          </form>
+        </mdb-navbar-toggler>
+      </mdb-navbar>
 
-            <ButtonDoc
-            v-for="page in pages"
-            :key="page.id"
-            :text="page.name"
-            @action="$router.push(page.path)"
-            class="my-2 w-75 gpm-grey-light gpm-attention-active"/>
+      <div class="breadCrumb">
+        <div class="mt-n2 pt-2 w-100 d-flex flex-wrap rounded z-depth-2 zind2 gpm-base"
+        aria-label="Breadcrumb">
+          <div v-for="(link, index) in breadCrumb" :key="index">
+            <span class="ml-2">-</span>
+            <router-link
+            :to="link.path"
+            :title="decodeURIComponent(link.name)"
+            :class="lastBreadClass(index)">
+              {{ breadName(link.name, index) }}
+            </router-link>
           </div>
-        </mdb-navbar-nav>
-
-        <form class="w-100 my-3">
-          <mdb-form-inline class="w-100">
-            <input class="gpm-default gpm-lecture-active form-control" type="text" placeholder="Search" aria-label="Search"/>
-          </mdb-form-inline>
-        </form>
-      </mdb-navbar-toggler>
-    </mdb-navbar>
-
-    <div class="mt-n2 pt-2 w-100 d-flex flex-wrap rounded z-depth-2 zind2 gpm-base breadCrumb"
-    aria-label="Breadcrumb">
-      <div v-for="(link, index) in breadCrumb" :key="index">
-        <span class="ml-2">-</span>
-        <router-link
-        :to="link.path"
-        :title="decodeURIComponent(link.name)"
-        :class="lastBreadClass(index)">
-          {{ breadName(link.name, index) }}
-        </router-link>
+        </div>
       </div>
-    </div>
 
-    <ButtonPiti
-      v-if="this.$route.path != '/home'"
-      @action="$router.push(retourLink)"
-      :text="'Retour'"
-      class="ml-auto mt-n2 pt-2 zind1 gpm-attention gpm-warning-active"/>
-  </mdb-container>
+      <ButtonPiti
+        v-if="this.$route.path != '/home'"
+        @action="$router.push(retourLink)"
+        :text="'Retour'"
+        class="mr-0 mt-n2 pt-2 zind1 gpm-attention gpm-warning-active"/>
+    </mdb-container>
+  </div>
 </template>
 
 <script>
@@ -86,7 +90,8 @@ export default {
         { path: "/home", name: "Accueil" },
         { path: "/home/news", name: "Nouveautés" },
         { path: "/home/groupes", name: "Groupes" },
-      ]
+      ],
+      scrollPos: 0
     }
   },
   computed: {
@@ -125,8 +130,29 @@ export default {
       if (index == Object.keys(this.breadCrumb).length-1) {
         return 'disabled'
       }
+    },
+    listenScroll() {
+      setTimeout(() => {
+        document.querySelector('#app').addEventListener(
+          'scroll',
+          () => { this.breadCrumbHide(event) },
+          { once: true }
+        );
+      }, 100);
+    },
+    breadCrumbHide(event) {
+      let bc = document.querySelector('.breadCrumb');
+
+      if (event.target.scrollTop > this.scrollPos) bc.style.marginTop = '-' + bc.scrollHeight + 'px'
+      else bc.style.marginTop = 0;
+
+      this.scrollPos = event.target.scrollTop;
+      this.listenScroll()
     }
   },
+  mounted() {
+    this.listenScroll()
+  }
 }
 </script>
 
@@ -137,18 +163,18 @@ export default {
     display: none;
   }
 }
+
 .logo {
   max-width: 80%;
 }
 
-.breadCrumb > a {
+.breadCrumb a {
   color: inherit !important;
 }
 
 .with-avatar {
   overflow: visible;
 }
-
 .avatar {
   position: absolute;
   top: -5px;

@@ -43,8 +43,8 @@ export default new Vuex.Store({
     },
     triggError(state, payload) {
       state.error.pending = payload.bool;
-      state.error.msg = payload.msg;
-      state.error.status = payload.status;
+      state.error.msg ? payload.msg : '';
+      state.error.status ? payload.status : '';
     },
     setSubmit(state, payload) {
       state.form.backFct = payload.backFct;
@@ -94,7 +94,7 @@ export default new Vuex.Store({
       context.commit('isLoading', payload)
     },
     setError(context, payload) {
-      context.commit('triggError', { bool: payload, msg: '' });
+      context.commit('triggError', { bool: payload });
     },
     chooseSubmit(context, payload) {
       context.commit('setSubmit', payload)
