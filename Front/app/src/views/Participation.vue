@@ -11,7 +11,7 @@
       <hr class="my-0 mx-auto w-75 black">
 
       <mdb-card-body class="rounded">
-        <div class="h6 p-3">
+        <div class="h6 p-2">
           {{ infos.preview }}
         </div>
       </mdb-card-body>
@@ -20,7 +20,9 @@
 
     <Commentaire>
       <template #sticker>
-        coucou
+        <Avatar :userId="infos.createurId"/>
+        <i class="far fa-user mx-1"></i>
+        {{ infos.createurNom }} {{ infos.createurPrenom }}
       </template>
       {{ infos.article }}
     </Commentaire>
@@ -28,6 +30,8 @@
     <div v-for="comm in commList" :key="comm.id">
       <Commentaire>
         <template #sticker>
+          <Avatar :userId="comm.userId"/>
+          <i class="far fa-user mx-1"></i>
           {{ comm.nom }} {{ comm.prenom }}
         </template>
         {{ comm.contenu }}
@@ -99,3 +103,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.avatar {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  z-index: 10;
+}
+</style>

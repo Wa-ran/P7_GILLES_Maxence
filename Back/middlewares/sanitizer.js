@@ -78,15 +78,15 @@ exports.decryptData = async (data) => {
   }
   else if (typeof data === 'object') {
     for (const [key, value] of Object.entries(data)) {
-      if (!(value instanceof Date)) {
-        data[key] = await this.decryptData(value)
-      }
+      data[key] = await this.decryptData(value)
     }
   }
   else {
-    let decData = decrypt(data);
-    if (decData === '') decData = data; // '' = decryptage d'un string non crypté
-    data = decData
+    if (typeof data === 'string' && !data.match(/^(\d{4}-\d{2}-\d{2}\ )/)) {
+      let decData = decrypt(data);
+      if (decData === '') decData = data; // '' = decryptage d'un string non crypté
+      data = decData      
+    }
   }
   return data
 };

@@ -9,9 +9,11 @@ BEGIN
     
     START TRANSACTION READ ONLY;
 
-		SELECT JSON_OBJECT('id', id, 'titre', titre, 'preview', preview, 'article', article, 'importance', importance, 'publique', publique, 'createur', createur, 'date_creation', date_creation, 'groupe_nom', groupe_nom)
+		SELECT JSON_OBJECT('id', participation.id, 'titre', participation.titre, 'preview', participation.preview, 'article', participation.article, 'importance', participation.importance, 'publique', participation.publique, 'createurId', participation.createur, 'createurNom', utilisateur.nom, 'createurPrenom', utilisateur.prenom, 'date_creation', participation.date_creation, 'groupe_nom', participation.groupe_nom)
         FROM participation
-        WHERE id = p_participation_id;
+        JOIN utilisateur
+        ON participation.createur = utilisateur.id
+        WHERE participation.id = p_participation_id;
     
     COMMIT;
 END
