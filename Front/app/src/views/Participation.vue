@@ -21,9 +21,9 @@
     <Commentaire>
       <template #sticker>
         <Avatar :userId="infos.createurId"/>
-        <span class="ml-4">
+        <div class="ml-4 p-1">
           {{ infos.createurNom }} {{ infos.createurPrenom }}        
-        </span>
+        </div>
       </template>
       {{ infos.article }}
     </Commentaire>
@@ -32,9 +32,9 @@
       <Commentaire>
         <template #sticker>
           <Avatar :userId="comm.userId"/>
-          <span class="ml-4">
+          <div class="ml-4 px-1">
             {{ comm.nom }} {{ comm.prenom }}
-          </span>
+          </div>
         </template>
         {{ comm.contenu }}
       </Commentaire>

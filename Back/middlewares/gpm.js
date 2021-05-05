@@ -211,6 +211,11 @@ exports.getParticipationComment = async (data) => {
   if (content.length === 0) {
     content = [{ contenu: 'Soyez le premier à commenter !' }]
   };
+
+  content.sort((a, b) => { // réarragement par id des comms (plus anciens > plus récent)
+    return a.id - b.id
+  })
+
   return content;
 };
 
