@@ -43,8 +43,8 @@ export default new Vuex.Store({
     },
     triggError(state, payload) {
       state.error.pending = payload.bool;
-      state.error.msg ? payload.msg : '';
-      state.error.status ? payload.status : '';
+      state.error.msg = payload.msg;
+      state.error.status = payload.status;
     },
     setSubmit(state, payload) {
       state.form.backFct = payload.backFct;

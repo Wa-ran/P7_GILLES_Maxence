@@ -21,8 +21,9 @@
     <Commentaire>
       <template #sticker>
         <Avatar :userId="infos.createurId"/>
-        <i class="far fa-user mx-1"></i>
-        {{ infos.createurNom }} {{ infos.createurPrenom }}
+        <span class="ml-4">
+          {{ infos.createurNom }} {{ infos.createurPrenom }}        
+        </span>
       </template>
       {{ infos.article }}
     </Commentaire>
@@ -31,8 +32,9 @@
       <Commentaire>
         <template #sticker>
           <Avatar :userId="comm.userId"/>
-          <i class="far fa-user mx-1"></i>
-          {{ comm.nom }} {{ comm.prenom }}
+          <span class="ml-4">
+            {{ comm.nom }} {{ comm.prenom }}
+          </span>
         </template>
         {{ comm.contenu }}
       </Commentaire>
@@ -104,7 +106,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .avatar {
   position: absolute;
   top: -10px;

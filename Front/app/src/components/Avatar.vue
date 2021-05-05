@@ -4,7 +4,7 @@
     alt="PP"
     class="z-depth-1 avatar"
     :class="mini ? 'rounded' : ''"
-    @error='errorClass'/>
+    @error='error404'/>
 </template>
 
 <script>
@@ -14,7 +14,9 @@ export default {
       if (this.userId) {
         return ('http://localhost:3000/images/avatars/' + this.userId + '_avatar_mini.webp')
       }
-      else return (this.mini ? this.$store.state.avatar.mini : this.$store.state.avatar.big)
+      else {
+        return (this.mini ? this.$store.state.avatar.mini : this.$store.state.avatar.big)
+      }
     }
   },
   props: {
@@ -28,19 +30,19 @@ export default {
     }
   },
   methods: {
-    errorClass(event) {
-      event.target.style.display = 'none'
+    error404(event) {
+      event.target.setAttribute(
+        'src',
+        this.mini ? 'http://localhost:3000/images/avatars/user404_mini.webp' : 'http://localhost:3000/images/avatars/user404.webp'
+      )
     }
   },
 }
 </script>
 
-<style lang="scss">
-img:before {
-  content: ' ';
-  display: block;
-  position: absolute;
-  height: 50px;
-  width: 50px;
+<style lang="scss" scoped>
+.avatar {
+  max-width: 200px;
+  max-height: 200px;
 }
 </style>

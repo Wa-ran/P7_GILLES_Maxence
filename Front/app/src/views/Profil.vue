@@ -99,11 +99,3 @@ export default {
   }
 }
 </script>
-
-// <style lang="scss" scoped>
-// .avatar {
-//   max-width: 100%;
-//   max-height: 100%;
-
-// }
-// </style>
