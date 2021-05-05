@@ -1,7 +1,9 @@
 <template>
   <div id="app" class="w-100 d-flex flex-column position-absolute page">
     <router-view name="MainNav" class="zind10"/>
-    <router-view class="w-100 h-100 flex-grow-1 zind5"/>
+    <main class="w-100 flex-grow-1 zind5">
+      <router-view id="MainView"/>    
+    </main>
     <router-view name="Footer" class="w-100 zind10"/>
 
     <ErrorModal/>
@@ -48,6 +50,9 @@ export default {
         profil: {},
         token: null,
       })
+    },
+    footerPadding() { // Pour que le bas du contenu n'apparaisse pas sous le footer
+      document.querySelector('#MainView :last-child').style.marginBottom = 3*document.querySelector('footer').scrollHeight + 'px'
     }
   },
   watch: {
@@ -61,7 +66,10 @@ export default {
     if (this.pathName === 'accueil' ) {
       this.restart()
     }
-  }
+  },
+  updated() {
+    this.footerPadding()
+  },
 }
 </script>
 

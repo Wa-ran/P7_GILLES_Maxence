@@ -1,7 +1,7 @@
 <template>
-  <div class="gpm-grey footer font-weight-bold">
+  <footer class="gpm-grey footer font-weight-bold">
     Coucou c'est le Footer !
-  </div>
+  </footer>
 </template>
 
 <style lang="scss">

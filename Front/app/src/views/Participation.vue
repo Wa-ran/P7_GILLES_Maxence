@@ -11,7 +11,7 @@
       <hr class="my-0 mx-auto w-75 black">
 
       <mdb-card-body class="rounded">
-        <div class="h6 p-2">
+        <div class="h6">
           {{ infos.preview }}
         </div>
       </mdb-card-body>
@@ -28,6 +28,7 @@
       {{ infos.article }}
     </Commentaire>
 
+<!-- Espace commentaires -->
     <div v-for="comm in commList" :key="comm.id">
       <Commentaire>
         <template #sticker>
@@ -40,7 +41,8 @@
       </Commentaire>
     </div>
 
-    <MainForm class="w-100 z-depth-0 transparent">
+    <MainForm class="mb-n5 w-100 z-depth-0 transparent"
+    :submitClass="'pt-0 mt-n5 mr-2 d-flex flex-row-reverse'">
       <Commentaire class="w-100">
         <template #sticker>
           Participez !
@@ -99,9 +101,9 @@ export default {
   async created() {
     await this.getInfos();
     await this.setSubmit();
-    // setInterval(async() => {
+    setInterval(async() => {
       await this.getComment()
-    // }, 1000)
+    }, 1000)
   }
 }
 </script>

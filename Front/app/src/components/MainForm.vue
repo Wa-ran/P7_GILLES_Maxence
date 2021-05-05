@@ -7,18 +7,16 @@
 
         <slot class="h-auto"></slot>
 
-        <div class="d-flex flex-center py-4 mt-3 mx-auto">
+        <div :class="submitClass ? submitClass : 'd-flex flex-center py-4 mt-3 mx-auto'">
           <!-- écoute de l'évènement sur le parent car submit.prevent, qui empêche le reload de la page, empêche aussi le fonctionnement du clic sur le bouton (tous concidérés 'submit') -->
-          <div>
-            <AnimSlideFade
-            :delay="350">
-              <ButtonDoc
-              :text="this.submitButton"
-              type=submit
-              class="my-1 mx-0 gpm-shadow-focus gpm-warning  gpm-alert-active"
-              />
-            </AnimSlideFade>
-          </div>
+          <AnimSlideFade
+          :delay="350">
+            <ButtonDoc
+            :text="this.submitButton"
+            type=submit
+            class="my-1 mx-0 gpm-shadow-focus gpm-warning  gpm-alert-active"
+            />
+          </AnimSlideFade>
         </div>
       </form>
     </mdb-card>
@@ -48,6 +46,10 @@ export default {
     submitButton: {
       type: String,
       default: 'Envoyer'
+    },
+    submitClass: {
+      type: String,
+      default: ''
     }
   },
   data() {

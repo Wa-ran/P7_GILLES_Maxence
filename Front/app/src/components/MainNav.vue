@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-n2 w-100 sticky-top" id="MainNav">
+  <header class="mb-n2 w-100 sticky-top" id="MainNav">
     <mdb-container class="container-fluid p-0 mb-n3" fluid>
       <mdb-navbar class="gpm-base navbar-3 z-depth-2 zind3" animated animation="2">
         <MainBrand class="my-2"/>
@@ -62,7 +62,7 @@
         :text="'Retour'"
         class="mr-0 mt-n2 pt-2 zind1 gpm-attention gpm-warning-active"/>
     </mdb-container>
-  </div>
+  </header>
 </template>
 
 <script>
