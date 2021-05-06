@@ -1,5 +1,5 @@
 <template>
-  <wrap withComp="AnimBlockSlide" class="w-100 mb-n3">
+  <wrap withComp="AnimBlockSlide" class="w-100 mb-n3 p-3">
     <h3 class="h5">Nouvelle Participation</h3>
     <TextArea
       :id="'titre'" :name="'titre'" :label="'Titre'"
@@ -25,21 +25,24 @@
         </div>
       </div>
     </div>
+    <InputFileDisplayer/>
   </wrap>
 </template>
 
 <script>
+import InputFileDisplayer from '@/components/InputFileDisplayer.vue';
 import Wrap from '@/components/Wrap';
 import TextArea from '@/components/TextArea';
 
 export default {
   name: 'participation',
   components: {
+    InputFileDisplayer,
     Wrap,
     TextArea
   },
   async created() {
-    await this.$store.dispatch('chooseSubmit', { backFct: 'postParticipation', submitPath: '/home/groupes/' + this.$route.params.groupeName })
+    await this.$store.dispatch('chooseSubmit', { backFct: 'postParticipation', submitPath: '/home/groupes/' + this.$route.params.groupeProps })
   }
 }
 </script>

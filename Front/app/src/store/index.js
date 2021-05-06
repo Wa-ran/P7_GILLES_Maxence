@@ -43,8 +43,8 @@ export default new Vuex.Store({
     },
     triggError(state, payload) {
       state.error.pending = payload.bool;
-      state.error.msg = payload.msg;
-      state.error.status = payload.status;
+      state.error.msg = payload.msg.value ? payload.msg : '';
+      state.error.status = payload.status.value ? payload.status : '';
     },
     setSubmit(state, payload) {
       state.form.backFct = payload.backFct;
@@ -101,8 +101,10 @@ export default new Vuex.Store({
     },
     sendForm(context, req) { // req = { backFct: ..., data: ...}
       return Back.request(req.backFct, req.data)
-      .then(res => { if (res) context.commit('setProfil', res) })
-      // Pas de res pour la création de groupes/participations/commentaires, seuls les formulaires "utilisateur" renvoient des données qui seront traitées par 'setProfil'
+      .then(res => { 
+        if (req.gpm) context.commit('setSubmit', { submitPath: res }) // Renvoi de GroupeName / participationId
+        else context.commit('setProfil', res) // Renvoi du profil
+      })
       .catch(error => {
         console.log(error);
         context.commit('triggError', { bool: true, status: error.status, msg: error.msg });
@@ -110,18 +112,21 @@ export default new Vuex.Store({
       })
     },
     GPMRequest(context, req) { // req = { backFct: ..., data: ...}
-      context.commit('isLoading', true);
-      return Back.request(req.backFct, req.data ? req.data : null)
-      .then(res => {
-        context.commit(req.backFct, res);
-        context.commit('isLoading', false)
-      })
-      .catch(error => {
-        console.log(error);
-        context.commit('triggError', { bool: true, status: error.status, msg: error.msg });
-        context.commit('isLoading', false);
-      })
-    },
+      if (!this.state.error.pending) {
+        context.commit('isLoading', true);
+        return Back.request(req.backFct, req.data ? req.data : null)
+        .then(res => {
+          context.commit(req.backFct, res);
+          context.commit('isLoading', false)
+        })
+        .catch(error => {
+          console.log(error);
+          context.commit('triggError', { bool: true, status: error.status, msg: error.msg });
+          context.commit('isLoading', false);
+          throw error
+        })
+      }
+    }
   },
   getters: {
 

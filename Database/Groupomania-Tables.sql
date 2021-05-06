@@ -34,6 +34,7 @@ CREATE TABLE departement (
 CREATE TABLE commentaire (
 				id INT UNSIGNED AUTO_INCREMENT NOT NULL,
 				contenu TEXT NOT NULL,
+                is_img BOOLEAN NOT NULL,
 				date_creation DATETIME NOT NULL,
                 participation_id INT UNSIGNED NOT NULL,
 				utilisateur_id INT UNSIGNED,

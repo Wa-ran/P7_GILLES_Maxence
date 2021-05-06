@@ -1,5 +1,5 @@
 <template>
-  <wrap withComp="AnimBlockSlide" class="w-100 mb-n3">
+  <wrap withComp="AnimBlockSlide" class="w-100 mb-n3 p-3">
     <mdb-input
       class="d-flex input-group gpm-mist" 
       id="groupe" label="Nom du groupe" name="groupe"
@@ -14,12 +14,13 @@
       <input type="checkbox" class="custom-control-input" id="publique" name="publique">
       <label class="custom-control-label" for="publique">Publique</label>
     </div>
+    <InputFileDisplayer/>
   </wrap>
 </template>
 
 <script>
 import mdbInput from 'mdbvue/lib/components/mdbInput';
-
+import InputFileDisplayer from '@/components/InputFileDisplayer.vue';
 import TextArea from '@/components/TextArea';
 import Wrap from '@/components/Wrap';
 
@@ -27,6 +28,7 @@ export default {
   name: 'groupe',
   components: {
     mdbInput,
+    InputFileDisplayer,
     TextArea,
     Wrap
   },

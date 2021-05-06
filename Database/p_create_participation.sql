@@ -14,6 +14,8 @@ BEGIN
         		
 		INSERT INTO utilisateur_participation (utilisateur_id, participation_id, admin)
 		VALUES (p_id, LAST_INSERT_ID(), 1);
+        
+        SELECT LAST_INSERT_ID();
     
     COMMIT;
 END

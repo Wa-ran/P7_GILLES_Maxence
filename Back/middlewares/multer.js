@@ -28,41 +28,4 @@ module.exports = multer({
     }
   }
 })
-.single('avatar');
-
-// exports.avatar = (req, res, next) => {
-//   let storage = multer.diskStorage({
-//     destination: (cb) => {
-//       cb(null, '../images/avatars');
-//     },
-//     filename: (file, cb) => {
-//       const name = req.body.id + "_avatar";
-//       const extension = MIME_TYPES[file.mimetype];
-//       cb(null, name + '.' + extension);
-//     }
-//   })
-
-//   multer({
-//     storage: storage,
-//     fileFilter: fileFilter
-//   })
-//   .single('avatar')
-// };
-
-
-// exports.avatar = multer({
-//   dest: '../images/avatars',
-//   rename: function (fieldname, filename) {
-//     return 'avatar'+Date.now();
-//   }
-// }), function(req, res) {
-//   // resize image
-//   sharp(newPath).resize(300, 200).toFile(newPath, function(err) {
-//     if (err) {
-//       throw err;
-//     }
-//     // output.jpg is a 300 pixels wide and 200 pixels high image
-//     // containing a scaled and cropped version of input.jpg
-//     res.json(newPath);
-//   });
-// });
+.single('file');

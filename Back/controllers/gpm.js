@@ -1,21 +1,22 @@
 const gpm = require('../middlewares/gpm');
+const fs = require('fs');
 const { cryptData, decryptData } = require('../middlewares/sanitizer');
 
 let fctMap = [
   {route: '/depts', fct: 'DeptsList'},
   {route: '/lastAnnonce', fct: 'LastAnnonce'},
-  // Groupes
+// Groupes
   {route: '/groupeList', fct: 'GroupeList'},
   {route: '/groupe/:groupe', fct: 'GroupeContent'},
   {route: '/groupe/create', fct: 'Groupe'},
   {route: '/groupe/:groupe/member', fct: 'GroupeMember'},
   {route: '/groupe/grant', fct: 'GroupeMember'},
-  // Participations
+// Participations
   {route: '/participation/:participationId', fct: 'ParticipationInfos'},
   {route: '/participation/create', fct: 'Participation'},
   {route: '/participation/:participationId/member', fct: 'ParticipationMember'},
   {route: '/participation/:participationId/grant', fct: 'ParticipationMember'},
-  // Commentaires
+// Commentaires
   {route: '/participation/:participationId/commentaire', fct: 'ParticipationComment'},
 ];
 
@@ -39,7 +40,7 @@ exports.setFct = (req, res, next) => { // Impoosible de définir dynamiquement l
       req['fct'] = req.method.toLowerCase() + pair.fct
     }
   };
-
+// exe --> API appelée = methode GET sur route '/depts' ==> GPMfct = 'getDeptsList'
   next();
 };
 
@@ -60,7 +61,19 @@ exports.sendIt = async (req, res) => {
       res.send(data)
     }
   })
+  .then(() => {
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlink(req.file.path, (err) => {
+        return console.log(err)
+      })
+    }
+  })
   .catch((error) => {
+    if (req.file) {
+      fs.unlink(req.file.path, (err) => {
+        return console.log(err)
+      })
+    }
     console.log(error);
     res.status(500).json(error.custMsg)
   })

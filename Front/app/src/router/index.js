@@ -52,8 +52,8 @@ const routes = [
         children: [
           { path: 'creation', name: 'creationGroupe' },
           { 
-            path: ':groupeName',
-            name: 'groupeName',
+            path: ':groupeProps',
+            name: 'groupeProps',
             children: [
               { path: 'creation', name: 'creationParticipation' },
             ]
@@ -62,7 +62,7 @@ const routes = [
       },
 
       {
-        path: 'groupes/:groupeName/:participation',
+        path: 'groupes/:groupeProps/:participationProps',
         name: 'participation',
         component: () => /* webpackPrefetch: true */ import('../views/Participation.vue'),
         props: true

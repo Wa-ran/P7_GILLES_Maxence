@@ -105,15 +105,24 @@ exports.avatar = (req, res, next) => {
     .toFile(miniPath);    
   })
   .then(() => {
-    return fs.unlink(path, (err) => {
-      if (err) {
-        console.log(err);
-        throw { custMsg : "Problème lors de l'enregistrement de votre avatar." }
-      }
+    return fs.unlink(req.file.path, (err) => {
+      return console.log(err)
     })
   })
   .then(() => res.sendStatus(201))
+  .then(() => {
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlink(req.file.path, (err) => {
+        return console.log(err)
+      })
+    }
+  })
   .catch((error) => {
+    if (req.file) {
+      fs.unlink(req.file.path, (err) => {
+        if(err) return console.log(err)
+      })
+    }
     console.log(error);
     res.status(500).json(error.custMsg)
   })

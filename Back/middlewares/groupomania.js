@@ -31,7 +31,7 @@ exports.call = async function(proc, ...args) {
   let list = '';
   args.forEach(arg => {
     if ((arg === undefined) || (arg === '')) {
-      console.log(arg)
+      console.log(args)
       this.errorHandler(new Error, 'Veuillez remplir tous les champs.')
     }
 

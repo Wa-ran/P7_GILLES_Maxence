@@ -2,7 +2,16 @@ import store from '../../store/index';
 
 export default {
   request(fct, data) {
-    return this[fct](data ? data : '')
+    let headers;
+    if (data && typeof data === 'object' && !(data instanceof FormData)) { // data = object to send
+      data = JSON.stringify(data);
+      headers = store.state.headers;
+    }
+    else { // Si rien a envoyer, OU si FormData (on laisse le browser gérer le content-type)
+      headers = { 'Authorization': store.state.headers.Authorization }
+    }
+
+    return this[fct](data ? data : '', headers)
     .then(async (res) => {
       if (res.status >= 400) {
         let err = {};
@@ -34,41 +43,41 @@ export default {
     return fetch('http://localhost:3000/user/signup', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+      body: data
     })
   },
   postLogin(data) {
     return fetch('http://localhost:3000/user/login', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+      body: data
     })
   },
-  putInfos(data) {
+  putInfos(data, headers) {
     return fetch('http://localhost:3000/user/putInfos', {
       method: "PUT",
-      headers: store.state.headers,
-      body: JSON.stringify(data)
+      headers,
+      body: data
     })
   },
-  putEmail(data) {
+  putEmail(data, headers) {
     return fetch('http://localhost:3000/user/putEmail', {
       method: "PUT",
-      headers: store.state.headers,
-      body: JSON.stringify(data)
+      headers,
+      body: data
     })
   },
-  putPass(data) {
+  putPass(data, headers) {
     return fetch('http://localhost:3000/user/putPass', {
       method: "PUT",
-      headers: store.state.headers,
-      body: JSON.stringify(data)
+      headers,
+      body: data
     })
   },
-  postAvatar(data) {
+  postAvatar(data, headers) {
     return fetch('http://localhost:3000/user/avatar', {
       method: "POST",
-      headers: { 'Authorization': store.state.headers.Authorization },
+      headers,
       body: data
     })
   },
@@ -87,43 +96,45 @@ export default {
       headers: store.state.headers
     })
   },
-  getGroupeContent(groupe) {
-    return fetch('http://localhost:3000/gpm/groupe/' + encodeURIComponent(groupe), {
+  getGroupeContent(groupeName, headers) {
+    return fetch('http://localhost:3000/gpm/groupe/' + encodeURIComponent(groupeName), {
       method: "GET",
-      headers: store.state.headers
+      headers
     })
   },
-  postGroupe(data) {
+  postGroupe(data, headers) {
     return fetch('http://localhost:3000/gpm/groupe/create', {
       method: "POST",
-      headers: store.state.headers,
-      body: JSON.stringify(data)
+      headers,
+      body: data
     })
   },
-  getParticipationInfos(participationId) {
-    return fetch('http://localhost:3000/gpm/participation/' + participationId, {
+  getParticipationInfos(idParticipation, headers) {
+    return fetch('http://localhost:3000/gpm/participation/' + idParticipation.toString(), {
       method: "GET",
-      headers: store.state.headers
+      headers
     })
   },
-  postParticipation(data) {
+  postParticipation(data, headers) {
     return fetch('http://localhost:3000/gpm/participation/create', {
       method: "POST",
-      headers: store.state.headers,
-      body: JSON.stringify(data)
+      headers,
+      body: data
     })
   },
-  getParticipationComment(participationId) {
-    return fetch('http://localhost:3000/gpm/participation/' + participationId + '/commentaire', {
+  getParticipationComment(idParticipation, headers) {
+    return fetch('http://localhost:3000/gpm/participation/' + idParticipation.toString() + '/commentaire', {
       method: "GET",
-      headers: store.state.headers
+      headers
     })
   },
-  postCommentaire(data) {
-    return fetch('http://localhost:3000/gpm/participation/' + data.idParticipation + '/commentaire', {
+  postCommentaire(data, headers) {
+    let idParticipation = (data instanceof FormData) ? data.get('idParticipation') : JSON.parse(data).idParticipation;
+
+    return fetch('http://localhost:3000/gpm/participation/' + idParticipation.toString() + '/commentaire', {
       method: "POST",
-      headers: store.state.headers,
-      body: JSON.stringify(data)
+      headers,
+      body: data
     })
   },
 }

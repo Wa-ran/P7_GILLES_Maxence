@@ -92,10 +92,10 @@ export default {
           data = new FormData(form);
 
           data.append('id', this.$store.state.profil.id); // Ajout systématique d'infos requises par le serveur
-          if (this.$route.params.groupeName)
-            data.append('groupe', this.$route.params.groupeName);
-          if (this.$route.params.participation)
-            data.append('idParticipation', parseInt(this.$route.params.participation));
+          if (this.$route.params.groupeProps)
+            data.append('groupe', this.$route.params.groupeProps);
+          if (this.$route.params.participationProps)
+            data.append('idParticipation', parseInt(this.$route.params.participationProps));
         } 
         else {
           data = {};
@@ -106,10 +106,10 @@ export default {
           }
 
           data['id'] = this.$store.state.profil.id;
-          if (this.$route.params.groupeName)
-            data['groupe'] = this.$route.params.groupeName;
-          if (this.$route.params.participation)
-            data['idParticipation'] = parseInt(this.$route.params.participation);
+          if (this.$route.params.groupeProps)
+            data['groupe'] = this.$route.params.groupeProps;
+          if (this.$route.params.participationProps)
+            data['idParticipation'] = parseInt(this.$route.params.participationProps);
         }
 
         this.sendForm(data)

@@ -1,16 +1,16 @@
 <template>
   <div class="h-100">
-    <DocCard :color="'gpm-default'" :key="groupeName">
+    <DocCard :color="'gpm-default'" :key="groupeProps">
 
       <template #title>
         <h2 class="h4 m-1">
-          {{ groupeName ? groupeName : 'Groupes' }}
+          {{ groupeProps ? groupeProps : 'Groupes' }}
         </h2>
       </template>
 
       <template>
         <div v-show="!isCreation" class="w-100">
-
+<!-- Vue normale -->
           <div class="spinner-border" role="status" v-if="loading">
             <span class="sr-only">Chargement...</span>
           </div>
@@ -32,6 +32,13 @@
               </template>
 
               <template #text>
+                <ImageShow
+                  :source="groupeProps ?
+                  'http://localhost:3000/images/participations/' + item.id + '.webp' :
+                  ('http://localhost:3000/images/groupes/' + encodeURIComponent(item.title).replaceAll(/%|~/g, '') + '.webp')"
+                  :textAlt="'Image du groupe.'"
+                  :imgClass="'m-0 w-100 rounded'"/>
+                  <!-- Ne plus jamais utiliser de texte en PK x( -->
                 <div class="mt-2">
                   {{ item.text }}
                 </div>
@@ -40,7 +47,7 @@
             </ArticlePreview>
           </wrap>
         </div>
-
+<!-- Vue formulaire de création -->
         <div v-if="isCreation" class="w-100">
           <main-form
           :submitButton="'Confirmer'"
@@ -64,6 +71,7 @@
 <script>
 import ButtonDoc from "@/components/ButtonDoc.vue"
 import ArticlePreview from '@/components/ArticlePreview';
+import ImageShow from '@/components/ImageShow';
 import MainForm from '@/components/MainForm';
 import DocCard from '@/components/DocCard';
 import Wrap from '@/components/Wrap';
@@ -80,13 +88,19 @@ export default {
   components: {
     ButtonDoc,
     ArticlePreview,
+    ImageShow,
     MainForm,
     DocCard,
     Wrap,
     groupe,
     participation
   },
-  props: ['groupeName'],
+  props: ['groupeProps'],
+  data() {
+    return {
+      noImg: false
+    }
+  },
   computed: {
     loading() {
       return this.$store.state.loading
@@ -98,13 +112,13 @@ export default {
       return this.$route.name.match(/(creation)/) ? true : false
     },
     formComponent() {
-      return this.groupeName ? participation : groupe
+      return this.groupeProps ? participation : groupe
     },
     pathToForm() {
       return this.$route.path + '/creation'
     },
     contentList() {
-      let data = this.groupeName ?
+      let data = this.groupeProps ?
         this.$store.state.groupe :
         this.$store.state.groupeList;
 
@@ -130,11 +144,17 @@ export default {
   },
   methods: {
     pathToContent(item) {
-      return this.groupeName ? this.$route.path + '/' + item.id : this.$route.path + '/' + item.title
+      return this.groupeProps ? this.$route.path + '/' + item.id : this.$route.path + '/' + item.title
     },
     async dispatch() {
-      if (this.$route.name == 'groupeName') {
-        await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeContent', data: this.groupeName })
+      if (this.$route.name === 'groupeProps') {
+        await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeContent', data: this.groupeProps })
+        .catch((err) => {
+          if (err.status === 404) {
+            // Cas où aucune participation n'a encore été créée
+            this.$router.push(this.$route.path + '/creation');
+          }
+        })
       }
       else {
         await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeList' })
@@ -145,7 +165,7 @@ export default {
     this.dispatch()
   },
   watch: {
-    groupeName() {
+    groupeProps() {
       this.dispatch()
     }
   }

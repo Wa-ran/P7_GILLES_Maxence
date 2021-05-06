@@ -8,7 +8,7 @@ BEGIN
     
     START TRANSACTION READ ONLY;
 
-		SELECT JSON_OBJECT('id', commentaire.id, 'userId', utilisateur.id, 'nom', utilisateur.nom, 'prenom', utilisateur.prenom, 'contenu', commentaire.contenu, 'date', commentaire.date_creation)
+		SELECT JSON_OBJECT('id', commentaire.id, 'userId', utilisateur.id, 'nom', utilisateur.nom, 'prenom', utilisateur.prenom, 'contenu', commentaire.contenu, 'date', commentaire.date_creation, 'image', commentaire.is_img)
 		FROM commentaire
         INNER JOIN utilisateur
         ON commentaire.utilisateur_id = utilisateur.id

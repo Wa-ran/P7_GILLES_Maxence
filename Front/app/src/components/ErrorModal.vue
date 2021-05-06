@@ -60,7 +60,13 @@ export default {
     endError() {
       this.$store.dispatch('setError', false);
     }
-  }
+  },
+  created() {
+    this.endError()
+  },
+  updated() {
+    this.endError()
+  },
 }
 </script>
 

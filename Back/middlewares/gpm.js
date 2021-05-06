@@ -1,5 +1,5 @@
 const groupomania = require('./groupomania');
-
+const fs = require('fs');
 const { encrypt, decrypt } = require('../middlewares/crypto');
 
 exports.verifRight = async (identifier, userId, accesReq) => {
@@ -137,9 +137,13 @@ exports.getGroupeContent = async (data) => {
 };
 
 exports.postGroupe = async (data) => {
+  // Input checkbox to boolean
+  data.image ? data.image = 1 : data.image = 0;
   data.publique ? data.publique = 1 : data.publique = 0;
 
-  await groupomania.call('create_groupe', data.groupe, data.description, data.id, data.publique)
+  await groupomania.call('create_groupe', data.groupe, data.description, data.id, data.publique);
+
+  if (data.image) fs.rename(data.file.path, 'images/groupes/' + encodeURIComponent(decrypt(data.groupe)).replaceAll(/%|~/g, '') + '.webp', (err) => { console.log(err) })
 };
 
 exports.getGroupeMember = async (data) => {
@@ -172,6 +176,8 @@ exports.getParticipationInfos = async (data) => {
 };
 
 exports.postParticipation = async (data) => {
+  // Input checkbox to boolean
+  data.image ? data.image = 1 : data.image = 0;
   data.publique ? data.publique = 1 : data.publique = 0;
   data.prive ? data.prive = 1 : data.prive = 0;
   data.importance ? data.importance = 100 : data.importance = 0;
@@ -181,6 +187,11 @@ exports.postParticipation = async (data) => {
   }
   await this.verifRight(data.groupe, data.id, 0);
   await groupomania.call('create_participation', data.groupe, data.id, data.titre, data.preview, data.article, data.importance, data.publique, data.prive)
+  .then((row) => {
+    data['idPart'] = row
+  })
+
+  if (data.image) fs.rename(data.file.path, 'images/participations/' + data.idPart + '.webp', (err) => { console.log(err) })
 };
 
 exports.getParticipationMember = async (data) => {
@@ -220,6 +231,14 @@ exports.getParticipationComment = async (data) => {
 };
 
 exports.postParticipationComment = async (data) => {
+  // Input checkbox to boolean
+  data.image ? data.image = 1 : data.image = 0;
+
   await this.verifRight(data.idParticipation, data.id, 0);
-  await groupomania.call('create_commentaire', data.id, data.idParticipation, data.contenu)  
+  await groupomania.call('create_commentaire', data.id, data.idParticipation, data.contenu, data.image)
+  .then((row) => {
+    data['idComm'] = row
+  })
+
+  if (data.image) fs.rename(data.file.path, 'images/commentaires/' + data.idComm + '.webp', (err) => { console.log(err) })
 };

@@ -18,7 +18,7 @@ exports.cryptData = async (req) => {
 
   try {
     for (const [key, value] of Object.entries(req.body)) {
-      if (key.match(/(email)|(nom)|(groupe)|(titre)/)) { 
+      if (key.match(/(email)|(nom)|(groupe)|(titre)/)) {
         saneData[key] = encrypt(value)
       }
       else if (key.match(/(password)/)) {
@@ -38,35 +38,14 @@ exports.cryptData = async (req) => {
         saneData[key] = encrypt(value)
       }
     }
+
+    if (req.file) saneData.file = req.file
+
     return saneData
   } catch (error) {
     throw { custMsg: "Le format des données n'est pas accepté." }
   }
 };
-
-// exports.decryptData = async (data) => {
-//   if (typeof data === 'object' && !Array.isArray(data)) { // objet
-//     for (const [key, value] of Object.entries(data)) {
-//       if (!key.match(/(departement)|(password)|(date)/)) {
-//         data[key] = decrypt(value);
-//         if (data[key].value === '') data[key] = value // '' = decryptage d'un string non crypté
-//       }
-//     }
-//   }
-//   else if (Array.isArray(data)) { // liste classique
-//     let list = [];
-//     for (const elem of data) {
-//       let sane = decrypt(elem);
-//       if (!sane.value) sane = elem // '' = decryptage d'un string non crypté
-//       list.push(sane)
-//     }
-//     data = list;
-//   }
-//   else {
-//     data = decrypt(data)
-//   }
-// return data
-// };
 
 exports.decryptData = async (data) => {
   if (Array.isArray(data)) {

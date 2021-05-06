@@ -118,7 +118,7 @@ button:focus span {
 }
 
 .custom-switch {
-  margin-left: 2.25rem !important;
+  display: flex;
   & label {
     &::before {
       background-color: $gpm-lecture !important;

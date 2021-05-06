@@ -33,8 +33,8 @@ export default {
 .coverShadow {
   position: absolute;
   left: 0;
-  bottom: -6px;
-  height: 8px;
+  bottom: -7px;
+  height: 9px;
   z-index: 2;
   border-radius: 0 0 3px 3px;
 }
