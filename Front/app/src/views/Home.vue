@@ -5,7 +5,7 @@
       <NavBurger class="gpm-base"/>    
     </div>
 
-    <router-view class="mx-auto"></router-view>
+    <router-view class="mx-auto w-100"></router-view>
 
     <ArticlePreview
     v-if="this.$route.path == '/home'"
