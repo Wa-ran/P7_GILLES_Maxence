@@ -12,18 +12,18 @@ exports.verifRight = async (identifier, userId, accesReq) => {
 
   await groupomania.connect
   .then(function () {
-    return session.sql('SELECT COUNT(*) FROM utilisateur_' + table + ' WHERE ' + table + '_' + column + ' = ' + identifier + ' AND utilisateur_id = ' + userId + ';')
+    return session.sql('SELECT COUNT(*) FROM utilisateur_' + table + ' WHERE ' + table + '_' + column + ' = \'' + identifier + '\' AND utilisateur_id = ' + userId + ';')
     .execute((row) => { member = row[0] })
   })
   .then(function () {
     if (member === 0) {
-      return session.sql('SELECT publique FROM ' + table + ' WHERE ' + column + ' = ' + identifier + ';')
+      return session.sql('SELECT publique FROM ' + table + ' WHERE ' + column + ' = \'' + identifier + '\';')
       .execute((row) => { publique = row[0] })    
     }
   })
   .then(function () {
     if ((member + publique) === 0 && (table === 'participation')) {
-      return session.sql('SELECT prive FROM participation WHERE id = ' + identifier + ';')
+      return session.sql('SELECT prive FROM participation WHERE id = \'' + identifier + '\';')
       .execute((row) => { prive = row[0] })
     }
   })

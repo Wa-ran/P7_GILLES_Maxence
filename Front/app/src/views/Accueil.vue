@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mdb-card class="accueil m-2 mt-4 pb-2 gpm-base gpm-big-shadow">
+    <mdb-card class="accueil mx-auto mt-4 pb-2 gpm-base gpm-big-shadow">
       <mdb-card v-mdb-waves="{ dark: true }" class="m-3 mt-n3 gpm-grey-light gpm-attention-active">
         <MainBrand class="mx-auto my-2 px-3"/>
       </mdb-card>

@@ -1,8 +1,8 @@
 <template>
   <div id="app" class="w-100 d-flex flex-column position-absolute page">
     <router-view name="MainNav" class="zind10"/>
-    <main class="w-100 flex-grow-1 zind5">
-      <router-view id="MainView"/>    
+    <main class="container w-100 flex-grow-1 zind5">
+      <router-view/>    
     </main>
     <router-view name="Footer" class="w-100 zind10"/>
 

@@ -1,6 +1,6 @@
 <template>
-  <footer class="gpm-grey footer font-weight-bold">
-    Coucou c'est le Footer !
+  <footer class="py-1 gpm-grey footer font-weight-bold">
+    CGU | Mentions Légales | Contacts
   </footer>
 </template>
 

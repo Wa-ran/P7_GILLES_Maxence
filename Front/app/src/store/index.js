@@ -42,9 +42,11 @@ export default new Vuex.Store({
       state.loading = payload
     },
     triggError(state, payload) {
-      state.error.pending = payload.bool;
-      state.error.msg = payload.msg.value ? payload.msg : '';
-      state.error.status = payload.status.value ? payload.status : '';
+      if (payload.status !== 404) {
+        state.error.pending = payload.bool;
+        state.error.msg = payload.msg ? payload.msg : '';
+        state.error.status = payload.status ? payload.status : '';      
+      }
     },
     setSubmit(state, payload) {
       state.form.backFct = payload.backFct;
@@ -109,6 +111,7 @@ export default new Vuex.Store({
         console.log(error);
         context.commit('triggError', { bool: true, status: error.status, msg: error.msg });
         context.commit('isLoading', false);
+        throw error
       })
     },
     GPMRequest(context, req) { // req = { backFct: ..., data: ...}

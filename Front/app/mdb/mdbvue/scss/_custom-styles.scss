@@ -47,8 +47,18 @@ a {
   }
 }
 
-.animated-icon2 * {
-  background-color: #141414 !important;
+.breadCrumb a:hover {
+  color: $gpm-attention !important;
+  box-shadow: inset 0 0 10px 10px $gpm-base !important;
+  background-color: $gpm-base-dark;
+}
+
+
+.animated-icon2 span {
+  background-color: $black !important;
+}
+.animated-icon2:hover span {
+  background-color: $gpm-attention !important;
 }
 
 .avatar {
@@ -184,6 +194,10 @@ button:focus span {
   margin: 20% auto !important;
 }
 
+.navbar > button {
+  margin-left: auto;
+}
+
 .overhid {
   overflow: hidden;
 }
@@ -262,3 +276,26 @@ div .textarea {
 .underline {
   text-decoration: underline;
 }
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  overflow-y: overlay;
+  border: none;
+  border-radius: 5px;
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: $gpm-base;
+}
+::-webkit-scrollbar-thumb {
+  background: $gpm-attention;
+  border-radius: 5px;
+}
+
+// ::-webkit-scrollbar the scrollbar.
+// ::-webkit-scrollbar-button the buttons on the scrollbar (arrows pointing upwards and downwards).
+// ::-webkit-scrollbar-thumb the draggable scrolling handle.
+// ::-webkit-scrollbar-track the track (progress bar) of the scrollbar.
+// ::-webkit-scrollbar-track-piece the track (progress bar) NOT covered by the handle.
+// ::-webkit-scrollbar-corner the bottom corner of the scrollbar, where both horizontal and vertical scrollbars meet.
+// ::-webkit-resizer the draggable resizing handle that appears at the bottom corner of some elements.

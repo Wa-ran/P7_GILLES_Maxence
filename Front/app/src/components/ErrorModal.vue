@@ -46,6 +46,9 @@ export default {
     ButtonPiti
   },
   computed: {
+    routeName() {
+      return this.route.name
+    },
     error() {
       return this.$store.state.error.pending
     },
@@ -64,9 +67,11 @@ export default {
   created() {
     this.endError()
   },
-  updated() {
-    this.endError()
-  },
+  watch: {
+    routeName() {
+      this.endError()
+    }
+  }
 }
 </script>
 

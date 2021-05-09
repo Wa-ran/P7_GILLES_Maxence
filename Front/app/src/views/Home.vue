@@ -1,6 +1,11 @@
 <template>
-  <div class="p-3">
-    <router-view class="w-100"></router-view>
+  <div id="MainView" class="py-3 mx-auto">
+
+    <div id="lgNav">
+      <NavBurger class="gpm-base"/>    
+    </div>
+
+    <router-view class="mx-auto"></router-view>
 
     <ArticlePreview
     v-if="this.$route.path == '/home'"
@@ -41,12 +46,14 @@ import mdbBadge from 'mdbvue/lib/components/mdbBadge';
 
 import ArticlePreview from '@/components/ArticlePreview';
 import ImageShow from '@/components/ImageShow';
+import NavBurger from '@/components/NavBurger.vue';
 
 export default {
   components: {
     mdbBadge,
     ArticlePreview,
-    ImageShow
+    ImageShow,
+    NavBurger
   },
   computed: {
     lastAnnonce() {
@@ -54,7 +61,7 @@ export default {
     },
     loading() {
       return this.$store.state.loading
-    }
+    },
   },
   methods: {
     async dispatch() {
@@ -68,3 +75,23 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@media (max-width: 991px) {
+  #lgNav {
+    display: none;
+  }
+}
+@media (min-width: 992px) {
+  #MainView {
+    max-width: 70%;
+    display: flex;
+    padding-left: 1rem;
+  }
+  #lgNav {
+    position: absolute;
+    left: 0;
+    top: 9.5vh
+  }
+}
+</style>

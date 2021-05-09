@@ -2,6 +2,10 @@
   <div>
     <mdb-card class="mb-3 gpm-default">
 
+      <div class="mx-auto mt-3 spinner-border" role="status" v-if="!articleLoaded">
+        <span class="sr-only">Chargement...</span>
+      </div>
+
       <div class="p-3 w-100">
         <h2 class="h5 m-1">
           {{ infos.titre }}
@@ -98,6 +102,7 @@ export default {
   data() {
     return {
       commLoading: false,
+      articleLoaded: false
     }
   },
   computed: {
@@ -109,7 +114,7 @@ export default {
     },
     loading() {
       return this.$store.state.loading
-    }
+    },
   },
   methods: {
     async getInfos() {
@@ -144,18 +149,23 @@ export default {
   },
   watch: {
     loading() {
+      if (!this.loading && !this.articleLoaded) this.articleLoaded = true; // On ne charge qu'une fois l'article
       if (document.querySelector('.was-validated') !== null && !this.$store.state.error.pending) {
         document.querySelector('.was-validated').classList.remove('was-validated');
         document.getElementById('commentaire').value = '';
-        this.submited = false
+        this.submited = false // Remise à zéro du formulaire de commentaire
       }
     }
   },
   async created() {
+    this.setLoader();
     await this.getInfos();
     await this.setSubmit();
     await this.getComment();
     document.addEventListener('submit', this.onSubmit())
+  },
+  mounted() {
+    
   },
   beforeDestroy() {
     document.removeEventListener('submit', this.onSubmit())
@@ -176,7 +186,7 @@ export default {
 }
 
 .mainImg {
-  width: 95vw;
+  width: 105%;
   align-self: center;
 }
 </style>

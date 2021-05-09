@@ -105,11 +105,14 @@ export default {
     loading() {
       return this.$store.state.loading
     },
+    routeName() {
+      return this.$route.name
+    },
     isGroupes() {
-      return this.$route.name == 'groupes' ? true : false
+      return this.routeName == 'groupes' ? true : false
     },
     isCreation() {
-      return this.$route.name.match(/(creation)/) ? true : false
+      return this.routeName.match(/(creation)/) ? true : false
     },
     formComponent() {
       return this.groupeProps ? participation : groupe
@@ -147,14 +150,8 @@ export default {
       return this.groupeProps ? this.$route.path + '/' + item.id : this.$route.path + '/' + item.title
     },
     async dispatch() {
-      if (this.$route.name === 'groupeProps') {
+      if (this.routeName === 'groupeProps') {
         await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeContent', data: this.groupeProps })
-        .catch((err) => {
-          if (err.status === 404) {
-            // Cas où aucune participation n'a encore été créée
-            this.$router.push(this.$route.path + '/creation');
-          }
-        })
       }
       else {
         await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeList' })
@@ -167,6 +164,9 @@ export default {
   watch: {
     groupeProps() {
       this.dispatch()
+    },
+    routeName() { // MAJ 'forcée' après cération de participation 
+      if (this.routeName === 'groupeProps') this.dispatch()
     }
   }
 }
