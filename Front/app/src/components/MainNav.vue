@@ -6,7 +6,7 @@
       mx-sm-auto
       d-flex gpm-base z-depth-2 zind3">
         <MainBrand class="m-sm-auto"/>
-        <NavBurger v-if="smallDevice" class="p-0 mx-1 my-2 z-depth-0 transparent innerNav"/>
+        <NavBurger id="NavBurger" class="p-2 mx-2 mt-1 z-depth-1 position-absolute gpm-base"/>
       </div>
 
       <div class="breadCrumb">
@@ -30,8 +30,6 @@
         :text="'Retour'"
         class="mr-0 mt-n2 pt-2 zind1 gpm-attention gpm-warning-active"/>
     </mdb-container>
-
-    <NavBurger v-if="!smallDevice" class="d-lg-none gpm-base outerNav z-depth-2"/>
   </header>
 </template>
 
@@ -56,9 +54,6 @@ export default {
     }
   },
   computed: {
-    smallDevice() {
-      return window.outerWidth < 575 ? true : false
-    },
     breadCrumb() {
       let list = this.$route.path.replace('/', '').split('/');
 
@@ -112,11 +107,37 @@ export default {
 
       this.scrollPos = event.target.scrollTop;
       this.listenScroll()
+    },
+    navPosition() {
+      let small = document.body.offsetWidth < 575 ? true : false;
+      let NavBurger = document.getElementById('NavBurger');
+      let navShow = document.querySelector('nav').classList.contains('show-navbar');
+      if (document.body.offsetWidth > 991 || navShow) {
+        NavBurger.style.top = '12vh';
+      }
+      else {
+        NavBurger.style.top = null;
+      }
+      if (small) {
+        NavBurger.style.right = 0;
+        NavBurger.style.left = null
+      }
+      else {
+        NavBurger.style.right = null;
+        NavBurger.style.left = 0
+      }
     }
   },
   mounted() {
-    this.listenScroll()
-  }
+    this.listenScroll();
+    this.navPosition();
+    window.addEventListener('resize', this.navPosition);
+    document.querySelector('#NavBurger > button').addEventListener('click', this.navPosition)
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.navPosition);
+    document.querySelector('#NavBurger > button').removeEventListener('click', this.navPosition)
+  },
 }
 </script>
 
@@ -126,15 +147,5 @@ export default {
   & .ripple {
     display: none;
   }
-}
-
-.innerNav {
-  position: absolute;
-  right: 0;
-  margin: 1rem;
-}
-.outerNav {
-  position: absolute;
-  margin: 0.5rem;
 }
 </style>

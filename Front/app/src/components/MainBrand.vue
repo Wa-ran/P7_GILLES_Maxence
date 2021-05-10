@@ -19,15 +19,21 @@ export default {
 
 <style lang="scss" scoped>
 img {
-  max-width: 80%;
+  max-width: 85%;
   max-height: 8vh;
 }
 h1 {
   display: block;
 }
 @media (max-width: 575px) {
-  a {
-    display: flex;
+  header h1 {
+    margin-top: 0.5rem;
+    & a {
+      display: flex;
+      & img {
+        max-width: 75%;
+      }
+    }
   }
 }
 </style>

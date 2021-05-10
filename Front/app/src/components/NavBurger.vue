@@ -1,9 +1,12 @@
 <template>
-  <mdb-navbar tag="div" class="transparent rounded navbar-3 zind3 d-flex flex-sm-row-reverse" animated animation="2">
+  <mdb-navbar tag="div" class="rounded navbar-3 zind3 d-flex flex-sm-row-reverse" animated animation="2">
 
-    <mdb-navbar-toggler class="px-3 m-auto gpm-base">
+    <mdb-navbar-toggler class="px-2 m-auto gpm-base">
       <mdb-navbar-nav class="m-0 w-100 container d-flex flex-row flex-wrap">
         <div class="d-flex flex-column justify-content-between w-100">
+          <h2 class="h4 m-1 gpm-base">
+            Navigation
+          </h2>
           <hr class="mt-2 mb-3 gpm-default w-100">
           <div id="toProfil" class="w-100 d-flex justify-content-between">
 
@@ -80,17 +83,21 @@ export default {
   max-height: 100%;
 }
 
+nav ul {
+  padding: 0;  
+}
+
 @media (min-width: 992px) {
   nav {
     display: flex;
     flex-wrap: wrap;
-    margin-left: 1rem;
-    padding: 0 !important;
-    max-width: 15vw;
+    max-width: fit-content !important;
     & ul {
-      padding: 0;
+      margin: 0;
+      width: fit-content !important;
     }
     & button {
+      min-width: fit-content !important;
       width: 100% !important;
     }
     & input {
@@ -100,6 +107,7 @@ export default {
   #toProfil {
     flex-wrap: wrap;
     width: 100%;
+    margin-bottom: -1rem;
     & {
       button {
         margin: 0 0 1rem 0 !important;

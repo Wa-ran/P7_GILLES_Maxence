@@ -1,10 +1,6 @@
 <template>
   <div id="MainView" class="py-3 mx-auto">
 
-    <div id="lgNav">
-      <NavBurger class="gpm-base"/>    
-    </div>
-
     <router-view class="mx-auto w-100"></router-view>
 
     <ArticlePreview
@@ -46,14 +42,12 @@ import mdbBadge from 'mdbvue/lib/components/mdbBadge';
 
 import ArticlePreview from '@/components/ArticlePreview';
 import ImageShow from '@/components/ImageShow';
-import NavBurger from '@/components/NavBurger.vue';
 
 export default {
   components: {
     mdbBadge,
     ArticlePreview,
-    ImageShow,
-    NavBurger
+    ImageShow
   },
   computed: {
     lastAnnonce() {
@@ -77,21 +71,10 @@ export default {
 </script>
 
 <style lang="scss">
-@media (max-width: 991px) {
-  #lgNav {
-    display: none;
-  }
-}
 @media (min-width: 992px) {
   #MainView {
     max-width: 70%;
     display: flex;
-    padding-left: 1rem;
-  }
-  #lgNav {
-    position: absolute;
-    left: 0;
-    top: 9.5vh
   }
 }
 </style>
