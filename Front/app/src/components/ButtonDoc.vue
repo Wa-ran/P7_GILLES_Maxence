@@ -58,11 +58,13 @@ export default {
   methods: {
     disableWaves($event) {
       let nextChildren = $event.target.children;
-      nextChildren.forEach(child => {
-        if (child.nodeType == Node.ELEMENT_NODE
-        && child.classList.contains('is-reppling'))
-        { child.remove() }
-      })
+      try {
+        nextChildren.forEach(child => {
+          if (child.classList.contains('is-reppling')) child.classList.remove('is-reppling')
+        })        
+      } catch (error) {
+        return
+      }
     }
   }
 }

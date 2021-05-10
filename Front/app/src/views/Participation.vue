@@ -127,7 +127,9 @@ export default {
       if (document.visibilityState === 'visible' && this.$route.name === 'participation') {
         setTimeout(() => {
           this.setLoader();
-          this.$store.dispatch('GPMRequest', { backFct: 'getParticipationComment', data: this.participationProps });
+          if (document.visibilityState === 'visible' && this.$route.name === 'participation') {
+            this.$store.dispatch('GPMRequest', { backFct: 'getParticipationComment', data: this.participationProps })
+          }
           this.getComment()
         }, 3000)
       }
@@ -163,9 +165,6 @@ export default {
     await this.setSubmit();
     await this.getComment();
     document.addEventListener('submit', this.onSubmit())
-  },
-  mounted() {
-    
   },
   beforeDestroy() {
     document.removeEventListener('submit', this.onSubmit())

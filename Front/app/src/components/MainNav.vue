@@ -134,6 +134,9 @@ export default {
     window.addEventListener('resize', this.navPosition);
     document.querySelector('#NavBurger > button').addEventListener('click', this.navPosition)
   },
+  updated() {
+    this.navPosition()
+  },
   destroyed() {
     window.removeEventListener('resize', this.navPosition);
     document.querySelector('#NavBurger > button').removeEventListener('click', this.navPosition)

@@ -108,7 +108,7 @@ export default new Vuex.Store({
         else context.commit('setProfil', res) // Renvoi du profil
       })
       .catch(error => {
-        console.log(error);
+        if (error.status !== 404) console.log(error);
         context.commit('triggError', { bool: true, status: error.status, msg: error.msg });
         context.commit('isLoading', false);
         throw error
@@ -123,7 +123,7 @@ export default new Vuex.Store({
           context.commit('isLoading', false)
         })
         .catch(error => {
-          console.log(error);
+          if (error.status !== 404) console.log(error);
           context.commit('triggError', { bool: true, status: error.status, msg: error.msg });
           context.commit('isLoading', false);
           throw error

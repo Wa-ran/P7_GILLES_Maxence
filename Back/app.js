@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 
 const user = require('./routes/user');
 const gpm = require('./routes/gpm');
-
+const fs = require('fs');
 const path = require('path');
 
 const app = express();
@@ -18,7 +18,18 @@ app.use((req, res, next) => {
 // Parser pour exploiter les données plus facilement
 app.use(bodyParser.json());
 
-app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/images',
+(req, res, next) => {
+  fs.access('./images/' + req.path, error => {
+    if (error) {
+      res.redirect('/images/404.webp');
+      next()
+    } else {
+      next()
+    }
+  })
+},
+express.static(path.join(__dirname, 'images')));
 
 app.use('/user', user);
 app.use('/gpm', gpm);
