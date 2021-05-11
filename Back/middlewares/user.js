@@ -56,3 +56,10 @@ exports.putPass = (data) => {
     return groupomania.call('modif_user_pass', data.passwordNew, data.id)
   })
 };
+
+exports.delete = (data) => {
+  return this.selectProfil(data)
+  .then(() => {
+    return groupomania.call('delete_user', data.id)
+  })
+};

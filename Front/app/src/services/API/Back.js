@@ -81,6 +81,13 @@ export default {
       body: data
     })
   },
+  deleteUser(data, headers) {
+    return fetch('http://localhost:3000/user/delete', {
+      method: "DELETE",
+      headers,
+      body: data
+    })
+  },
   getUsersList() {
     return fetch('http://localhost:3000/gpm/users', { headers : store.state.headers })
   },

@@ -22,7 +22,13 @@ app.use('/images',
 (req, res, next) => {
   fs.access('./images/' + req.path, error => {
     if (error) {
-      res.redirect('/images/404.webp');
+      if (req.path.match(/(avatar)/)) {
+        if (req.path.match(/(mini)/)) res.redirect('/images/avatars/user404_mini.webp')
+        else res.redirect('/images/avatars/user404.webp')
+      }
+      else {
+        res.redirect('/images/404.webp')
+      }
       next()
     } else {
       next()

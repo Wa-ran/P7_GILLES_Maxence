@@ -120,7 +120,7 @@ export default {
       .then(() => {
         if (!this.$store.state.error.pending) {
           if (this.submitPath === 'return') this.$router.go(-1)
-          else this.$router.push(this.submitPath)
+          else if (this.$route.path !== this.submitPath) this.$router.push(this.submitPath)
         }
       })
     }

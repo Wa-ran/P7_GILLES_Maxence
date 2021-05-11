@@ -40,7 +40,8 @@ const routes = [
           { path: 'infos', name: 'infos' },
           { path: 'avatar', name: 'avatar' },
           { path: 'mail', name: 'mail' },
-          { path: 'pass', name: 'pass' }
+          { path: 'pass', name: 'pass' },
+          { path: 'deleteUser', name: 'deleteUser' }
         ]
       },
     

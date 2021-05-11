@@ -34,6 +34,9 @@ const mail = () => ({
 const pass = () => ({
   component: import('@/views/forms/pass')
 });
+const deleteUser = () => ({
+  component: import('@/views/forms/deleteUser')
+});
 
 export default {
   name: 'ProfilModif',
@@ -44,7 +47,8 @@ export default {
     infos,
     avatar,
     mail,
-    pass
+    pass,
+    deleteUser
   },
   computed: {
     formComponent() {

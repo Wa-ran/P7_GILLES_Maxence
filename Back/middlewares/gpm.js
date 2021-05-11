@@ -11,17 +11,17 @@ exports.verifRight = async (identifier, userId, accesReq) => {
   let column = Number.isInteger(identifier) ? 'id' : 'nom';
 
   await groupomania.connect
-  .then(function () {
+  .then(function () { // user = membre ?
     return session.sql('SELECT COUNT(*) FROM utilisateur_' + table + ' WHERE ' + table + '_' + column + ' = \'' + identifier + '\' AND utilisateur_id = ' + userId + ';')
     .execute((row) => { member = row[0] })
   })
-  .then(function () {
+  .then(function () { // publique ?
     if (member === 0) {
       return session.sql('SELECT publique FROM ' + table + ' WHERE ' + column + ' = \'' + identifier + '\';')
       .execute((row) => { publique = row[0] })    
     }
   })
-  .then(function () {
+  .then(function () { // privé ?
     if ((member + publique) === 0 && (table === 'participation')) {
       return session.sql('SELECT prive FROM participation WHERE id = \'' + identifier + '\';')
       .execute((row) => { prive = row[0] })
@@ -32,10 +32,12 @@ exports.verifRight = async (identifier, userId, accesReq) => {
     throw { custMsg : 'Problème lors de la vérification des droits.' }
   })
 
-  if ((publique + member - prive) < accesReq) {
+  let acces = (publique + member - prive);
+  if (acces === -1) { // => participation privée et user non membre = non visible
     throw { custMsg : 'Vous n\'avez pas les droits.' }
   }
-  // -1 => privé, non visible
+
+  return acces
   // 0 => visible, non membre
   // 1 ou 2 => membre, peut participer
 };
@@ -158,7 +160,7 @@ exports.getGroupeMember = async (data) => {
 };
 
 exports.putGroupeMember = async (data) => {
-  await this.verifAdmin(data.groupe, data.id, 1);
+  await this.verifAdmin(data.groupe, data.id);
   await groupomania.call('grant_groupe_right', data.groupe, data.id, data.idNewMember, data.newAdmin)
 };
 
@@ -166,6 +168,7 @@ exports.putGroupeMember = async (data) => {
 
 exports.getParticipationInfos = async (data) => {
   let content = [];
+  await this.verifRight(data.groupe, data.id);
   await groupomania.call('participation_infos', data.idParticipation)
   .then((row) => {
     row.forEach(el => {
@@ -185,7 +188,10 @@ exports.postParticipation = async (data) => {
   if ((data.publique + data.prive) === 2) {
     throw { custMsg: "Une participation ne peut être publique et privée !" }
   }
-  await this.verifRight(data.groupe, data.id, 0);
+  await this.verifRight(data.idParticipation, data.id)
+  .then((res) => {
+    if (res < 1) throw { custMsg : 'Vous n\'avez pas le droit de participer.' }
+  })
   await groupomania.call('create_participation', data.groupe, data.id, data.titre, data.preview, data.article, data.importance, data.publique, data.prive)
   .then((row) => {
     data['idPart'] = row
@@ -206,13 +212,13 @@ exports.getParticipationMember = async (data) => {
 };
 
 exports.putParticipationMember = async (data) => {
-  this.verifAdmin(data.idParticipation, data.id, 0);
+  await this.verifAdmin(data.idParticipation, data.id);
   await groupomania.call('grant_participation_right', data.idParticipation, data.id, data.idNewMember, data.newAdmin)  
 };
 
 exports.getParticipationComment = async (data) => {
   let content = [];
-  await this.verifRight(data.idParticipation, data.id, -1);
+  await this.verifRight(data.idParticipation, data.id);
   await groupomania.call('participation_comment', data.idParticipation)
   .then((row) => {
     row.forEach(el => {
@@ -234,7 +240,10 @@ exports.postParticipationComment = async (data) => {
   // Input checkbox to boolean
   data.image ? data.image = 1 : data.image = 0;
 
-  await this.verifRight(data.idParticipation, data.id, 0);
+  await this.verifRight(data.idParticipation, data.id)
+  .then((res) => {
+    if (res < 1) throw { custMsg : 'Vous n\'avez pas le droit de participer.' }
+  })
   await groupomania.call('create_commentaire', data.id, data.idParticipation, data.contenu, data.image)
   .then((row) => {
     data['idComm'] = row

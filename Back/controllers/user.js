@@ -127,3 +127,15 @@ exports.avatar = (req, res, next) => {
     res.status(500).json(error.custMsg)
   })
 };
+
+exports.delete = (req, res, next) => {
+  cryptData(req)
+  .then((data) => {
+    return user.delete(data)
+  })
+  .then(() => res.sendStatus(204))
+  .catch((error) => {
+    console.log(error);
+    res.status(500).json(error.custMsg)
+  })
+};

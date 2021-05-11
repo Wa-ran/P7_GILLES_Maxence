@@ -53,7 +53,7 @@
             </div>
             <div class="w-50 d-flex flex-column">
               <Avatar :mini="false"
-              class="w-100 rounded"/>
+              class="m-auto w-100 rounded"/>
               <ButtonPiti
               @action="$router.push('profil/modification/avatar')"
               :text="'Modifier'"
@@ -69,6 +69,16 @@
           <ButtonPiti
           @action="$router.push('profil/modification/pass')"
           :text="'Modifier votre mot de passe ?'"
+          class="w-100 gpm-attention gpm-warning-active"/>
+        </wrap>
+      </div>
+
+      <div class="w-100">
+        <wrap withComp="AnimBlockSlide" class="w-100">
+          <hr class="my-3 gpm-base w-100">
+          <ButtonPiti
+          @action="$router.push('profil/modification/deleteUser')"
+          :text="'Supprimer mon compte'"
           class="w-100 gpm-attention gpm-warning-active"/>
         </wrap>
       </div>
