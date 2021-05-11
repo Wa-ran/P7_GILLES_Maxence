@@ -249,5 +249,21 @@ exports.postParticipationComment = async (data) => {
     data['idComm'] = row
   })
 
-  if (data.image) fs.rename(data.file.path, 'images/commentaires/' + data.idComm + '.webp', (err) => { console.log(err) })
+  if (data.image) fs.rename(data.file.path, 'images/commentaires/' + data.idComm + '.webp', (err) => { if (err) console.log(err) })
+};
+
+exports.deleteParticipationComment = async (data) => {
+  await this.verifRight(data.idParticipation, data.id)
+  .then((res) => {
+    if (res < 1 || data.id !== data.idCreateur) throw { custMsg : 'Vous n\'avez pas le droit de participer.' }
+  })
+  await groupomania.call('delete_commentaire', data.idComm)
+
+  fs.access('images/commentaires/' + data.idComm + '.webp', err => {
+    if (err) {
+      return
+    } else {
+      fs.unlink('images/commentaires/' + data.idComm + '.webp', (err) => { if (err) console.log(err) })
+    }
+  })
 };

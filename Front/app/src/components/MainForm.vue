@@ -87,15 +87,22 @@ export default {
       let data;
       form.classList.add('was-validated'); // Mdb
 
-      if (form.checkValidity() && !this.error) {
+      if (form.checkValidity() && !this.error) { // Ajout systématique d'infos requises par le serveur
         if (document.querySelector('[type="file"]')) { // Check si envoi multipart
           data = new FormData(form);
 
-          data.append('id', this.$store.state.profil.id); // Ajout systématique d'infos requises par le serveur
+          if (this.$store.state.profil.id)
+            data.append('id', this.$store.state.profil.id);
           if (this.$route.params.groupeProps)
             data.append('groupe', this.$route.params.groupeProps);
           if (this.$route.params.participationProps)
-            data.append('idParticipation', parseInt(this.$route.params.participationProps));
+            data.append('idParticipation', this.$route.params.participationProps);
+
+          for (let item of data.entries()) {
+            if (item[0].match(/^(id)/)) {
+              item[1] = Number.parseInt(item[1])
+            }
+          }
         } 
         else {
           data = {};
@@ -105,11 +112,18 @@ export default {
               data[elem.name] = elem.value;
           }
 
-          data['id'] = this.$store.state.profil.id;
+          if (this.$store.state.profil.id)
+            data['id'] = this.$store.state.profil.id;
           if (this.$route.params.groupeProps)
             data['groupe'] = this.$route.params.groupeProps;
           if (this.$route.params.participationProps)
-            data['idParticipation'] = parseInt(this.$route.params.participationProps);
+            data['idParticipation'] = this.$route.params.participationProps;
+
+          for (let [key, value] of Object.entries(data)) {
+            if (key.match(/^(id)/)) {
+              data[key] = Number.parseInt(value)
+            }
+          }
         }
 
         this.sendForm(data)

@@ -144,4 +144,13 @@ export default {
       body: data
     })
   },
+  deleteCommentaire(data, headers) {
+    let idParticipation = JSON.parse(data).idParticipation;
+
+    return fetch('http://localhost:3000/gpm/participation/' + idParticipation.toString() + '/commentaire', {
+      method: "DELETE",
+      headers,
+      body: data
+    })
+  },
 }

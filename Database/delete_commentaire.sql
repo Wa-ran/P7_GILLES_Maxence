@@ -1,0 +1,16 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_commentaire`(p_id INT)
+BEGIN
+    
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION, SQLWARNING
+	BEGIN
+		ROLLBACK;
+		RESIGNAL;
+	END;
+
+    START TRANSACTION READ WRITE;
+
+		DELETE FROM commentaire
+		WHERE id = p_id;
+    
+    COMMIT;
+END

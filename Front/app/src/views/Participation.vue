@@ -1,5 +1,25 @@
 <template>
   <div>
+
+    <mdbModal v-show="deleteComm" centered>
+      <MainForm id="formDeleteComm" v-if="deleteComm" class="gpm-attention" :submitButton="'Oui'">
+
+        <ButtonCircle
+        @actionBtnCircle="deleteComm = null; setSubmit()"
+        class="gpm-warning cross">
+          <i class="p-1 fas fa-times fa-2x"></i>
+        </ButtonCircle>
+
+        <div class="pt-3 m-auto d-flex flex-column">
+          <span class="mb-3">Voulez-vous supprimer ce commentaire ?</span>
+          <span>" {{ deleteComm.contenu }} "</span>
+          <mdbInput :value="deleteComm.id" name="idComm" class="mx-auto w-25 p-0 m-0 hiddenInput"/>
+          <mdbInput :value="deleteComm.userId" name="idCreateur" class="mx-auto w-25 p-0 m-0 hiddenInput"/>
+        </div>
+
+      </MainForm>
+    </mdbModal>
+
     <mdb-card class="mb-3 gpm-default">
 
       <div class="mx-auto mt-3 spinner-border" role="status" v-if="!articleLoaded">
@@ -40,12 +60,20 @@
 <!-- Espace commentaires -->
     <div v-for="comm in commList" :key="comm.id" class="pt-2">
       <Commentaire>
+
         <template #sticker>
           <Avatar :userId="comm.userId"/>
           <div class="ml-4 px-1">
             {{ comm.nom }} {{ comm.prenom }}
           </div>
         </template>
+
+        <ButtonCircle v-if="comm.userId === userId"
+        @actionBtnCircle="deleteComm = { ...comm }; setSubmit()"
+        class="gpm-attention cross">
+          <i class="fas fa-times"></i>
+        </ButtonCircle>
+
         <ImageShow v-if="comm.image == 1"
           :source="'http://localhost:3000/images/commentaires/' + comm.id + '.webp'"
           :textAlt="'Image partagée par ' + comm.nom + ' ' + comm.prenom"/>
@@ -58,7 +86,7 @@
     </div>
 
 <!-- Nouveau Commentaire -->
-    <MainForm class="mb-n5 w-100 z-depth-0 transparent"
+    <MainForm v-if="!deleteComm" class="mb-n5 w-100 z-depth-0 transparent"
     :submitClass="'pt-0 mt-n4 mr-2 d-flex flex-row-reverse'">
       <Commentaire class="w-100">
         <template #sticker>
@@ -80,7 +108,10 @@
 <script>
 import mdbCard from 'mdbvue/lib/components/mdbCard';
 import mdbCardBody from 'mdbvue/lib/components/mdbCardBody';
+import mdbInput from 'mdbvue/lib/components/mdbInput';
+import mdbModal from 'mdbvue/lib/components/mdbModal';
 
+import ButtonCircle from '@/components/ButtonCircle.vue';
 import Commentaire from '@/components/Commentaire.vue';
 import ImageShow from '@/components/ImageShow.vue';
 import InputFileDisplayer from '@/components/InputFileDisplayer.vue';
@@ -92,6 +123,9 @@ export default {
   components: {
     mdbCard,
     mdbCardBody,
+    mdbInput,
+    mdbModal,
+    ButtonCircle,
     Commentaire,
     ImageShow,
     InputFileDisplayer,
@@ -102,7 +136,10 @@ export default {
   data() {
     return {
       commLoading: false,
-      articleLoaded: false
+      articleLoaded: false,
+      userId: this.$store.state.profil.id,
+      deleteComm: null,
+      wasSubmited: false
     }
   },
   computed: {
@@ -119,9 +156,6 @@ export default {
   methods: {
     async getInfos() {
       await this.$store.dispatch('GPMRequest', { backFct: 'getParticipationInfos', data: this.participationProps })
-    },
-    async setSubmit() {
-      await this.$store.dispatch('chooseSubmit', { backFct: 'postCommentaire', submitPath: this.$route.path })
     },
     async getComment() {
       if (document.visibilityState === 'visible' && this.$route.name === 'participation') {
@@ -144,9 +178,23 @@ export default {
         else if (this.commLoading) this.commLoading = false
       }, 1000);
     },
+    setSubmit() {
+      setTimeout(async () => {
+        if (document.getElementById('formDeleteComm') !== null) {
+          await this.$store.dispatch('chooseSubmit', { backFct: 'deleteCommentaire', submitPath: this.$route.path }) // Formulaire "delete"
+        }
+        else {
+          await this.$store.dispatch('chooseSubmit', { backFct: 'postCommentaire', submitPath: this.$route.path }) // Formulaire d'envoi
+        }
+      }, 500);
+    },
     onSubmit() {
-      this.$store.dispatch('setLoading', true);
-      if (document.getElementById('commentaire').value === '') document.getElementById('commentaire').value = ' '
+      setTimeout(() => {
+        this.commLoading = true;
+        this.deleteComm = null;
+        this.wasSubmited = true;
+        this.setSubmit()
+      }, 200);
     }
   },
   watch: {
@@ -154,20 +202,23 @@ export default {
       if (!this.loading && !this.articleLoaded) this.articleLoaded = true; // On ne charge qu'une fois l'article
       if (document.querySelector('.was-validated') !== null && !this.$store.state.error.pending) {
         document.querySelector('.was-validated').classList.remove('was-validated');
-        document.getElementById('commentaire').value = '';
-        this.submited = false // Remise à zéro du formulaire de commentaire
+        if (this.wasSubmited) {
+          let textarea = document.querySelector('textarea');
+            textarea.value = null
+          this.wasSubmited = false
+        }
       }
     }
   },
   async created() {
     this.setLoader();
     await this.getInfos();
-    await this.setSubmit();
     await this.getComment();
-    document.addEventListener('submit', this.onSubmit())
+    await this.setSubmit();
+    document.addEventListener('submit', this.onSubmit)
   },
-  beforeDestroy() {
-    document.removeEventListener('submit', this.onSubmit())
+  destroyed() {
+    document.removeEventListener('submit', this.onSubmit)
   },
 }
 </script>
@@ -182,6 +233,12 @@ export default {
 
 .comm {
   white-space: pre-wrap;
+}
+
+.cross {
+  position: absolute;
+  right: -0.3rem;
+  top: -0.3rem;
 }
 
 .mainImg {

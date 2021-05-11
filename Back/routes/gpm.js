@@ -20,5 +20,6 @@ router.put('/participation/:participationId/grant', auth, gpm.setFct, gpm.sendIt
 
 router.get('/participation/:participationId/commentaire', auth, gpm.setFct, gpm.sendIt);
 router.post('/participation/:participationId/commentaire', multer, auth, gpm.setFct, gpm.sendIt);
+router.delete('/participation/:participationId/commentaire', auth, gpm.setFct, gpm.sendIt);
 
 module.exports = router;
