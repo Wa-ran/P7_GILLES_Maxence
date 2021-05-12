@@ -259,11 +259,5 @@ exports.deleteParticipationComment = async (data) => {
   })
   await groupomania.call('delete_commentaire', data.idComm)
 
-  fs.access('images/commentaires/' + data.idComm + '.webp', err => {
-    if (err) {
-      return
-    } else {
-      fs.unlink('images/commentaires/' + data.idComm + '.webp', (err) => { if (err) console.log(err) })
-    }
-  })
+  fs.unlink('images/commentaires/' + data.idComm + '.webp', (err) => { if (err) console.log(err) })
 };

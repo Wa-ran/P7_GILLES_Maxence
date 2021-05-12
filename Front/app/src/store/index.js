@@ -67,7 +67,7 @@ export default new Vuex.Store({
         }
         state.avatar.big = 'http://localhost:3000/images/avatars/' + state.profil.id + '_avatar.webp' + '?rand=' + Date.now();
         state.avatar.mini = 'http://localhost:3000/images/avatars/' + state.profil.id + '_avatar_mini.webp' + '?rand=' + Date.now();
-        // rand sert à reload l'image au changement
+        // rand sert à reload l'image si changement
       }
     },
     getDeptsList(state, payload) {
@@ -80,7 +80,7 @@ export default new Vuex.Store({
       state.groupeList = payload
     },
     getGroupeContent(state, payload) {
-      state.groupe = payload
+      state.groupe = payload ? payload : {}
     },
     getParticipationInfos(state, payload) {
       for (const [key, value] of Object.entries(payload[0])) {

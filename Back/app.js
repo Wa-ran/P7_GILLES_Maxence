@@ -25,11 +25,11 @@ app.use('/images',
       if (req.path.match(/(avatar)/)) {
         if (req.path.match(/(mini)/)) res.redirect('/images/avatars/user404_mini.webp')
         else res.redirect('/images/avatars/user404.webp')
+        next()
       }
       else {
-        res.redirect('/images/404.webp')
+        res.sendStatus(204)
       }
-      next()
     } else {
       next()
     }

@@ -53,9 +53,6 @@ exports.sendIt = async (req, res) => {
     if (!data) { // Pas de contenu = objet créé
       res.sendStatus(201)
     }
-    else if (!data.value && data.length === 0) { 
-      res.sendStatus(404)
-    }
     else {
       data = await decryptData(data);
       res.send(data)

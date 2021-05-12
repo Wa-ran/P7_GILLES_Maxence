@@ -85,14 +85,15 @@ exports.avatar = (req, res, next) => {
   let newPath = 'images/avatars/' + req.body.id + '_avatar.webp';
   let miniPath = 'images/avatars/' + req.body.id + '_avatar_mini.webp';
 
-  try {
-    fs.unlink(newPath);
-    fs.unlink(miniPath);
-  } catch (error) {};
-
   cryptData(req)
   .then((data) => {
     return user.selectProfil(data)
+  })
+  .then(() => { // avatar existant ?
+    try {
+      fs.unlink(newPath);
+      fs.unlink(miniPath);
+    } catch (error) {};
   })
   .then(() => {
     return sharp(path)
@@ -104,19 +105,12 @@ exports.avatar = (req, res, next) => {
     .resize(40, 40)
     .toFile(miniPath);    
   })
-  .then(() => {
+  .then(() => { // suppr temp
     return fs.unlink(req.file.path, (err) => {
-      return console.log(err)
+      if(err) return console.log(err)
     })
   })
   .then(() => res.sendStatus(201))
-  .then(() => {
-    if (req.file && fs.existsSync(req.file.path)) {
-      fs.unlink(req.file.path, (err) => {
-        return console.log(err)
-      })
-    }
-  })
   .catch((error) => {
     if (req.file) {
       fs.unlink(req.file.path, (err) => {
@@ -132,6 +126,15 @@ exports.delete = (req, res, next) => {
   cryptData(req)
   .then((data) => {
     return user.delete(data)
+  })
+  .then(() => {
+    fs.access('images/avatars/' + req.id + '_avatar.webp', err => {
+      if (err) { return }
+      else {
+        fs.unlink('images/avatars/' + req.id + '_avatar.webp', (err) => { if (err) console.log(err) });
+        fs.unlink('images/avatars/' + req.id + '_avatar_mini.webp', (err) => { if (err) console.log(err) })
+      }
+    })
   })
   .then(() => res.sendStatus(204))
   .catch((error) => {
