@@ -30,6 +30,7 @@ export default new Vuex.Store({
     },
     groupe: {},
     groupeList: [],
+    groupeMember: [],
     headers: {},
     lastAnnonce: {},
     loading: true,
@@ -78,6 +79,9 @@ export default new Vuex.Store({
     },
     getGroupeList(state, payload) {
       state.groupeList = payload
+    },
+    getGroupeMember(state, payload) {
+      state.groupeMember = payload
     },
     getGroupeContent(state, payload) {
       state.groupe = payload ? payload : {}

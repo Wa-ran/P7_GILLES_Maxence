@@ -99,7 +99,7 @@ export default {
         );
       }, 100);
     },
-    breadCrumbHide(event) {
+    breadCrumbHide(event) { // Hide on scroll top
       let bc = document.querySelector('.breadCrumb');
 
       if (event.target.scrollTop > this.scrollPos) bc.style.marginTop = '-' + bc.scrollHeight + 'px'
@@ -109,38 +109,40 @@ export default {
       this.listenScroll()
     },
     navPosition() {
-      let small = document.body.offsetWidth < 575 ? true : false;
-      let NavBurger = document.getElementById('NavBurger');
-      let navShow = document.querySelector('nav').classList.contains('show-navbar');
-      if (document.body.offsetWidth > 991 || navShow) {
-        NavBurger.style.top = '12vh';
-      }
-      else {
-        NavBurger.style.top = null;
-      }
-      if (small) {
-        NavBurger.style.right = 0;
-        NavBurger.style.left = null
-      }
-      else {
-        NavBurger.style.right = null;
-        NavBurger.style.left = 0
-      }
+      setTimeout(() => {
+        let small = document.body.offsetWidth < 575 ? true : false;
+        let NavBurger = document.getElementById('NavBurger');
+        let navShow = document.querySelector('nav').classList.contains('show-navbar');
+        if ((document.body.offsetWidth > 991) || navShow) { // NavBar dépliée
+          NavBurger.style.top = '13vh';
+        }
+        else { // repliée
+          NavBurger.style.top = null;
+        }
+        if (small) {
+          NavBurger.style.right = 0;
+          NavBurger.style.left = null
+        }
+        else {
+          NavBurger.style.right = null;
+          NavBurger.style.left = 0
+        }        
+      }); // attendre que l'event atteigne le button ('useCapture: true') et que la nav réagisse ('show-navbar') pour pouvoir correctement la positionner
     }
   },
   mounted() {
     this.listenScroll();
     this.navPosition();
     window.addEventListener('resize', this.navPosition);
-    document.querySelector('#NavBurger > button').addEventListener('click', this.navPosition)
+    document.querySelector('#NavBurger').addEventListener('click', this.navPosition, true)
   },
   updated() {
     this.navPosition()
   },
   destroyed() {
     window.removeEventListener('resize', this.navPosition);
-    document.querySelector('#NavBurger > button').removeEventListener('click', this.navPosition)
-  },
+    document.querySelector('#NavBurger').removeEventListener('click', this.navPosition, true)
+  }
 }
 </script>
 

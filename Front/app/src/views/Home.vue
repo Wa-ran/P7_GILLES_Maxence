@@ -1,7 +1,7 @@
 <template>
   <div id="MainView" class="py-3 mx-auto">
 
-    <router-view class="mx-auto w-100"></router-view>
+    <router-view class="mx-auto w-100"/>
 
     <ArticlePreview
     v-if="this.$route.path == '/home'"
@@ -44,6 +44,7 @@ import ArticlePreview from '@/components/ArticlePreview';
 import ImageShow from '@/components/ImageShow';
 
 export default {
+  name: 'Home',
   components: {
     mdbBadge,
     ArticlePreview,

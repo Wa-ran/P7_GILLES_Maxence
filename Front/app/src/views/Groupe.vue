@@ -8,7 +8,9 @@
         </h2>
       </template>
 
-      <template>
+      <router-view class="mx-auto w-100"/>
+
+      <template v-if="this.$route.name != 'groupeMember'">
         <div v-show="!isCreation" class="w-100">
 <!-- Vue normale -->
           <div class="spinner-border" role="status" v-if="loading">
@@ -23,12 +25,12 @@
             :isGroupe="isGroupes">
 
               <template #title>
-                <h3 class="mx-auto mb-2 pb-0"
-                :class="isGroupes ? 'h4' : 'h5'">
-                  <router-link :to="pathToContent(item)">
+                <router-link :to="pathToContent(item)">
+                  <h3 class="mx-auto mb-2 pb-0"
+                  :class="isGroupes ? 'h4' : 'h5'">
                     {{ item.title }}
-                  </router-link>
-                </h3>
+                  </h3>
+                </router-link>
               </template>
 
               <template #text>
@@ -59,12 +61,18 @@
       </template>
     </DocCard>
 
-    <ButtonDoc
-    v-show="!isCreation"
-    @action="$router.push(pathToForm)"
-    :text="isGroupes ? 'Créer un nouveau groupe' : 'Nouvelle participation'"
-    class="mx-auto my-3 gpm-attention gpm-warning-active gpm-shadow-focus"/>
+    <div v-show="!isCreation" class="d-flex flex-wrap">
+      <ButtonDoc
+      @action="$router.push(pathToForm)"
+      :text="isGroupes ? 'Créer un nouveau groupe' : 'Nouvelle participation'"
+      class="mx-auto mt-3 gpm-attention gpm-warning-active gpm-shadow-focus"/>
 
+      <ButtonDoc
+      v-show="groupeProps && (this.$route.name != 'groupeMember')"
+      @action="$router.push(groupeProps + '/member')"
+      :text="'Voir les membres du groupe'"
+      class="mx-auto mt-3 gpm-default gpm-attention-active gpm-shadow-focus"/>
+    </div>
   </div>
 </template>
 
@@ -151,9 +159,10 @@ export default {
     },
     async dispatch() {
       if (this.routeName === 'groupeProps') {
-        await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeContent', data: this.groupeProps })
+        await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeContent', data: this.groupeProps });
+        await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeMember', data: this.groupeProps })
       }
-      else {
+      else if (this.routeName === 'groupes') {
         await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeList' })
       }
     }

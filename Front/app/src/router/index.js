@@ -5,6 +5,10 @@ import Home from '@/views/Home.vue'
 import MainNav from '@/components/MainNav.vue'
 import Footer from '@/views/Footer.vue'
 
+function lazyLoad(view){
+  return() => import(/* webpackPrefetch: true */ /* webpackPreload: true */`@/views/${view}.vue`)
+}
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -30,12 +34,12 @@ const routes = [
       {
         path: 'profil',
         name: 'profil',
-        component: () => /* webpackPrefetch: true */ import('../views/Profil.vue'),
+        component: lazyLoad('Profil'),
       },
 
       {
         path: 'profil/modification',
-        component: () => /* webpackPrefetch: true */ import('../views/ProfilModif.vue'),
+        component: lazyLoad('ProfilModif'),
         children: [
           { path: 'infos', name: 'infos' },
           { path: 'avatar', name: 'avatar' },
@@ -48,7 +52,7 @@ const routes = [
       {
         path: 'groupes',
         name: 'groupes',
-        component: () => /* webpackPrefetch: true */ import('../views/Groupe.vue'),
+        component: lazyLoad('Groupe'),
         props: true,
         children: [
           { path: 'creation', name: 'creationGroupe' },
@@ -58,15 +62,20 @@ const routes = [
             children: [
               { path: 'creation', name: 'creationParticipation' },
             ]
+          },
+          {
+            path: ':groupeProps/member',
+            name: 'groupeMember',
+            component: lazyLoad('Member'),
+            props: true
+          },
+          {
+            path: ':groupeProps/:participationProps',
+            name: 'participation',
+            component: lazyLoad('Participation'),
+            props: true
           }
         ]
-      },
-
-      {
-        path: 'groupes/:groupeProps/:participationProps',
-        name: 'participation',
-        component: () => /* webpackPrefetch: true */ import('../views/Participation.vue'),
-        props: true
       }
     ]
   },

@@ -49,7 +49,6 @@
 
     <Commentaire>
       <template #sticker>
-        <Avatar :userId="infos.createurId"/>
         <div class="ml-4 px-1">
           {{ infos.createurNom }} {{ infos.createurPrenom }}        
         </div>
@@ -59,16 +58,15 @@
 
 <!-- Espace commentaires -->
     <div v-for="comm in commList" :key="comm.id" class="pt-2">
-      <Commentaire>
+      <Commentaire :avatarId="comm.userId">
 
         <template #sticker>
-          <Avatar :userId="comm.userId"/>
           <div class="ml-4 px-1">
             {{ comm.nom }} {{ comm.prenom }}
           </div>
         </template>
 
-        <ButtonCircle v-if="comm.userId === userId"
+        <ButtonCircle v-if="comm.userId === userId || isAdmin"
         @actionBtnCircle="deleteComm = { ...comm }; setSubmit()"
         class="gpm-attention cross">
           <i class="fas fa-times"></i>
@@ -148,6 +146,15 @@ export default {
     },
     commList() {
       return this.$store.state.commentaires
+    },
+    isAdmin() {
+      let admin = false;
+      let members = this.$store.state.groupeMember;
+      for (let member of members) {
+        if (member.user == this.userId && member.admin == 1)
+        admin = true
+      }
+      return admin
     },
     loading() {
       return this.$store.state.loading

@@ -9,9 +9,11 @@ BEGIN
     
     START TRANSACTION READ ONLY;
 
-		SELECT JSON_OBJECT('user', utilisateur_id, 'admin', admin)
+		SELECT JSON_OBJECT('user', utilisateur.id, 'nom', utilisateur.nom, 'prenom', utilisateur.prenom, 'admin', utilisateur_participation.admin)
 		FROM utilisateur_participation
-        WHERE participation_id = p_participation_id;
+        JOIN utilisateur
+        ON utilisateur.id = utilisateur_participation.utilisateur_id
+        WHERE utilisateur_participation.participation_id = p_participation_id;
     
     COMMIT;
 END

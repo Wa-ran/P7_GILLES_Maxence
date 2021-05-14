@@ -109,6 +109,12 @@ export default {
       headers
     })
   },
+  getGroupeMember(groupeName, headers) {
+    return fetch('http://localhost:3000/gpm/groupe/' + encodeURIComponent(groupeName) + '/member', {
+      method: "GET",
+      headers
+    })
+  },
   postGroupe(data, headers) {
     return fetch('http://localhost:3000/gpm/groupe/create', {
       method: "POST",

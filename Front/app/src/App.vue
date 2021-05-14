@@ -43,6 +43,7 @@ export default {
         },
         groupe: {},
         groupeList: [],
+        groupeMember: [],
         headers: {},
         lastAnnonce: {},
         loading: true,

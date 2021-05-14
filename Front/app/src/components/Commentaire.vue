@@ -1,6 +1,7 @@
 <template>
-  <div class="w-100">
+  <div>
     <DocStickers class="py-1 px-2 h6">
+      <Avatar :userId="avatarId"/>
       <slot name="sticker"></slot>
     </DocStickers>
     <mdb-card class="w-100 mb-3 gpm-lecture">
@@ -15,6 +16,7 @@
 import mdbCard from 'mdbvue/lib/components/mdbCard';
 import mdbCardBody from 'mdbvue/lib/components/mdbCardBody';
 
+import Avatar from '@/components/Avatar.vue';
 import DocStickers from '@/components/DocStickers.vue';
 
 export default {
@@ -22,7 +24,23 @@ export default {
   components: {
     mdbCard,
     mdbCardBody,
+    Avatar,
     DocStickers
+  },
+  props: {
+    avatarId: {
+      type: [Number, String],
+      default: 0
+    }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.avatar {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  z-index: 10;
+}
+</style>

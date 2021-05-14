@@ -255,7 +255,7 @@ exports.postParticipationComment = async (data) => {
 exports.deleteParticipationComment = async (data) => {
   await this.verifRight(data.idParticipation, data.id)
   .then((res) => {
-    if (res < 1 || data.id !== data.idCreateur) throw { custMsg : 'Vous n\'avez pas le droit de participer.' }
+    if (res < 1 || data.id !== data.idCreateur) throw { custMsg : 'Vous n\'avez pas les droits' }
   })
   await groupomania.call('delete_commentaire', data.idComm)
 
