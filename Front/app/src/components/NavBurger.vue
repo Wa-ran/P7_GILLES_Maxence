@@ -13,7 +13,7 @@
             <ButtonDoc
             @action="$router.push('/home/profil')"
             class="w-50 mr-2 gpm-grey-light gpm-attention-active with-avatar">
-              <Avatar/>
+              <Avatar :imgClass="'rounded'"/>
               <span class="ml-3 btn-text-normal">Mon Profil</span>
             </ButtonDoc>
 

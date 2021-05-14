@@ -67,6 +67,18 @@ a:hover, button:hover span {
 
 .avatar {
   object-fit: cover;
+  &-mini {
+    &-left {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      z-index: 10;
+    }
+  }
+}
+
+.bold {
+  font-weight: bold;
 }
 
 button:focus span {
@@ -285,6 +297,10 @@ div .textarea {
 
 .underline {
   text-decoration: underline;
+}
+
+.w-fit {
+  width: fit-content;
 }
 
 ::-webkit-scrollbar {

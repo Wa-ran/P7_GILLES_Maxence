@@ -50,7 +50,7 @@ exports.verifAdmin = async (identifier, userId) => {
 
   await groupomania.connect
   .then(function () {
-    return session.sql('SELECT admin FROM utilisateur_' + table + ' WHERE ' + table + '_' + column + ' = ' + identifier + ' AND utilisateur_id = ' + userId + ';')
+    return session.sql('SELECT admin FROM utilisateur_' + table + ' WHERE ' + table + '_' + column + ' = \'' + identifier + '\' AND utilisateur_id = ' + userId + ';')
     .execute((row) => { admin = row[0] })
   })
   .catch((error) => {
@@ -159,6 +159,18 @@ exports.getGroupeMember = async (data) => {
   return content;    
 };
 
+exports.getGroupeCommSignaled = async (data) => {
+  let content = [];
+  await this.verifAdmin(data.groupe, data.id);
+  await groupomania.call('groupe_comm_signaled', data.groupe)
+  .then((row) => {
+    row.forEach(el => {
+      content.push(el)
+    })
+  })
+  return content;
+};
+
 exports.putGroupeMember = async (data) => {
   await this.verifAdmin(data.groupe, data.id);
   await groupomania.call('grant_groupe_right', data.groupe, data.id, data.idNewMember, data.newAdmin)
@@ -236,6 +248,12 @@ exports.getParticipationComment = async (data) => {
   return content;
 };
 
+exports.putSignalComment = async (data) => {
+  await this.verifRight(data.idParticipation, data.id);
+  await session.sql('UPDATE commentaire SET signaled = 1 WHERE id = ' + data.idComm + ';')
+  .execute()
+};
+
 exports.postParticipationComment = async (data) => {
   // Input checkbox to boolean
   data.image ? data.image = 1 : data.image = 0;
@@ -253,6 +271,7 @@ exports.postParticipationComment = async (data) => {
 };
 
 exports.deleteParticipationComment = async (data) => {
+  await this.verifAdmin(data.idParticipation, data.id)
   await this.verifRight(data.idParticipation, data.id)
   .then((res) => {
     if (res < 1 || data.id !== data.idCreateur) throw { custMsg : 'Vous n\'avez pas les droits' }

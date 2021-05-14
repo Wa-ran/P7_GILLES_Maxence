@@ -44,6 +44,7 @@ export default {
         groupe: {},
         groupeList: [],
         groupeMember: [],
+        groupeCommSignaled: [],
         headers: {},
         lastAnnonce: {},
         loading: true,

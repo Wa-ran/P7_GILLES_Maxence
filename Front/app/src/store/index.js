@@ -31,6 +31,7 @@ export default new Vuex.Store({
     groupe: {},
     groupeList: [],
     groupeMember: [],
+    groupeCommSignaled: [],
     headers: {},
     lastAnnonce: {},
     loading: true,
@@ -81,7 +82,10 @@ export default new Vuex.Store({
       state.groupeList = payload
     },
     getGroupeMember(state, payload) {
-      state.groupeMember = payload
+      state.groupeMember = payload ? payload : []
+    },
+    getGroupeCommSignaled(state, payload) {
+      state.groupeCommSignaled = payload ? payload : []
     },
     getGroupeContent(state, payload) {
       state.groupe = payload ? payload : {}

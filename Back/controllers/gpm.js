@@ -10,7 +10,8 @@ let fctMap = [
   {route: '/groupe/:groupe', fct: 'GroupeContent'},
   {route: '/groupe/create', fct: 'Groupe'},
   {route: '/groupe/:groupe/member', fct: 'GroupeMember'},
-  {route: '/groupe/grant', fct: 'GroupeMember'},
+  {route: '/groupe/:groupe/commSignaled', fct: 'GroupeCommSignaled'},
+  {route: '/groupe/grant', fct: 'Groupe'},
 // Participations
   {route: '/participation/:participationId', fct: 'ParticipationInfos'},
   {route: '/participation/create', fct: 'Participation'},
@@ -18,6 +19,7 @@ let fctMap = [
   {route: '/participation/:participationId/grant', fct: 'ParticipationMember'},
 // Commentaires
   {route: '/participation/:participationId/commentaire', fct: 'ParticipationComment'},
+  {route: '/commentaire/signal', fct: 'SignalComment'},
 ];
 
 exports.setFct = (req, res, next) => { // Impoosible de définir dynamiquement la gpm.fct sans passer par le req (la callback du router doit avoir les arguments (req, res, next) et RIEN d'autre, gpm.sendIt('ma fct') ne marche pas)

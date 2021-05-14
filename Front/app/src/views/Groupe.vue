@@ -10,7 +10,7 @@
 
       <router-view class="mx-auto w-100"/>
 
-      <template v-if="this.$route.name != 'groupeMember'">
+      <template v-if="(this.$route.name != 'groupeMember') && (this.$route.name != 'groupeCommSignaled')">
         <div v-show="!isCreation" class="w-100">
 <!-- Vue normale -->
           <div class="spinner-border" role="status" v-if="loading">
@@ -72,6 +72,12 @@
       @action="$router.push(groupeProps + '/member')"
       :text="'Voir les membres du groupe'"
       class="mx-auto mt-3 gpm-default gpm-attention-active gpm-shadow-focus"/>
+
+      <ButtonDoc
+      v-show="groupeProps && isAdmin"
+      @action="$router.push(groupeProps + '/commSignaled')"
+      :text="'Voir les commentaires signalés'"
+      class="mx-auto mt-3 gpm-default gpm-attention-active gpm-shadow-focus"/>
     </div>
   </div>
 </template>
@@ -110,6 +116,17 @@ export default {
     }
   },
   computed: {
+    isAdmin() {
+      let admin = false;
+      if (this.$store.state.groupeMember) {
+        for (let member of this.$store.state.groupeMember) {
+          if (member.user === this.$store.state.profil.id && member.admin == 1) {
+            admin = true
+          }
+        }
+      }
+      return admin
+    },
     loading() {
       return this.$store.state.loading
     },

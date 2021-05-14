@@ -3,7 +3,7 @@
     :src="image"
     alt="PP"
     class="z-depth-1 avatar"
-    :class="mini ? 'rounded' : ''"
+    :class="imgClass"
     @error='error404'/>
 </template>
 
@@ -27,6 +27,10 @@ export default {
     userId: {
       type: [Number, String],
       required: false
+    },
+    imgClass: {
+      type: String,
+      default: ''
     }
   },
   methods: {

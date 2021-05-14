@@ -70,13 +70,19 @@ const routes = [
             props: true
           },
           {
-            path: ':groupeProps/:participationProps',
-            name: 'participation',
-            component: lazyLoad('Participation'),
+            path: ':groupeProps/commSignaled',
+            name: 'groupeCommSignaled',
+            component: lazyLoad('GroupeCommSignaled'),
             props: true
           }
         ]
-      }
+      },
+      {
+        path: 'groupes/:groupeProps/:participationProps',
+        name: 'participation',
+        component: lazyLoad('Participation'),
+        props: true
+      },
     ]
   },
 

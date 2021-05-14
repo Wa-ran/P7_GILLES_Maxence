@@ -1,8 +1,10 @@
 <template>
   <div>
     <DocStickers class="py-1 px-2 h6">
-      <Avatar :userId="avatarId"/>
-      <slot name="sticker"></slot>
+      <Avatar v-if="avatarId" :userId="avatarId" :imgClass="'rounded'" class="avatar-mini-left"/>
+      <div :class="avatarId ? 'ml-4' : ''">
+        <slot name="sticker"></slot>          
+      </div>
     </DocStickers>
     <mdb-card class="w-100 mb-3 gpm-lecture">
       <mdb-card-body class="w-100 p-2 gpm-lecture rounded text-left">
@@ -30,17 +32,8 @@ export default {
   props: {
     avatarId: {
       type: [Number, String],
-      default: 0
+      default: null
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.avatar {
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  z-index: 10;
-}
-</style>

@@ -115,6 +115,12 @@ export default {
       headers
     })
   },
+  getGroupeCommSignaled(groupeName, headers) {
+    return fetch('http://localhost:3000/gpm/groupe/' + encodeURIComponent(groupeName) + '/commSignaled', {
+      method: "GET",
+      headers
+    })
+  },
   postGroupe(data, headers) {
     return fetch('http://localhost:3000/gpm/groupe/create', {
       method: "POST",
@@ -155,6 +161,13 @@ export default {
 
     return fetch('http://localhost:3000/gpm/participation/' + idParticipation.toString() + '/commentaire', {
       method: "DELETE",
+      headers,
+      body: data
+    })
+  },
+  putSignalComment(data, headers) {
+    return fetch('http://localhost:3000/gpm/commentaire/signal', {
+      method: "PUT",
       headers,
       body: data
     })

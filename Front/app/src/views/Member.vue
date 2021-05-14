@@ -1,35 +1,45 @@
 <template>
-  <div class="w-100 pt-3">
+  <div class="pt-3">
     <div class="spinner-border" role="status" v-if="loading">
       <span class="sr-only">Chargement...</span>
     </div>
 
-    <wrap withComp="AnimBlockSlide" class="w-100 mt-n3">
-      <h3 class="pb-3 h5 text-left">
-        Membres :
-      </h3>
-      <Commentaire v-for="(member, index) of memberList" :key="index"
-      :avatarId="member.id">
-
-        <div class="pt-1 pl-4 ml-2 comm d-flex justify-content-between">
-          <span>{{ member.nom }} {{ member.prenom }}</span>
-          <span v-if="member.admin == 1" class="admin">
-            Administrateur
-          </span>
+    <wrap withComp="AnimBlockSlide" class="mt-n3 w-fit">
+      <div class="mb-3">
+        <h3 class="pb-3 h5 text-left">
+          Admin :
+        </h3>
+        <div v-for="(admin, index) of adminList" :key="index" class="d-flex">
+          <div class="px-2 pl-5 w-fit rounded bold z-depth-1 position-relative gpm-lecture">
+            <Avatar :userId="admin.user" :imgClass="'rounded avatar-mini-left'"/>
+            {{ admin.nom }} {{ admin.prenom }}
+          </div>
         </div>
-      </Commentaire>
+      </div>
+
+      <div class="mb-3">
+        <h3 class="pb-3 h5 text-left">
+          Membres :
+        </h3>
+        <div v-for="(member, index) of memberList" :key="index" class="d-flex">
+          <div class="px-2 pl-5 w-fit rounded bold z-depth-1 position-relative gpm-lecture">
+            <Avatar :userId="member.user" :imgClass="'rounded avatar-mini-left'"/>
+            {{ member.nom }} {{ member.prenom }}
+          </div>
+        </div>
+      </div>
     </wrap>
   </div>
 </template>
 
 <script>
-import Commentaire from '@/components/Commentaire';
+import Avatar from '@/components/Avatar';
 import Wrap from '@/components/Wrap';
 
 export default {
   name: 'Member',
   components: {
-    Commentaire,
+    Avatar,
     Wrap
   },
   props: ['groupeProps'],
@@ -38,6 +48,14 @@ export default {
       return this.$store.state.loading
     },
     memberList() {
+      let list = this.$store.state.groupeMember;
+      let members = [];
+      for (let member of list) {
+        if (member.admin === 0) members.push(member)
+      }
+      return members
+    },
+    adminList() {
       return this.$store.state.groupeMember
     }
   },
@@ -48,7 +66,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.admin {
-  font-weight: bold;
+.avatar-mini-left {
+  top: -20px;
+  left: -5px;
 }
 </style>
