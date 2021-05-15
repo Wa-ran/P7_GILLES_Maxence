@@ -2,7 +2,7 @@
   <div>
 
     <mdbModal v-show="showModal" centered>
-      <MainForm id="modalComm" v-if="showModal" class="gpm-attention" :submitButton="'Oui'">
+      <MainForm id="modalComm" v-if="showModal" class="gpm-attention p-3" :submitButton="'Oui'">
 
         <ButtonCircle
         @actionBtnCircle="deleteComm = null; signalComm = null; setSubmit()"
@@ -12,7 +12,8 @@
 
         <div class="pt-3 m-auto d-flex flex-column">
           <span class="mb-3">Voulez-vous {{ deleteComm ? 'supprimer' : 'signaler' }} ce commentaire ?</span>
-          <span>" {{ showModal.contenu }} "</span>
+          <span>" <span class="bold">{{ showModal.contenu }}</span> "</span>
+          <span class="text-left">de <span class="bold">{{ showModal.nom }} {{ showModal.prenom }}</span></span>
           <mdbInput :value="showModal.id" name="idComm" class="mx-auto w-25 p-0 m-0 hiddenInput"/>
           <mdbInput :value="showModal.userId" name="idCreateur" class="mx-auto w-25 p-0 m-0 hiddenInput"/>
         </div>
@@ -81,7 +82,9 @@
         <ImageShow v-if="comm.image == 1"
           :source="'http://localhost:3000/images/commentaires/' + comm.id + '.webp'"
           :textAlt="'Image partagée par ' + comm.nom + ' ' + comm.prenom"/>
+
         <div class="pt-1 comm">{{ comm.contenu }}</div>
+        <div class="text-right date">{{ setDate(comm.date) }}</div>
       </Commentaire>
     </div>
 
@@ -219,6 +222,20 @@ export default {
         this.wasSubmited = true;
         this.setSubmit()
       }, 200);
+    },
+    setDate(date) {
+      function addZero(i) {
+        if (i < 10) {
+          i = "0" + i;
+        }
+        return i;
+      }
+      let commDate = (new Date(Date.now() - new Date(date).getTime()).getTime())/(1000);
+      if (commDate < 60) return 'Il y a ' + Math.round(commDate) + ' sec'
+      else if (commDate/60 < 60) return 'Il y a ' + Math.round(commDate/60) + ' min'
+      else if (commDate/3600 < 2) return 'Il y a ' + Math.round(commDate/3600) + ' heure'
+      else if (new Date(Date.now()).getDay() == new Date(date).getDay()) return addZero(new Date(date).getHours()) + ':' + addZero(new Date(date).getMinutes())
+      else return 'Le ' + date.split(' ')[0]
     }
   },
   watch: {

@@ -172,6 +172,11 @@ button:focus span {
   }
 }
 
+.date {
+  font-size: 12px;
+  color: $gpm-grey-dark;
+}
+
 .gpm-big-shadow {
   box-shadow: 0 5px 11px 0 rgba($black, 0.68), 0 4px 15px 0 rgba($black, 0.45);
 }
@@ -205,6 +210,7 @@ button:focus span {
   margin: 0 !important;
   padding: 0 !important;
   height: 0 !important;
+  border: none !important;
 }
 
 .invalid-feedback {
