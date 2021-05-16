@@ -3,37 +3,37 @@
 
     <router-view class="mx-auto w-100"/>
 
-    <ArticlePreview
-    v-if="this.$route.path == '/home'"
-    class="w-100 mt-4 gpm-lecture"
-    :btnColor="'gpm-warning gpm-alert-active'">
+    <div v-if="this.$route.path == '/home'">
+      <ArticlePreview v-for="article of lastArticles" :key="article.id"
+      class="w-100 mt-4 gpm-lecture"
+      :btnColor="'gpm-warning gpm-alert-active'">
 
-      <template #title>
-        <div class="spinner-border gpm-lecture" role="status" v-if="loading">
-          <span class="sr-only">Chargement...</span>
-        </div>
+        <template #title>
+          <div class="spinner-border gpm-lecture" role="status" v-if="loading">
+            <span class="sr-only">Chargement...</span>
+          </div>
 
-        <h2 class="h5">{{ lastAnnonce.titre }}</h2>
-      </template>
+          <h2 class="h5">{{ article.titre }}</h2>
+        </template>
 
-      <template #text>
-        <ImageShow
-          :source="'http://localhost:3000/images/participations/' + lastAnnonce.id + '.webp'"
-          :textAlt="'Image de l\'article.'"
-          :imgClass="'m-0 mb-2 w-100 rounded'"/>
+        <template #text>
+          <ImageShow
+            :source="'http://localhost:3000/images/participations/' + article.id + '.webp'"
+            :textAlt="'Image de l\'article.'"
+            :imgClass="'m-0 mb-2 w-100 rounded'"/>
 
-        {{ lastAnnonce.preview }}
-      </template>
+          {{ article.preview }}
+        </template>
 
-      <template #infos>
-        <div class="d-flex flex-wrap w-75">
-          <mdb-badge class="mt-2 mr-2 gpm-base z-depth-0">{{ 0 }} com.</mdb-badge>
-          <mdb-badge class="mt-2 mr-2 gpm-base z-depth-0">{{ lastAnnonce.groupe_nom }}</mdb-badge>
-          <!-- <mdb-badge class="mt-2 mr-2 gpm-base z-depth-0">{{ this.importance }}</mdb-badge> -->
-        </div>
-      </template>
+        <template #infos>
+          <div class="d-flex flex-wrap w-75">
+            <mdb-badge class="mt-2 mr-2 gpm-base z-depth-0">{{ article.groupe_nom }}</mdb-badge>
+            <!-- <mdb-badge class="mt-2 mr-2 gpm-base z-depth-0">{{ this.importance }}</mdb-badge> -->
+          </div>
+        </template>
 
-    </ArticlePreview>
+      </ArticlePreview>
+    </div>
   </div>
 </template>
 
@@ -51,8 +51,8 @@ export default {
     ImageShow
   },
   computed: {
-    lastAnnonce() {
-      return this.$store.state.lastAnnonce
+    lastArticles() {
+      return this.$store.state.lastArticles
     },
     loading() {
       return this.$store.state.loading
@@ -61,7 +61,7 @@ export default {
   methods: {
     async dispatch() {
       if (this.$route.path == '/home') {
-        await this.$store.dispatch('GPMRequest', { backFct: 'getLastAnnonce' })
+        await this.$store.dispatch('GPMRequest', { backFct: 'getLastArticles' })
       }
     },
   },

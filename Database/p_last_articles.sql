@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `last_annonce`()
+CREATE DEFINER=`root`@`localhost` PROCEDURE `last_articles`()
 BEGIN
 	DECLARE last_annonce INT;
     
@@ -13,14 +13,12 @@ BEGIN
 		SELECT id
         INTO last_annonce
         FROM participation
-        WHERE groupe_nom = '3b265bff7bd75e95dc0d84a9d8d6274b565ab1'
-        AND date_creation = (SELECT MAX(date_creation)
-							FROM participation
-                            WHERE groupe_nom = '3b265bff7bd75e95dc0d84a9d8d6274b565ab1');
+        WHERE date_creation = (SELECT MAX(date_creation));
 
 		SELECT JSON_OBJECT('id', id, 'titre', titre, 'preview', preview, 'article', article, 'date_creation', date_creation, 'groupe_nom', groupe_nom, 'importance', importance, 'createur', createur)
 		FROM participation
-		WHERE id = last_annonce;
+		WHERE id = last_annonce
+        LIMIT 5;
     
     COMMIT;
 END

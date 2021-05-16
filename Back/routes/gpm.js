@@ -5,7 +5,7 @@ const multer = require('../middlewares/multer');
 const gpm = require('../controllers/gpm');
 
 router.get('/depts', gpm.setFct, gpm.sendIt);
-router.get('/lastAnnonce', auth, gpm.setFct, gpm.sendIt);
+router.get('/lastArticles', auth, gpm.setFct, gpm.sendIt);
 router.get('/groupeList', auth, gpm.setFct, gpm.sendIt);
 
 router.get('/groupe/:groupe', auth, gpm.setFct, gpm.sendIt);

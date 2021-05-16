@@ -33,7 +33,7 @@ export default new Vuex.Store({
     groupeMember: [],
     groupeCommSignaled: [],
     headers: {},
-    lastAnnonce: {},
+    lastArticles: [],
     loading: true,
     participationInfos: {},
     profil: {},
@@ -75,8 +75,8 @@ export default new Vuex.Store({
     getDeptsList(state, payload) {
       state.depts = payload
     },
-    getLastAnnonce(state, payload) {
-      state.lastAnnonce = payload
+    getLastArticles(state, payload) {
+      state.lastArticles = payload
     },
     getGroupeList(state, payload) {
       state.groupeList = payload

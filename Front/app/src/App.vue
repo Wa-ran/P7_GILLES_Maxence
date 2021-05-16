@@ -51,7 +51,7 @@ export default {
         groupeMember: [],
         groupeCommSignaled: [],
         headers: {},
-        lastAnnonce: {},
+        lastArticles: [],
         loading: true,
         participationInfos: {},
         profil: {},

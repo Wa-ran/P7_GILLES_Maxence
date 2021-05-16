@@ -97,14 +97,15 @@ exports.checkDept = (data) => {
   })
 };
 
-exports.getLastAnnonce = async () => {
-  let annonce = {};
-  await groupomania.connect
-  .then(() => {
-    return session.sql('CALL last_annonce()')
-    .execute(row => { annonce = row[0] })
+exports.getLastArticles = async () => {
+  let content = [];
+  await groupomania.call('last_articles')
+  .then((row) => {
+    row.forEach(part => {
+      content.push(part)
+    })
   })
-  return annonce;
+  return content;
 };
 
 exports.getGroupeList = async () => {
