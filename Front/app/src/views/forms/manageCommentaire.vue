@@ -1,6 +1,6 @@
 <template>
   <mdbModal centered v-if="showModal">
-    <MainForm class="gpm-attention p-3" :submitButton="'Oui'">
+    <MainForm class="w-100 gpm-attention p-3" :submitButton="'Oui'">
 
       <ButtonCircle
       @actionBtnCircle="$emit('closeModal')"

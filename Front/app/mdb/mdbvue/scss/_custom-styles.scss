@@ -270,9 +270,22 @@ form {
   }
 }
 
+.modal {
+  max-width: 100vw;
+  max-height: 100vh;
+}
+.modal-dialog {
+  margin: auto !important;
+  margin-top: 30vh !important;
+  width: fit-content !important;
+}
 .modal-content {
   width: fit-content !important;
-  margin: auto;
+  height: fit-content !important;
+  margin: auto !important;
+  & > * {
+    width: 100% !important;
+  }
 }
 
 select {
