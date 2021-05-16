@@ -13,7 +13,9 @@
             <span class="sr-only">Chargement...</span>
           </div>
 
-          <h2 class="h5">{{ article.titre }}</h2>
+          <router-link :to="'home/groupes/' + article.groupe_nom + '/' + article.id">
+            <h2 class="h5">{{ article.titre }}</h2>
+          </router-link>
         </template>
 
         <template #text>
