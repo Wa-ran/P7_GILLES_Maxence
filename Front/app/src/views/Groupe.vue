@@ -69,13 +69,13 @@
 
       <ButtonDoc
       v-show="groupeProps && (this.$route.name != 'groupeMember')"
-      @action="$router.push(groupeProps + '/member')"
+      @action="$router.push('/home/groupes/' + groupeProps + '/member')"
       :text="'Voir les membres du groupe'"
       class="mx-auto mt-3 gpm-default gpm-attention-active gpm-shadow-focus"/>
 
       <ButtonDoc
       v-show="groupeProps && isAdmin"
-      @action="$router.push(groupeProps + '/commSignaled')"
+      @action="$router.push('/home/groupes/' + groupeProps + '/commSignaled')"
       :text="'Voir les commentaires signalés'"
       class="mx-auto mt-3 gpm-default gpm-attention-active gpm-shadow-focus"/>
     </div>
@@ -143,7 +143,9 @@ export default {
       return this.groupeProps ? participation : groupe
     },
     pathToForm() {
-      return this.$route.path + '/creation'
+      return this.groupeProps ?
+      '/home/groupes/' + this.groupeProps + '/creation' :
+      '/home/groupes/creation'
     },
     contentList() {
       let data = this.groupeProps ?
@@ -172,7 +174,9 @@ export default {
   },
   methods: {
     pathToContent(item) {
-      return this.groupeProps ? this.$route.path + '/' + item.id : this.$route.path + '/' + item.title
+      return this.groupeProps ?
+      '/home/groupes/' + this.groupeProps + '/' + item.id :
+      '/home/groupes/' + item.title
     },
     async dispatch() {
       if (this.routeName === 'groupeProps') {

@@ -270,6 +270,11 @@ form {
   }
 }
 
+.modal-content {
+  width: fit-content !important;
+  margin: auto;
+}
+
 select {
   background-color: inherit !important;
   color: inherit !important;

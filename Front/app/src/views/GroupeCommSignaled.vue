@@ -12,7 +12,9 @@
         <div v-for="(comm, index) of signaledList" :key="index" class="d-flex">
           <div class="px-2 pl-5 w-fit rounded z-depth-1 position-relative gpm-lecture">
             <Avatar :userId="comm.user" :imgClass="'rounded avatar-mini-left'"/>
-            {{ comm.contenu }}
+            <router-link :to="comm.idParticipation.toString()">
+              {{ comm.contenu }}
+            </router-link>
           </div>
         </div>
       </div>

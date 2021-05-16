@@ -250,8 +250,10 @@ exports.getParticipationComment = async (data) => {
 };
 
 exports.putSignalComment = async (data) => {
+  data.signal ? data.signal = 1 : data.signal = 0;
+
   await this.verifRight(data.idParticipation, data.id);
-  await session.sql('UPDATE commentaire SET signaled = 1 WHERE id = ' + data.idComm + ';')
+  await session.sql('UPDATE commentaire SET signaled = ' + data.signal + ' WHERE id = ' + data.idComm + ';')
   .execute()
 };
 

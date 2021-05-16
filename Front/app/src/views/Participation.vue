@@ -1,25 +1,8 @@
 <template>
   <div>
 
-    <mdbModal v-show="showModal" centered>
-      <MainForm id="modalComm" v-if="showModal" class="gpm-attention p-3" :submitButton="'Oui'">
-
-        <ButtonCircle
-        @actionBtnCircle="deleteComm = null; signalComm = null; setSubmit()"
-        class="gpm-warning gpm-alert-active btnDelete">
-          <i class="p-1 fas fa-times fa-2x"></i>
-        </ButtonCircle>
-
-        <div class="pt-3 m-auto d-flex flex-column">
-          <span class="mb-3">Voulez-vous {{ deleteComm ? 'supprimer' : 'signaler' }} ce commentaire ?</span>
-          <span>" <span class="bold">{{ showModal.contenu }}</span> "</span>
-          <span class="text-left">de <span class="bold">{{ showModal.nom }} {{ showModal.prenom }}</span></span>
-          <mdbInput :value="showModal.id" name="idComm" class="mx-auto w-25 p-0 m-0 hiddenInput"/>
-          <mdbInput :value="showModal.userId" name="idCreateur" class="mx-auto w-25 p-0 m-0 hiddenInput"/>
-        </div>
-
-      </MainForm>
-    </mdbModal>
+    <manageCommentaire :showModal="showModal" :purpose="purpose" :comm="manageComm"
+    @closeModal="showModal = false"/>
 
     <mdb-card class="mb-3 gpm-default">
 
@@ -58,7 +41,7 @@
     </Commentaire>
 
 <!-- Espace commentaires -->
-    <div v-for="comm in commList" :key="comm.id" class="pt-2">
+    <div v-for="comm in commList" :key="comm.id" :id="comm.id" class="pt-2">
       <Commentaire :avatarId="comm.userId">
 
         <template #sticker>
@@ -67,14 +50,20 @@
           </div>
         </template>
 
+        <ButtonPiti v-if="comm.signaled == 1 && isAdmin"
+        @action="showModal = true, manageComm = comm, purpose= 'approve'"
+        class="mr-4 gpm-warning gpm-warning-active btnDelete btn-text-normal">
+          Commentaire signalé
+        </ButtonPiti>
+
         <ButtonCircle v-if="comm.userId === userId || isAdmin"
-        @actionBtnCircle="deleteComm = { ...comm }; setSubmit()"
+        @actionBtnCircle="showModal = true, manageComm = comm, purpose= 'delete'"
         class="gpm-attention gpm-warning-active btnDelete">
           <i class="fas fa-times"></i>
         </ButtonCircle>
 
         <ButtonPiti v-else
-        @action="signalComm = { ...comm }; setSubmit()"
+        @action="showModal = true, manageComm = comm, purpose= 'signal'"
         class="gpm-attention gpm-warning-active btnDelete btn-text-normal">
           Signaler
         </ButtonPiti>
@@ -93,7 +82,7 @@
     </div>
 
 <!-- Nouveau Commentaire -->
-    <MainForm v-if="!deleteComm && !signalComm" class="mb-n5 w-100 z-depth-0 transparent"
+    <MainForm v-if="!showModal" class="mb-n5 w-100 z-depth-0 transparent"
     :submitClass="'pt-0 mt-n4 mr-5 d-flex flex-row-reverse'">
       <Commentaire class="w-100">
         <template #sticker>
@@ -115,14 +104,13 @@
 <script>
 import mdbCard from 'mdbvue/lib/components/mdbCard';
 import mdbCardBody from 'mdbvue/lib/components/mdbCardBody';
-import mdbInput from 'mdbvue/lib/components/mdbInput';
-import mdbModal from 'mdbvue/lib/components/mdbModal';
 
 import ButtonCircle from '@/components/ButtonCircle.vue';
 import ButtonPiti from '@/components/ButtonPiti.vue';
 import Commentaire from '@/components/Commentaire.vue';
 import ImageShow from '@/components/ImageShow.vue';
 import InputFileDisplayer from '@/components/InputFileDisplayer.vue';
+import manageCommentaire from './forms/manageCommentaire.vue';
 import MainForm from '@/components/MainForm.vue';
 import TextArea from '@/components/TextArea.vue';
 
@@ -131,14 +119,13 @@ export default {
   components: {
     mdbCard,
     mdbCardBody,
-    mdbInput,
-    mdbModal,
     ButtonCircle,
     ButtonPiti,
     Commentaire,
     ImageShow,
     InputFileDisplayer,
     MainForm,
+    manageCommentaire,
     TextArea
   },
   props: ['groupeProps', 'participationProps'],
@@ -147,18 +134,13 @@ export default {
       commLoading: false,
       articleLoaded: false,
       userId: this.$store.state.profil.id,
-      deleteComm: null,
-      signalComm: null,
-      wasSubmited: false
+      wasSubmited: false,
+      showModal: false,
+      manageComm: null,
+      purpose: null
     }
   },
   computed: {
-    showModal() {
-      let comm = null;
-      if (this.deleteComm) comm = { ...this.deleteComm }
-      else if (this.signalComm) comm = { ...this.signalComm }
-      return comm
-    },
     infos() {
       return this.$store.state.participationInfos
     },
@@ -203,23 +185,15 @@ export default {
         else if (this.commLoading) this.commLoading = false
       }, 1000);
     },
-    setSubmit() {
-      setTimeout(async () => {
-        if (document.getElementById('modalComm') !== null) {
-          if (this.deleteComm) await this.$store.dispatch('chooseSubmit', { backFct: 'deleteCommentaire', submitPath: this.$route.path }) // Formulaire "delete"
-          if (this.signalComm) await this.$store.dispatch('chooseSubmit', { backFct: 'putSignalComment', submitPath: this.$route.path }) // Formulaire "delete"
-        }
-        else {
-          await this.$store.dispatch('chooseSubmit', { backFct: 'postCommentaire', submitPath: this.$route.path }) // Formulaire d'envoi
-        }
-      }, 500);
+    async setSubmit() {
+      if (!this.showModal)
+      await this.$store.dispatch('chooseSubmit', { backFct: 'postCommentaire', submitPath: this.$route.path })
     },
     onSubmit() {
       setTimeout(() => {
         this.commLoading = true;
-        this.deleteComm = null;
-        this.signalComm = null;
         this.wasSubmited = true;
+        this.showModal = false;
         this.setSubmit()
       }, 200);
     },
@@ -249,6 +223,9 @@ export default {
           this.wasSubmited = false
         }
       }
+    },
+    showModal() {
+      this.setSubmit()
     }
   },
   async created() {
