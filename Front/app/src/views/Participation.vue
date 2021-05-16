@@ -94,7 +94,7 @@
 
 <!-- Nouveau Commentaire -->
     <MainForm v-if="!deleteComm && !signalComm" class="mb-n5 w-100 z-depth-0 transparent"
-    :submitClass="'pt-0 mt-n4 mr-2 d-flex flex-row-reverse'">
+    :submitClass="'pt-0 mt-n4 mr-5 d-flex flex-row-reverse'">
       <Commentaire class="w-100">
         <template #sticker>
           Participez !

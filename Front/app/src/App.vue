@@ -2,6 +2,7 @@
   <div id="app" class="w-100 d-flex flex-column position-absolute page">
     <router-view name="MainNav" class="zind10"/>
     <main class="container w-100 flex-grow-1 zind5">
+      <ButtonScroll/>
       <router-view/>    
     </main>
     <router-view name="Footer" class="w-100 zind10"/>
@@ -12,10 +13,12 @@
 </template>
 
 <script>
+import ButtonScroll from "@/components/ButtonScroll.vue"
 import ErrorModal from "@/components/ErrorModal.vue"
 
 export default {
   components: {
+    ButtonScroll,
     ErrorModal
   },
   computed: {
@@ -25,6 +28,8 @@ export default {
   },
   methods: {
     restart() {
+      this.footerPadding();
+      this.scrollButton();
       this.$store.replaceState({
         avatar: {
           big: '',
@@ -55,6 +60,9 @@ export default {
     },
     footerPadding() { // Pour que le bas du contenu n'apparaisse pas sous le footer
       document.querySelector('#MainView :last-child').style.marginBottom = 3*document.querySelector('footer').scrollHeight + 'px'
+    },
+    scrollButton() {
+
     }
   },
   watch: {
@@ -92,5 +100,10 @@ $image-path: '~@/../mdb/mdbvue/img'; // image path variable update
 .page {
   min-height: 100%;
   max-height: 100%;
+}
+#ButtonScroll {
+  position: fixed;
+  bottom: 5vh;
+  right: 1rem;
 }
 </style>
