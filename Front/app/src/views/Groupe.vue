@@ -73,11 +73,13 @@
       :text="'Voir les membres du groupe'"
       class="mx-auto mt-3 gpm-default gpm-attention-active gpm-shadow-focus"/>
 
-      <ButtonDoc
-      v-show="groupeProps && isAdmin"
-      @action="$router.push('/home/groupes/' + groupeProps + '/commSignaled')"
-      :text="'Voir les commentaires signalés'"
-      class="mx-auto mt-3 gpm-default gpm-attention-active gpm-shadow-focus"/>
+      <AdminPannel v-show="isAdmin" class="mt-3">
+        <ButtonDoc
+        v-show="groupeProps"
+        @action="$router.push('/home/groupes/' + groupeProps + '/commSignaled')"
+        :text="'Voir les commentaires signalés'"
+        class="mx-auto mt-3 gpm-warning gpm-alert-active gpm-shadow-focus"/>
+      </AdminPannel>
     </div>
   </div>
 </template>
@@ -85,6 +87,7 @@
 <script>
 import ButtonDoc from "@/components/ButtonDoc.vue"
 import ArticlePreview from '@/components/ArticlePreview';
+import AdminPannel from '@/components/AdminPannel';
 import ImageShow from '@/components/ImageShow';
 import MainForm from '@/components/MainForm';
 import DocCard from '@/components/DocCard';
@@ -102,6 +105,7 @@ export default {
   components: {
     ButtonDoc,
     ArticlePreview,
+    AdminPannel,
     ImageShow,
     MainForm,
     DocCard,
@@ -180,7 +184,7 @@ export default {
     },
     async dispatch() {
       if (this.routeName === 'groupeProps') {
-        await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeContent', data: this.groupeProps });
+        await this.$store.dispatch('GPMRequest', { backFct: 'getGroupe', data: this.groupeProps });
         await this.$store.dispatch('GPMRequest', { backFct: 'getGroupeMember', data: this.groupeProps })
       }
       else if (this.routeName === 'groupes') {

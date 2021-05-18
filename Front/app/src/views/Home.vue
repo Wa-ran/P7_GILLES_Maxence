@@ -29,7 +29,11 @@
 
         <template #infos>
           <div class="d-flex flex-wrap w-75">
-            <mdb-badge class="mt-2 mr-2 gpm-base z-depth-0">{{ article.groupe_nom }}</mdb-badge>
+            <mdb-badge class="mt-2 mr-2 gpm-base z-depth-0">
+              <router-link :to="'home/groupes/' + article.groupe_nom">
+                {{ article.groupe_nom }}
+              </router-link>
+            </mdb-badge>
             <!-- <mdb-badge class="mt-2 mr-2 gpm-base z-depth-0">{{ this.importance }}</mdb-badge> -->
           </div>
         </template>

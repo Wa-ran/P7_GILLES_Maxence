@@ -87,16 +87,16 @@ export default new Vuex.Store({
     getGroupeCommSignaled(state, payload) {
       state.groupeCommSignaled = payload ? payload : []
     },
-    getGroupeContent(state, payload) {
+    getGroupe(state, payload) {
       state.groupe = payload ? payload : {}
     },
-    getParticipationInfos(state, payload) {
+    getParticipation(state, payload) {
       for (const [key, value] of Object.entries(payload[0])) {
         state.participationInfos[key] = value
       }
     },
     getParticipationComment(state, payload) {
-      state.commentaires = payload
+      state.commentaires = payload ? payload : []
     }
   },
   actions: {

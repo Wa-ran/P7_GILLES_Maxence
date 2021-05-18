@@ -1,0 +1,16 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_groupe`(p_nom INT)
+BEGIN
+    
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION, SQLWARNING
+	BEGIN
+		ROLLBACK;
+		RESIGNAL;
+	END;
+
+    START TRANSACTION READ WRITE;
+
+		DELETE FROM groupe
+		WHERE nom = p_nom;
+    
+    COMMIT;
+END

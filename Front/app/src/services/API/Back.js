@@ -103,7 +103,7 @@ export default {
       headers: store.state.headers
     })
   },
-  getGroupeContent(groupeName, headers) {
+  getGroupe(groupeName, headers) {
     return fetch('http://localhost:3000/gpm/groupe/' + encodeURIComponent(groupeName), {
       method: "GET",
       headers
@@ -128,7 +128,13 @@ export default {
       body: data
     })
   },
-  getParticipationInfos(idParticipation, headers) {
+  deleteGroupe(groupeName, headers) {
+    return fetch('http://localhost:3000/gpm/groupe/' + encodeURIComponent(groupeName), {
+      method: "DELETE",
+      headers
+    })
+  },
+  getParticipation(idParticipation, headers) {
     return fetch('http://localhost:3000/gpm/participation/' + idParticipation.toString(), {
       method: "GET",
       headers
@@ -139,6 +145,12 @@ export default {
       method: "POST",
       headers,
       body: data
+    })
+  },
+  deleteParticipation(idParticipation, headers) {
+    return fetch('http://localhost:3000/gpm/participation/' + idParticipation.toString(), {
+      method: "DELETE",
+      headers
     })
   },
   getParticipationComment(idParticipation, headers) {

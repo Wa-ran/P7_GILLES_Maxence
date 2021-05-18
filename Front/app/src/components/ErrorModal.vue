@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     routeName() {
-      return this.route.name
+      return this.$route.name
     },
     error() {
       return this.$store.state.error.pending

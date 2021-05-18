@@ -128,7 +128,7 @@ exports.getGroupeList = async () => {
 
 // Groupes
 
-exports.getGroupeContent = async (data) => {
+exports.getGroupe = async (data) => {
   let content = [];
   await groupomania.call('groupe_content', data.groupe)
   .then((row) => {
@@ -177,9 +177,17 @@ exports.putGroupeMember = async (data) => {
   await groupomania.call('grant_groupe_right', data.groupe, data.id, data.idNewMember, data.newAdmin)
 };
 
+exports.deleteGroupe = async (data) => {
+  await this.verifAdmin(data.idParticipation, data.id)
+  await groupomania.call('delete_groupe', data.groupe)
+
+  fs.unlink('images/groupes/' + data.groupe + '.webp', (err) => { if (err) console.log(err) })
+};
+
+
 // Participations
 
-exports.getParticipationInfos = async (data) => {
+exports.getParticipation = async (data) => {
   let content = [];
   await this.verifRight(data.groupe, data.id);
   await groupomania.call('participation_infos', data.idParticipation)
@@ -201,7 +209,7 @@ exports.postParticipation = async (data) => {
   if ((data.publique + data.prive) === 2) {
     throw { custMsg: "Une participation ne peut être publique et privée !" }
   }
-  await this.verifRight(data.idParticipation, data.id)
+  await this.verifRight(data.groupe, data.id)
   .then((res) => {
     if (res < 1) throw { custMsg : 'Vous n\'avez pas le droit de participer.' }
   })
@@ -228,6 +236,15 @@ exports.putParticipationMember = async (data) => {
   await this.verifAdmin(data.idParticipation, data.id);
   await groupomania.call('grant_participation_right', data.idParticipation, data.id, data.idNewMember, data.newAdmin)  
 };
+
+exports.deleteParticipation = async (data) => {
+  await this.verifAdmin(data.idParticipation, data.id)
+  await groupomania.call('delete_participation', data.idComm)
+
+  fs.unlink('images/participations/' + data.idParticipation + '.webp', (err) => { if (err) console.log(err) })
+};
+
+// Commentaires
 
 exports.getParticipationComment = async (data) => {
   let content = [];

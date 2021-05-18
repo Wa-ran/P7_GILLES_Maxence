@@ -7,13 +7,13 @@ let fctMap = [
   {route: '/lastArticles', fct: 'LastArticles'},
 // Groupes
   {route: '/groupeList', fct: 'GroupeList'},
-  {route: '/groupe/:groupe', fct: 'GroupeContent'},
+  {route: '/groupe/:groupe', fct: 'Groupe'},
   {route: '/groupe/create', fct: 'Groupe'},
   {route: '/groupe/:groupe/member', fct: 'GroupeMember'},
   {route: '/groupe/:groupe/commSignaled', fct: 'GroupeCommSignaled'},
   {route: '/groupe/grant', fct: 'Groupe'},
 // Participations
-  {route: '/participation/:participationId', fct: 'ParticipationInfos'},
+  {route: '/participation/:participationId', fct: 'Participation'},
   {route: '/participation/create', fct: 'Participation'},
   {route: '/participation/:participationId/member', fct: 'ParticipationMember'},
   {route: '/participation/:participationId/grant', fct: 'ParticipationMember'},
