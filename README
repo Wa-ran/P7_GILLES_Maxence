@@ -1,0 +1,10 @@
+Projet 7 du parcours OC - Développeur Web
+
+Réalisé avec VueJS + MdBootstrap, ExpressJS, Mysql
+
+Le dossier "Front" contient l'application: dans "app", installez les modules, lancez 'npm run start'
+Le dossier "Back" contient le serveur NodeJs: dans "Back", installez les modules, lancez 'nodemon server'
+
+Le dossier "Database" contient les fichiers .sql pour l'installation de la BDR (remplissez la table "departement" avec des noms de votre choix)
+Si vous utilisez le Dump, quelques données seront déjà présentes
+Par simplicité et parce que nous sommes sur un projet étudiant, seul l'utilisateur "root" est requis (vérifiez le champ "password" de la const "config" dans le fichier: "Back/middlewares/groupomania" pour établir la connection)
