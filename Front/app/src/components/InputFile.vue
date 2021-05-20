@@ -3,7 +3,7 @@
     <div class="mt-3 w-100 custom-file">
       <input type="file" class="w-100 custom-file-input" id="file" name="file" 
       autofocus
-      accept="image/jpg,image/jpeg,image/pdf,image/webp"
+      accept="image/jpg,image/jpeg,image/pdf,image/png,image/webp"
       @change="filePreview">
       <label class="w-100 text-left custom-file-label" for="file">
         {{ file ? file : 'Votre image' }}

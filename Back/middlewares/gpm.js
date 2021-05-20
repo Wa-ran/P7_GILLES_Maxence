@@ -2,41 +2,48 @@ const groupomania = require('./groupomania');
 const fs = require('fs');
 const { encrypt, decrypt } = require('../middlewares/crypto');
 
-exports.verifRight = async (identifier, userId, accesReq) => {
-  let publique = 0;
-  let member = 0;
-  let prive = 0;
-// identifier = idparticipation ou groupeName = clause pour WHERE
-  let table = Number.isInteger(identifier) ? 'participation' : 'groupe';
-  let column = Number.isInteger(identifier) ? 'id' : 'nom';
+exports.verifRight = async (identifier, userId) => {
+  let acces;
 
-  await groupomania.connect
-  .then(function () { // user = membre ?
-    return session.sql('SELECT COUNT(*) FROM utilisateur_' + table + ' WHERE ' + table + '_' + column + ' = \'' + identifier + '\' AND utilisateur_id = ' + userId + ';')
-    .execute((row) => { member = row[0] })
-  })
-  .then(function () { // publique ?
-    if (member === 0) {
-      return session.sql('SELECT publique FROM ' + table + ' WHERE ' + column + ' = \'' + identifier + '\';')
-      .execute((row) => { publique = row[0] })    
+  await this.verifAdmin(identifier, userId)
+  .then(async (res) => {
+    if (res == 1) return acces = 1
+    else {
+      let publique = 0;
+      let member = 0;
+      let prive = 0;
+    // identifier = idparticipation ou groupeName = clause pour WHERE
+      let table = Number.isInteger(identifier) ? 'participation' : 'groupe';
+      let column = Number.isInteger(identifier) ? 'id' : 'nom';
+    
+      await groupomania.connect
+      .then(function () { // user = membre ?
+        return session.sql('SELECT COUNT(*) FROM utilisateur_' + table + ' WHERE ' + table + '_' + column + ' = \'' + identifier + '\' AND utilisateur_id = ' + userId + ';')
+        .execute((row) => { member = row[0] })
+      })
+      .then(function () { // publique ?
+        if (member === 0) {
+          return session.sql('SELECT publique FROM ' + table + ' WHERE ' + column + ' = \'' + identifier + '\';')
+          .execute((row) => { publique = row[0] })    
+        }
+      })
+      .then(function () { // privé ?
+        if ((member + publique) === 0 && (table === 'participation')) {
+          return session.sql('SELECT prive FROM participation WHERE id = \'' + identifier + '\';')
+          .execute((row) => { prive = row[0] })
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        throw { custMsg : 'Problème lors de la vérification des droits.' }
+      })
+    
+      acces = (publique + member - prive);
+      if (acces === -1) { // => participation privée et user non membre = non visible
+        throw { custMsg : 'Vous n\'avez pas les droits.' }
+      }
     }
   })
-  .then(function () { // privé ?
-    if ((member + publique) === 0 && (table === 'participation')) {
-      return session.sql('SELECT prive FROM participation WHERE id = \'' + identifier + '\';')
-      .execute((row) => { prive = row[0] })
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-    throw { custMsg : 'Problème lors de la vérification des droits.' }
-  })
-
-  let acces = (publique + member - prive);
-  if (acces === -1) { // => participation privée et user non membre = non visible
-    throw { custMsg : 'Vous n\'avez pas les droits.' }
-  }
-
   return acces
   // 0 => visible, non membre
   // 1 ou 2 => membre, peut participer
@@ -97,6 +104,13 @@ exports.checkDept = (data) => {
   })
 };
 
+exports.getLastAnnonce = () => {
+  return groupomania.call('last_annonce')
+  .then((row) => {
+    return row[0]
+  })
+};
+
 exports.getLastArticles = async () => {
   let content = [];
   await groupomania.call('last_articles')
@@ -146,7 +160,14 @@ exports.postGroupe = async (data) => {
 
   await groupomania.call('create_groupe', data.groupe, data.description, data.id, data.publique);
 
-  if (data.image) fs.rename(data.file.path, 'images/groupes/' + encodeURIComponent(decrypt(data.groupe)).replaceAll(/%|~/g, '') + '.webp', (err) => { console.log(err) })
+  let name = encodeURIComponent(decrypt(data.groupe)).toString();
+
+  if (data.image) fs.rename(data.file.path, 'images/groupes/' + name.replace(/%|~/g, '') + '.webp', (err) => { 
+    if (err) {
+      console.log(err)
+      fs.unlink(data.file.path, (err) => { if (err) console.log(err) })
+    }
+  })
 };
 
 exports.getGroupeMember = async (data) => {
@@ -211,14 +232,19 @@ exports.postParticipation = async (data) => {
   }
   await this.verifRight(data.groupe, data.id)
   .then((res) => {
-    if (res < 1) throw { custMsg : 'Vous n\'avez pas le droit de participer.' }
+    if (res < 1) throw { custMsg : 'Vous n\'avez pas le droit de créer une participation.' }
   })
   await groupomania.call('create_participation', data.groupe, data.id, data.titre, data.preview, data.article, data.importance, data.publique, data.prive)
   .then((row) => {
     data['idPart'] = row
   })
 
-  if (data.image) fs.rename(data.file.path, 'images/participations/' + data.idPart + '.webp', (err) => { console.log(err) })
+  if (data.image) fs.rename(data.file.path, 'images/participations/' + data.idPart + '.webp', (err) => {
+    if (err) {
+      console.log(err)
+      fs.unlink(data.file.path, (err) => { if (err) console.log(err) })
+    }
+  })
 };
 
 exports.getParticipationMember = async (data) => {
@@ -255,9 +281,6 @@ exports.getParticipationComment = async (data) => {
       content.push(el)
     })
   })
-  if (content.length === 0) {
-    content = [{ contenu: 'Soyez le premier à commenter !' }]
-  };
 
   content.sort((a, b) => { // réarragement par id des comms (plus anciens > plus récent)
     return a.id - b.id
@@ -287,17 +310,18 @@ exports.postParticipationComment = async (data) => {
     data['idComm'] = row
   })
 
-  if (data.image) fs.rename(data.file.path, 'images/commentaires/' + data.idComm + '.webp', (err) => { if (err) console.log(err) })
+  if (data.image) fs.rename(data.file.path, 'images/commentaires/' + data.idComm + '.webp', (err) => {
+    if (err) {
+      console.log(err)
+      fs.unlink(data.file.path, (err) => { if (err) console.log(err) })
+    }
+  })
 };
 
 exports.deleteParticipationComment = async (data) => {
-  await this.verifAdmin(data.idParticipation, data.id)
-  .then(async (res) => {
-    if (res < 1)
-    await this.verifRight(data.idParticipation, data.id)
-    .then((res) => {
-      if (res < 1 || data.id !== data.idCreateur) throw { custMsg : 'Vous n\'avez pas les droits' }
-    })
+  await this.verifRight(data.idParticipation, data.id)
+  .then((res) => {
+    if (res < 1 && (data.id !== data.idCreateur)) throw { custMsg : 'Vous n\'avez pas les droits' }
   })
   await groupomania.call('delete_commentaire', data.idComm)
 

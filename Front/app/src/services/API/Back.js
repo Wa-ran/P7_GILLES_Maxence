@@ -94,6 +94,9 @@ export default {
   getDeptsList() {
     return fetch('http://localhost:3000/gpm/depts')
   },
+  getLastAnnonce() {
+    return fetch('http://localhost:3000/gpm/lastAnnonce', { headers : store.state.headers })
+  },
   getLastArticles() {
     return fetch('http://localhost:3000/gpm/lastArticles', { headers : store.state.headers })
   },

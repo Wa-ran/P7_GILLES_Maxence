@@ -2,8 +2,7 @@ const mysqlx = require('@mysql/xdevapi');
 const config = {
     password: 'pass',
     user: 'root',
-    host: '127.0.0.1',
-    port: 33060,
+    host: 'localhost',
     schema: 'groupomania'
 };
 
@@ -12,16 +11,8 @@ exports.connect = mysqlx.getSession(config)
   session = s;
   return session.sql('USE groupomania').execute();
 })
-.catch(() => {
-  throw 'La connexion à la BDR a échouée !'
-});
-
-exports.connect = mysqlx.getSession(config)
-.then(function (s) {
-  session = s;
-  return session.sql('USE groupomania').execute();
-})
-.catch(() => {
+.catch((err) => {
+  console.log(err)
   throw 'La connexion à la BDR a échouée !'
 });
 

@@ -29,7 +29,6 @@ export default {
   methods: {
     restart() {
       this.footerPadding();
-      this.scrollButton();
       this.$store.replaceState({
         avatar: {
           big: '',
@@ -51,6 +50,7 @@ export default {
         groupeMember: [],
         groupeCommSignaled: [],
         headers: {},
+        lastAnnonce: {},
         lastArticles: [],
         loading: true,
         participationInfos: {},
@@ -60,9 +60,6 @@ export default {
     },
     footerPadding() { // Pour que le bas du contenu n'apparaisse pas sous le footer
       document.querySelector('#MainView :last-child').style.marginBottom = 3*document.querySelector('footer').scrollHeight + 'px'
-    },
-    scrollButton() {
-
     }
   },
   watch: {

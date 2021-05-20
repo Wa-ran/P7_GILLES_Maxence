@@ -4,6 +4,7 @@ const { cryptData, decryptData } = require('../middlewares/sanitizer');
 
 let fctMap = [
   {route: '/depts', fct: 'DeptsList'},
+  {route: '/lastAnnonce', fct: 'LastAnnonce'},
   {route: '/lastArticles', fct: 'LastArticles'},
 // Groupes
   {route: '/groupeList', fct: 'GroupeList'},

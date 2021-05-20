@@ -148,7 +148,7 @@ export default {
     },
     pathToForm() {
       return this.groupeProps ?
-      '/home/groupes/' + this.groupeProps + '/creation' :
+      '/home/groupes/' + encodeURIComponent(this.groupeProps) + '/creation' :
       '/home/groupes/creation'
     },
     contentList() {
@@ -179,8 +179,8 @@ export default {
   methods: {
     pathToContent(item) {
       return this.groupeProps ?
-      '/home/groupes/' + this.groupeProps + '/' + item.id :
-      '/home/groupes/' + item.title
+      '/home/groupes/' + encodeURIComponent(this.groupeProps) + '/' + item.id :
+      '/home/groupes/' + encodeURIComponent(item.title)
     },
     async dispatch() {
       if (this.routeName === 'groupeProps') {
@@ -192,8 +192,8 @@ export default {
       }
     }
   },
-  created() {
-    this.dispatch()
+  async created() {
+    await this.dispatch()
   },
   watch: {
     groupeProps() {

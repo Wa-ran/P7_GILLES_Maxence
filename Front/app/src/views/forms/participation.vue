@@ -42,7 +42,7 @@ export default {
     TextArea
   },
   async created() {
-    await this.$store.dispatch('chooseSubmit', { backFct: 'postParticipation', submitPath: '/home/groupes/' + this.$route.params.groupeProps })
+    await this.$store.dispatch('chooseSubmit', { backFct: 'postParticipation', submitPath: '/home/groupes/' + encodeURIComponent(this.$route.params.groupeProps) })
   }
 }
 </script>

@@ -39,7 +39,7 @@ export default {
   },
   watch : {
     groupeName() {
-      this.$store.dispatch('chooseSubmit', { backFct: 'postGroupe', submitPath: '/home/groupes/' + this.groupeName });    
+      this.$store.dispatch('chooseSubmit', { backFct: 'postGroupe', submitPath: '/home/groupes/' + encodeURIComponent(this.groupeName) });    
     }
   }
 }

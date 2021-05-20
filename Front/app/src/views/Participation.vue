@@ -31,7 +31,7 @@
 
     </mdb-card>
 
-    <Commentaire>
+    <Commentaire :avatarId="infos.userId">
       <template #sticker>
         <div class="px-1">
           {{ infos.createurNom }} {{ infos.createurPrenom }}        
@@ -41,42 +41,40 @@
     </Commentaire>
 
 <!-- Espace commentaires -->
-    <div v-if="commList.lenght > 0">
-      <div v-for="comm in commList" :key="comm.id" :id="comm.id" class="pt-2">
-        <Commentaire :avatarId="comm.userId">
+    <div v-for="comm in commList" :key="comm.id" :id="comm.id" class="pt-2">
+      <Commentaire :avatarId="comm.userId">
 
-          <template #sticker>
-            <div class="px-1">
-              {{ comm.nom }} {{ comm.prenom }}
-            </div>
-          </template>
+        <template #sticker>
+          <div class="px-1">
+            {{ comm.nom }} {{ comm.prenom }}
+          </div>
+        </template>
 
-          <ButtonPiti v-if="comm.signaled == 1 && isAdmin"
-          @action="showModal = true, manageComm = comm, purpose= 'approve'"
-          class="mr-4 gpm-warning gpm-warning-active btnDelete btn-text-normal">
-            Commentaire signalé
-          </ButtonPiti>
+        <ButtonPiti v-if="comm.signaled == 1 && isAdmin"
+        @action="showModal = true, manageComm = comm, purpose= 'approve'"
+        class="mr-4 gpm-warning gpm-warning-active btnDelete btn-text-normal">
+          Commentaire signalé
+        </ButtonPiti>
 
-          <ButtonCircle v-if="comm.userId === userId || isAdmin"
-          @actionBtnCircle="showModal = true, manageComm = comm, purpose= 'delete'"
-          class="gpm-attention gpm-warning-active btnDelete">
-            <i class="fas fa-times"></i>
-          </ButtonCircle>
+        <ButtonCircle v-if="comm.userId === userId || isAdmin"
+        @actionBtnCircle="showModal = true, manageComm = comm, purpose= 'delete'"
+        class="gpm-attention gpm-warning-active btnDelete">
+          <i class="fas fa-times"></i>
+        </ButtonCircle>
 
-          <ButtonPiti v-else
-          @action="showModal = true, manageComm = comm, purpose= 'signal'"
-          class="gpm-attention gpm-warning-active btnDelete btn-text-normal">
-            Signaler
-          </ButtonPiti>
+        <ButtonPiti v-else
+        @action="showModal = true, manageComm = comm, purpose= 'signal'"
+        class="gpm-attention gpm-warning-active btnDelete btn-text-normal">
+          Signaler
+        </ButtonPiti>
 
-          <ImageShow v-if="comm.image == 1"
-            :source="'http://localhost:3000/images/commentaires/' + comm.id + '.webp'"
-            :textAlt="'Image partagée par ' + comm.nom + ' ' + comm.prenom"/>
+        <ImageShow v-if="comm.image == 1"
+          :source="'http://localhost:3000/images/commentaires/' + comm.id + '.webp'"
+          :textAlt="'Image partagée par ' + comm.nom + ' ' + comm.prenom"/>
 
-          <div class="pt-1 comm">{{ comm.contenu }}</div>
-          <div class="text-right date">{{ setDate(comm.date) }}</div>
-        </Commentaire>
-      </div>
+        <div class="pt-1 comm">{{ comm.contenu }}</div>
+        <div class="text-right date">{{ setDate(comm.date) }}</div>
+      </Commentaire>
     </div>
 
     <div class="spinner-border" role="status" v-if="commLoading">
